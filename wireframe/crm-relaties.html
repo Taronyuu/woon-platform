@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM - Relatiebeheer - Wooon.nl</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold text-blue-600">Wooon.nl</div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="account-makelaar.html" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                    <a href="woning-invoeren.html" class="text-gray-700 hover:text-blue-600">Woningen</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Projecten</a>
+                    <a href="crm-relaties.html" class="text-blue-600 font-semibold">Relaties</a>
+                    <a href="berichten.html" class="text-gray-700 hover:text-blue-600">Berichten</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700">Makelaar Account</span>
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Uitloggen</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2">CRM - Relatiebeheer</h1>
+            <p class="text-gray-600">Beheer uw klanten, leads en prospects op één centrale plek</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm text-gray-600">Totaal contacten</span>
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-gray-800">247</div>
+                <p class="text-xs text-green-600 mt-2">+12 deze maand</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm text-gray-600">Actieve leads</span>
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-gray-800">43</div>
+                <p class="text-xs text-gray-600 mt-2">Opvolging vereist</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm text-gray-600">Gesloten deals</span>
+                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-gray-800">18</div>
+                <p class="text-xs text-gray-600 mt-2">Deze maand</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm text-gray-600">Conversieratio</span>
+                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-gray-800">24%</div>
+                <p class="text-xs text-green-600 mt-2">+3% vs vorige maand</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <input type="text" placeholder="Zoek op naam, email of telefoonnummer..." class="w-96 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="">Alle statussen</option>
+                            <option value="new">Nieuw</option>
+                            <option value="active">Actief</option>
+                            <option value="viewing">Bezichtiging gepland</option>
+                            <option value="negotiating">Onderhandeling</option>
+                            <option value="closed-won">Gesloten (Won)</option>
+                            <option value="closed-lost">Gesloten (Lost)</option>
+                        </select>
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="">Alle woningen</option>
+                            <option value="koop">Koop</option>
+                            <option value="huur">Huur</option>
+                            <option value="nieuwbouw">Nieuwbouw</option>
+                        </select>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg border border-gray-300">
+                            Exporteer
+                        </button>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            + Nieuw contact
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-b border-gray-200">
+                <nav class="flex">
+                    <button class="px-6 py-4 text-blue-600 border-b-2 border-blue-600 font-semibold">Alle contacten</button>
+                    <button class="px-6 py-4 text-gray-600 hover:text-blue-600">Leads</button>
+                    <button class="px-6 py-4 text-gray-600 hover:text-blue-600">Klanten</button>
+                    <button class="px-6 py-4 text-gray-600 hover:text-blue-600">Archief</button>
+                </nav>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interesse</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Laatste contact</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                                        JD
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-800">Jan de Vries</div>
+                                        <div class="text-xs text-gray-500">Lead #2847</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">jan.devries@email.nl</div>
+                                <div class="text-xs text-gray-500">06-12345678</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">Appartement Amsterdam</div>
+                                <div class="text-xs text-gray-500">€ 425.000 • Koop</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">Bezichtiging</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">Vandaag 10:32</div>
+                                <div class="text-xs text-gray-500">via Berichten</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-2">
+                                    <button class="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Bekijken">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Bericht sturen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Notitie toevoegen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                                        MB
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-800">Maria Bakker</div>
+                                        <div class="text-xs text-gray-500">Klant #1832</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">m.bakker@gmail.com</div>
+                                <div class="text-xs text-gray-500">06-98765432</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">Villa Utrecht</div>
+                                <div class="text-xs text-gray-500">€ 750.000 • Koop</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-semibold rounded-full">Onderhandeling</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">Gisteren 16:45</div>
+                                <div class="text-xs text-gray-500">via Telefoon</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-2">
+                                    <button class="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Bekijken">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Bericht sturen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Notitie toevoegen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                                        PT
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-800">Peter Timmers</div>
+                                        <div class="text-xs text-gray-500">Lead #2901</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">p.timmers@outlook.com</div>
+                                <div class="text-xs text-gray-500">06-55512345</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">Woning Rotterdam</div>
+                                <div class="text-xs text-gray-500">€ 1.450/mnd • Huur</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">Actief</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">2 dagen geleden</div>
+                                <div class="text-xs text-gray-500">via Berichten</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-2">
+                                    <button class="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Bekijken">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Bericht sturen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Notitie toevoegen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                                        SK
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-800">Sophie Koster</div>
+                                        <div class="text-xs text-gray-500">Lead #2863</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">sophie.k@icloud.com</div>
+                                <div class="text-xs text-gray-500">06-77889900</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">Nieuwbouw Den Haag</div>
+                                <div class="text-xs text-gray-500">€ 385.000 • Nieuwbouw</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">Nieuw</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">3 dagen geleden</div>
+                                <div class="text-xs text-gray-500">via Website</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-2">
+                                    <button class="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Bekijken">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Bericht sturen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Notitie toevoegen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                                        LV
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-800">Lars van Dijk</div>
+                                        <div class="text-xs text-gray-500">Klant #1745</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">l.vandijk@live.nl</div>
+                                <div class="text-xs text-gray-500">06-44556677</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">Studio Leiden</div>
+                                <div class="text-xs text-gray-500">€ 895/mnd • Huur</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">Gesloten</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-800">1 week geleden</div>
+                                <div class="text-xs text-gray-500">via Email</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-2">
+                                    <button class="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Bekijken">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Bericht sturen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-1 text-gray-600 hover:bg-gray-100 rounded" title="Notitie toevoegen">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-600">
+                    Toont 1-5 van 247 contacten
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">Vorige</button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded-lg">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">Volgende</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="font-semibold text-lg mb-4">Lead pipeline</h3>
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-gray-700">Nieuw</span>
+                            <span class="text-sm font-semibold text-gray-800">15</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 35%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-gray-700">Actief contact</span>
+                            <span class="text-sm font-semibold text-gray-800">28</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-gray-700">Bezichtiging</span>
+                            <span class="text-sm font-semibold text-gray-800">12</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-600 h-2 rounded-full" style="width: 28%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-gray-700">Onderhandeling</span>
+                            <span class="text-sm font-semibold text-gray-800">8</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-orange-600 h-2 rounded-full" style="width: 19%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-gray-700">Gesloten (Won)</span>
+                            <span class="text-sm font-semibold text-gray-800">18</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 42%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="font-semibold text-lg mb-4">Opvolging vereist</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <div>
+                            <div class="font-semibold text-sm text-gray-800">Emma Hendriks</div>
+                            <div class="text-xs text-gray-600">5 dagen geen reactie</div>
+                        </div>
+                        <button class="text-red-600 hover:text-red-700 text-sm font-semibold">
+                            Follow-up
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                        <div>
+                            <div class="font-semibold text-sm text-gray-800">Sophie Koster</div>
+                            <div class="text-xs text-gray-600">3 dagen geen reactie</div>
+                        </div>
+                        <button class="text-yellow-600 hover:text-yellow-700 text-sm font-semibold">
+                            Follow-up
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                        <div>
+                            <div class="font-semibold text-sm text-gray-800">Peter Timmers</div>
+                            <div class="text-xs text-gray-600">2 dagen geen reactie</div>
+                        </div>
+                        <button class="text-yellow-600 hover:text-yellow-700 text-sm font-semibold">
+                            Follow-up
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="font-semibold text-lg mb-4">Activiteit deze week</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-800">87 berichten verstuurd</div>
+                            <div class="text-xs text-gray-500">+12 vs vorige week</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-800">23 bezichtigingen</div>
+                            <div class="text-xs text-gray-500">+5 vs vorige week</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-800">6 deals gesloten</div>
+                            <div class="text-xs text-gray-500">€ 2.4M totaal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-900 text-white mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

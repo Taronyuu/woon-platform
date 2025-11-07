@@ -1,0 +1,92 @@
+Hee Zander,
+ 
+Als het goed is heb je van de week een uitnodiging gekregen.
+We hebben 10.30 een meeting in Deventer.
+ 
+Zie hieronder mijn antwoorden op je vragen.
+ 
+Tot (hopelijk) 4 november!
+ 
+ 
+ 
+ 
+Image
+Eigenwijze groet,
+ 
+Amber Gerritsen-Vos
+Marketing Strateeg
++31 (0)6-13655626
+/
+www.eigenwijz.nu
+/
+Image
+Image
+Image
++31 (0)85-7600202
+/
+Grotestraat 10 / 7461 KG / Rijssen
+ 
+ 
+Van: Zander van der Meer | Meer Development <zander@meerdevelopment.nl>
+Datum: dinsdag, 14 oktober 2025 om 20:28
+Aan: Amber Gerritsen-Vos <amber@eigenwijz.nu>
+CC: Eddy van Horssen <eddy@ska-pa.nl>
+Onderwerp: Re: Wooon.nl
+
+Hoi Amber,
+ 
+Ik ben met enige regelmaat op reis, maar gelukkig ben ik nog steeds de meeste tijd wel in Nederland :-) 4 november is dus voor mij geen probleem! Hoe laat?
+ 
+Alvast enkele vragen vanuit mijn kant:
+De technische realisatie staat op naam van mij en Code14, wie/wat is/zijn Code14?  Bij code14 hebben in eerste instantie geïnventariseerd naar de mogelijkheden op basis van een no-code website.
+In Fase 1 staat een API koppeling voor de bestaande bouw, is deze API open? Moet nog onderzocht worden.
+Is er een compleet overzicht van alle websites die gescraped moeten gaan worden? Deze volgt zodra we de sessies per aanbod gaan doen (huur, Bestaand en nieuwbouw)
+Ik zie ‘woningen invoeren’, is dat enkel favoriete woningen opslaan of zit daar meer logica achter? Het mooiste is dat de makelaars hier de woningen kunnen invoeren.
+ 
+Met vriendelijke groet,
+Zander van der Meer
+Meer Development
+ 
+ 
+
+
+On 14 Oct 2025, at 12:14, Amber Gerritsen-Vos <amber@eigenwijz.nu> wrote:
+ 
+Hi Zander,
+ 
+Leuk je vanochtend gesproken te hebben!
+Eddy en ik zijn ook weer helemaal up-to-date en hebben samen het wireframe en de strategische planning bijgewerkt.
+ 
+Bijgaand tref je deze documenten aan.
+ 
+Ik hoop dat je hiermee een duidelijker beeld krijgt van ons idee.
+Jouw mening, feedback en input zijn natuurlijk meer dan welkom!
+ 
+We willen dit graag een keer met z’n drieën bespreken.
+Ik weet dat jij niet vaak in Nederland bent, maar heb je toevallig de mogelijkheid om op 4 november naar Deventer te komen?
+Dan hebben we een afspraak bij Eddy op kantoor bij Ska-Pa. Mocht je niet in Nederland zijn, dan kan het eventueel ook digitaal.
+ 
+Wel even onder voorbehoud: ik ben halverwege november uitgerekend, dus het kan zijn dat we de afspraak moeten verschuiven of dat ik er niet bij kan zijn.
+ 
+Ik hoor graag van je!
+ 
+ 
+ 
+<image001.gif>
+Eigenwijze groet,
+ 
+Amber Gerritsen-Vos
+Marketing Strateeg
++31 (0)6-13655626
+/
+www.eigenwijz.nu
+/
+<image002[68].png>
+<image003[38].png>
+<image004[45].png>
++31 (0)85-7600202
+/
+Grotestraat 10 / 7461 KG / Rijssen
+ 
+<Strategische Planning Wooon (1).docx><Wireframe Wooon (1).docx>
+ 
