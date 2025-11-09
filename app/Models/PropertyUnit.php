@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class PropertyUnit extends Model
+{
+    protected $fillable = [
+        'name',
+        'title',
+        'description',
+        'property_type',
+        'transaction_type',
+        'status',
+        'living_type',
+        'buyprice',
+        'buyprice_label',
+        'buyprice_range_from',
+        'buyprice_range_to',
+        'land_costs',
+        'contract_price',
+        'ground_lease',
+        'canon',
+        'canon_comment',
+        'rentprice_month',
+        'service_fee_month',
+        'total_rent_month',
+        'price_currency',
+        'property_tax',
+        'hoa_fees',
+        'address_street',
+        'address_number',
+        'address_addition',
+        'address_city',
+        'address_postal_code',
+        'address_province',
+        'address_country',
+        'latitude',
+        'longitude',
+        'neighborhood',
+        'municipality',
+        'surface',
+        'lotsize',
+        'volume',
+        'outdoor_surface',
+        'planarea',
+        'bedrooms',
+        'sleepingrooms',
+        'bathrooms',
+        'floors',
+        'construction_year',
+        'renovation_year',
+        'energy_label',
+        'energy_index',
+        'floor',
+        'orientation',
+        'berth',
+        'garage',
+        'has_parking',
+        'has_elevator',
+        'has_ac',
+        'has_alarm',
+        'parking_lots_data',
+        'storages_data',
+        'outdoor_spaces_data',
+        'images',
+        'videos',
+        'floor_plans',
+        'virtual_tour_url',
+        'brochure_url',
+        'agent_name',
+        'agent_company',
+        'agent_phone',
+        'agent_email',
+        'agent_logo_url',
+        'features',
+        'amenities',
+        'data',
+        'listing_date',
+        'acceptance_date',
+        'viewing_date',
+        'first_seen_at',
+        'last_seen_at',
+        'last_changed_at',
+    ];
+
+    protected $casts = [
+        'berth' => 'boolean',
+        'garage' => 'boolean',
+        'has_parking' => 'boolean',
+        'has_elevator' => 'boolean',
+        'has_ac' => 'boolean',
+        'has_alarm' => 'boolean',
+        'parking_lots_data' => 'array',
+        'storages_data' => 'array',
+        'outdoor_spaces_data' => 'array',
+        'images' => 'array',
+        'videos' => 'array',
+        'floor_plans' => 'array',
+        'features' => 'array',
+        'amenities' => 'array',
+        'data' => 'array',
+        'listing_date' => 'date',
+        'viewing_date' => 'datetime',
+        'first_seen_at' => 'datetime',
+        'last_seen_at' => 'datetime',
+        'last_changed_at' => 'datetime',
+    ];
+
+    public function websites(): BelongsToMany
+    {
+        return $this->belongsToMany(Website::class)
+            ->withPivot('external_id', 'source_url', 'first_seen_at', 'last_seen_at')
+            ->withTimestamps();
+    }
+}

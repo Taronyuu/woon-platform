@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'firecrawl' => [
+        'base_url' => env('FIRECRAWL_BASE_URL', 'https://crawl.meerdevelopment.nl/firecrawl/v1'),
+        'username' => env('FIRECRAWL_USERNAME', 'admin'),
+        'password' => env('FIRECRAWL_PASSWORD'),
+    ],
+
 ];

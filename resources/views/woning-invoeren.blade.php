@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woning invoeren - Wooon.nl</title>
+    @vite(["resources/css/app.css", "resources/js/app.js"])
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Wooon.nl</div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="{{ route('realtor.dashboard') }}" class="text-gray-700 hover:text-blue-600 transition-colors">Dashboard</a>
+                    <a href="{{ route('realtor.properties.create') }}" class="text-blue-600 font-semibold">Woningen</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">Projecten</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">Relaties</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700">Makelaar Account</span>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">Uitloggen</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2">Woning invoeren</h1>
+            <p class="text-gray-600">Voer een nieuwe woning in of importeer meerdere woningen tegelijk</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="flex">
+                    <button class="px-6 py-4 text-blue-600 border-b-2 border-blue-600 font-semibold">Handmatig invoeren</button>
+                    <button class="px-6 py-4 text-gray-600 hover:text-blue-600">Bulk importeren</button>
+                    <button class="px-6 py-4 text-gray-600 hover:text-blue-600">Via API</button>
+                </nav>
+            </div>
+
+            <div class="p-6">
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-gradient-to-br from-blue-500 to-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3 shadow-lg">1</span>
+                        Basisgegevens
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ml-11">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Type aanbieding *</label>
+                            <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                                <option value="">Selecteer type</option>
+                                <option value="koop">Te koop</option>
+                                <option value="huur">Te huur</option>
+                                <option value="nieuwbouw">Nieuwbouw</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status *</label>
+                            <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                                <option value="">Selecteer status</option>
+                                <option value="beschikbaar">Beschikbaar</option>
+                                <option value="optie">Onder optie</option>
+                                <option value="verkocht">Verkocht/Verhuurd</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Titel woning *</label>
+                            <input type="text" placeholder="Bijv. Ruime eengezinswoning met tuin" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-gradient-to-br from-purple-500 to-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3 shadow-lg">2</span>
+                        Adresgegevens
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ml-11">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Straatnaam *</label>
+                            <input type="text" placeholder="Straatnaam" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Huisnummer *</label>
+                                <input type="text" placeholder="123" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Toevoeging</label>
+                                <input type="text" placeholder="A" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Postcode *</label>
+                            <input type="text" placeholder="1234 AB" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Plaats *</label>
+                            <input type="text" placeholder="Amsterdam" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3 shadow-lg">3</span>
+                        Prijs & Oppervlakte
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ml-11">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Vraagprijs *</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3 text-gray-500 font-semibold">€</span>
+                                <input type="text" placeholder="450.000" class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Huurprijs per maand</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3 text-gray-500 font-semibold">€</span>
+                                <input type="text" placeholder="1.500" class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Woonoppervlakte *</label>
+                            <div class="relative">
+                                <input type="text" placeholder="120" class="w-full pr-12 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                                <span class="absolute right-4 top-3 text-gray-500 font-semibold">m²</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Perceeloppervlakte</label>
+                            <div class="relative">
+                                <input type="text" placeholder="200" class="w-full pr-12 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                                <span class="absolute right-4 top-3 text-gray-500 font-semibold">m²</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-gradient-to-br from-green-500 to-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3 shadow-lg">4</span>
+                        Kenmerken
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 ml-11">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Aantal kamers *</label>
+                            <input type="number" placeholder="4" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Aantal slaapkamers</label>
+                            <input type="number" placeholder="3" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Aantal badkamers</label>
+                            <input type="number" placeholder="1" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Soort woning</label>
+                            <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                                <option value="">Selecteer type</option>
+                                <option>Appartement</option>
+                                <option>Eengezinswoning</option>
+                                <option>Studio</option>
+                                <option>Penthouse</option>
+                                <option>Villa</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Bouwjaar</label>
+                            <input type="text" placeholder="1985" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Energielabel</label>
+                            <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300">
+                                <option value="">Selecteer label</option>
+                                <option>A++++</option>
+                                <option>A+++</option>
+                                <option>A++</option>
+                                <option>A+</option>
+                                <option>A</option>
+                                <option>B</option>
+                                <option>C</option>
+                                <option>D</option>
+                                <option>E</option>
+                                <option>F</option>
+                                <option>G</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Extra kenmerken</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Tuin</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Balkon</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Parkeerplaats</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Garage</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Lift</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Dakterras</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">CV</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Zonnepanelen</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-gradient-to-br from-orange-500 to-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3 shadow-lg">5</span>
+                        Omschrijving
+                    </h2>
+                    <div class="ml-11">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Korte omschrijving</label>
+                        <textarea rows="3" placeholder="Korte samenvatting van de woning" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300 mb-4"></textarea>
+
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Uitgebreide omschrijving *</label>
+                        <textarea rows="8" placeholder="Volledige beschrijving van de woning, inclusief indeling, voorzieningen, ligging, etc." class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all hover:border-gray-300"></textarea>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-gradient-to-br from-pink-500 to-pink-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3 shadow-lg">6</span>
+                        Foto's & Media
+                    </h2>
+                    <div class="ml-11">
+                        <div class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center mb-4 hover:border-purple-400 hover:bg-purple-50/50 transition-all cursor-pointer group">
+                            <svg class="w-12 h-12 text-gray-400 mx-auto mb-4 group-hover:text-purple-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            <p class="text-gray-600 mb-2 font-medium">Sleep foto's hierheen of klik om te uploaden</p>
+                            <p class="text-sm text-gray-500">PNG, JPG tot 10MB per bestand</p>
+                            <button class="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200 font-semibold">
+                                Bestanden selecteren
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="relative group rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop" alt="Hoofdfoto" class="w-full h-32 object-cover">
+                                <div class="absolute top-2 left-2">
+                                    <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold">Hoofdfoto</span>
+                                </div>
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <button class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-700">Verwijder</button>
+                                </div>
+                            </div>
+                            <div class="relative group rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&h=300&fit=crop" alt="Foto 2" class="w-full h-32 object-cover">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <button class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-700">Verwijder</button>
+                                </div>
+                            </div>
+                            <div class="relative group rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop" alt="Foto 3" class="w-full h-32 object-cover">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <button class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-700">Verwijder</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Plattegrond uploaden</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition cursor-pointer">
+                                <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                <p class="text-sm text-gray-600">Upload plattegrond (PDF of afbeelding)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3">7</span>
+                        Duurzaamheid
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ml-11">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Isolatie</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Dakisolatie</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Muurisolatie</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Vloerisolatie</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Dubbel glas</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">HR++ glas</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Duurzame voorzieningen</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Zonnepanelen</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Zonneboiler</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Warmtepomp</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Laadpaal</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                    <span class="text-sm">Energieneutraal</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm mr-3">8</span>
+                        Databron & Sync
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ml-11">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Herkomst data</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <option value="handmatig">Handmatig ingevoerd</option>
+                                <option value="vbo">VBO/Makelaars API</option>
+                                <option value="kolibri">Kolibri</option>
+                                <option value="mijnhuiszaken">Mijnhuiszaken.nl</option>
+                                <option value="woningnet">Woningnet.nl</option>
+                                <option value="adees">ADEES</option>
+                                <option value="scrape">Gescrapet</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Externe referentie ID</label>
+                            <input type="text" placeholder="Externe ID voor synchronisatie" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Automatisch synchroniseren met externe bron</span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="border-t border-gray-200 pt-6 flex items-center justify-between">
+                    <div>
+                        <button class="text-gray-600 hover:text-gray-800 px-6 py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition">
+                            Opslaan als concept
+                        </button>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button class="text-gray-600 hover:text-gray-800 px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-50 transition-all">
+                            Annuleren
+                        </button>
+                        <button class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-200">
+                            Bekijk preview
+                        </button>
+                        <button class="bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-200">
+                            Publiceren
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-blue-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h3 class="font-semibold text-blue-900 mb-2">Tips voor het invoeren van woningen</h3>
+                    <ul class="text-sm text-blue-800 space-y-1">
+                        <li>• Velden met een * zijn verplicht</li>
+                        <li>• Gebruik duidelijke foto's met goede belichting (minimaal 5 foto's aanbevolen)</li>
+                        <li>• Een uitgebreide omschrijving verhoogt de kans op reacties</li>
+                        <li>• Vergeet niet duurzaamheidskenmerken toe te voegen, dit is belangrijk voor kopers</li>
+                        <li>• Voor bulk import, gebruik het tabblad "Bulk importeren" en download het CSV-sjabloon</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-900 text-white mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

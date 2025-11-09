@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makelaar Dashboard - Wooon.nl</title>
+    @vite(["resources/css/app.css", "resources/js/app.js"])
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-2xl font-bold text-blue-600">Wooon.nl</a>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Dashboard</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Support</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Documentatie</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-blue-600 font-semibold">Makelaar Dashboard</a>
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600">Uitloggen</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold mb-2">Welkom, Amsterdam Makelaars</h1>
+            <p class="text-gray-600">Beheer je woningen, projecten en relaties</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Actieve woningen</p>
+                        <p class="text-3xl font-bold text-blue-600">23</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-green-600 text-sm mt-2">+3 deze maand</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Bezichtigingen</p>
+                        <p class="text-3xl font-bold text-blue-600">12</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm mt-2">Deze week</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Relaties</p>
+                        <p class="text-3xl font-bold text-blue-600">156</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-green-600 text-sm mt-2">+8 deze maand</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Projecten</p>
+                        <p class="text-3xl font-bold text-blue-600">5</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm mt-2">3 nieuwbouw</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+            <aside class="lg:col-span-1">
+                <nav class="bg-white rounded-lg shadow">
+                    <a href="#gegevens" class="block px-6 py-4 border-l-4 border-blue-600 bg-blue-50 text-blue-600 font-semibold">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Bedrijfsgegevens
+                    </a>
+                    <a href="#relaties" class="block px-6 py-4 border-l-4 border-transparent hover:bg-gray-50 hover:border-gray-300 text-gray-700">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        Relaties
+                        <span class="float-right bg-blue-600 text-white text-xs px-2 py-1 rounded-full">156</span>
+                    </a>
+                    <a href="#woningen" class="block px-6 py-4 border-l-4 border-transparent hover:bg-gray-50 hover:border-gray-300 text-gray-700">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        Woningen
+                        <span class="float-right bg-blue-600 text-white text-xs px-2 py-1 rounded-full">23</span>
+                    </a>
+                    <a href="#projecten" class="block px-6 py-4 border-l-4 border-transparent hover:bg-gray-50 hover:border-gray-300 text-gray-700">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Projecten
+                        <span class="float-right bg-blue-600 text-white text-xs px-2 py-1 rounded-full">5</span>
+                    </a>
+                    <a href="#integraties" class="block px-6 py-4 border-l-4 border-transparent hover:bg-gray-50 hover:border-gray-300 text-gray-700">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Integraties
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="lg:col-span-3">
+
+                <section id="gegevens" class="bg-white rounded-lg shadow p-8 mb-6">
+                    <h2 class="text-2xl font-bold mb-6">Bedrijfsgegevens</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Bedrijfsnaam</label>
+                            <input type="text" value="Amsterdam Makelaars" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">KvK-nummer</label>
+                            <input type="text" value="12345678" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">E-mailadres</label>
+                            <input type="email" value="info@amsterdammakelaars.nl" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefoonnummer</label>
+                            <input type="tel" value="020-1234567" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Adres</label>
+                            <input type="text" value="Keizersgracht 100" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Postcode & Plaats</label>
+                            <input type="text" value="1015 AT Amsterdam" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bedrijfsomschrijving</label>
+                        <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">Amsterdam Makelaars is een erkend NVM makelaarskantoor gespecialiseerd in woningen in de Amsterdamse grachtengordel.</textarea>
+                    </div>
+
+                    <div class="mt-6 flex justify-end space-x-4">
+                        <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                            Annuleren
+                        </button>
+                        <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Opslaan
+                        </button>
+                    </div>
+                </section>
+
+                <section id="relaties" class="bg-white rounded-lg shadow p-8 mb-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold">Relaties</h2>
+                        <div class="flex space-x-3">
+                            <input type="text" placeholder="Zoek relaties..." class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                + Nieuwe relatie
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Naam</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">E-mail</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telefoon</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acties</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4">
+                                        <div class="font-medium text-gray-900">Jan de Vries</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600">jan@example.com</td>
+                                    <td class="px-6 py-4 text-gray-600">06-12345678</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            Koper
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button class="text-blue-600 hover:text-blue-700 mr-3">Bewerken</button>
+                                        <button class="text-red-600 hover:text-red-700">Verwijderen</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4">
+                                        <div class="font-medium text-gray-900">Maria Jansen</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600">maria@example.com</td>
+                                    <td class="px-6 py-4 text-gray-600">06-87654321</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Verkoper
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button class="text-blue-600 hover:text-blue-700 mr-3">Bewerken</button>
+                                        <button class="text-red-600 hover:text-red-700">Verwijderen</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4">
+                                        <div class="font-medium text-gray-900">Peter Bakker</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600">peter@example.com</td>
+                                    <td class="px-6 py-4 text-gray-600">06-11223344</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                            Huurder
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button class="text-blue-600 hover:text-blue-700 mr-3">Bewerken</button>
+                                        <button class="text-red-600 hover:text-red-700">Verwijderen</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6 flex justify-between items-center">
+                        <p class="text-sm text-gray-600">Toon 3 van 156 relaties</p>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">Vorige</button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg">1</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">3</button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">Volgende</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="woningen" class="bg-white rounded-lg shadow p-8 mb-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold">Woningen</h2>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            + Nieuwe woning toevoegen
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-gray-300 w-32 h-24 rounded flex-shrink-0 flex items-center justify-center">
+                                    <span class="text-xs text-gray-600">Foto</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-start justify-between">
+                                        <div>
+                                            <h3 class="font-semibold text-lg mb-1">Keizersgracht 123, Amsterdam</h3>
+                                            <p class="text-blue-600 font-semibold mb-2">€ 425.000</p>
+                                            <p class="text-gray-600 text-sm mb-3">Appartement • 3 kamers • 85 m² • Energielabel B</p>
+                                            <div class="flex items-center space-x-4 text-sm">
+                                                <span class="flex items-center text-green-600">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    Actief
+                                                </span>
+                                                <span class="text-gray-600">45 weergaven deze week</span>
+                                                <span class="text-gray-600">8 keer opgeslagen</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col space-y-2">
+                                            <button class="text-blue-600 hover:text-blue-700 text-sm">Bewerken</button>
+                                            <button class="text-gray-600 hover:text-gray-700 text-sm">Preview</button>
+                                            <button class="text-red-600 hover:text-red-700 text-sm">Verwijderen</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-gray-300 w-32 h-24 rounded flex-shrink-0 flex items-center justify-center">
+                                    <span class="text-xs text-gray-600">Foto</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-start justify-between">
+                                        <div>
+                                            <h3 class="font-semibold text-lg mb-1">Prinsengracht 789, Amsterdam</h3>
+                                            <p class="text-blue-600 font-semibold mb-2">€ 1.250 / maand</p>
+                                            <p class="text-gray-600 text-sm mb-3">Huurwoning • 4 kamers • 110 m² • Energielabel A</p>
+                                            <div class="flex items-center space-x-4 text-sm">
+                                                <span class="flex items-center text-green-600">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    Actief
+                                                </span>
+                                                <span class="text-gray-600">32 weergaven deze week</span>
+                                                <span class="text-gray-600">12 keer opgeslagen</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col space-y-2">
+                                            <button class="text-blue-600 hover:text-blue-700 text-sm">Bewerken</button>
+                                            <button class="text-gray-600 hover:text-gray-700 text-sm">Preview</button>
+                                            <button class="text-red-600 hover:text-red-700 text-sm">Verwijderen</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="projecten" class="bg-white rounded-lg shadow p-8 mb-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold">Projecten</h2>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            + Nieuw project toevoegen
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
+                            <div class="bg-gray-300 h-48 flex items-center justify-center">
+                                <span class="text-gray-600">Project afbeelding</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-semibold text-lg mb-2">Nieuwbouw IJburg</h3>
+                                <p class="text-gray-600 text-sm mb-4">24 nieuwbouwappartementen vanaf € 385.000</p>
+                                <div class="flex items-center justify-between text-sm mb-4">
+                                    <span class="text-gray-600">18 woningen beschikbaar</span>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">In verkoop</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">Bewerken</button>
+                                    <button class="flex-1 border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50 text-sm">Bekijken</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
+                            <div class="bg-gray-300 h-48 flex items-center justify-center">
+                                <span class="text-gray-600">Project afbeelding</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-semibold text-lg mb-2">Grachtengordel Renovatie</h3>
+                                <p class="text-gray-600 text-sm mb-4">6 gerenoveerde appartementen vanaf € 650.000</p>
+                                <div class="flex items-center justify-between text-sm mb-4">
+                                    <span class="text-gray-600">2 woningen beschikbaar</span>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">In verkoop</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">Bewerken</button>
+                                    <button class="flex-1 border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50 text-sm">Bekijken</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="integraties" class="bg-white rounded-lg shadow p-8">
+                    <h2 class="text-2xl font-bold mb-6">Integraties</h2>
+
+                    <div class="space-y-6">
+
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-blue-100 p-3 rounded-lg">
+                                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-semibold text-lg mb-1">Move.nl</h3>
+                                        <p class="text-gray-600 text-sm mb-2">Synchroniseer woningen automatisch met Move.nl</p>
+                                        <span class="inline-flex items-center text-sm text-green-600">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            Actief
+                                        </span>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 hover:text-blue-700 font-semibold">Instellingen</button>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-gray-100 p-3 rounded-lg">
+                                        <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-semibold text-lg mb-1">Kolibri API</h3>
+                                        <p class="text-gray-600 text-sm mb-2">Koppeling met Kolibri CRM systeem</p>
+                                        <span class="inline-flex items-center text-sm text-gray-600">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            Niet actief
+                                        </span>
+                                    </div>
+                                </div>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Activeren</button>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <div class="bg-gray-100 p-3 rounded-lg">
+                                        <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-semibold text-lg mb-1">E-mail marketing</h3>
+                                        <p class="text-gray-600 text-sm mb-2">Stuur automatische mailings naar relaties</p>
+                                        <span class="inline-flex items-center text-sm text-gray-600">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            Binnenkort beschikbaar
+                                        </span>
+                                    </div>
+                                </div>
+                                <button class="bg-gray-300 text-gray-600 px-4 py-2 rounded-lg cursor-not-allowed" disabled>Binnenkort</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </main>
+
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-white mt-12">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Wooon.nl</h4>
+                    <p class="text-gray-400">Het complete onafhankelijke woonplatform voor Nederland</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Over ons</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Over Wooon</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="hover:text-white">Werken bij</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Voor professionals</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Makelaars</a></li>
+                        <li><a href="#" class="hover:text-white">API-partners</a></li>
+                        <li><a href="#" class="hover:text-white">Adverteren</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Juridisch</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white">Algemene voorwaarden</a></li>
+                        <li><a href="#" class="hover:text-white">Cookie beleid</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
