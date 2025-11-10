@@ -2,33 +2,11 @@
 
 namespace App\Crawlers;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class FundaCrawler extends WebsiteCrawler
 {
-    public function getStartUrls(): array
-    {
-        return [
-            'https://www.funda.nl/koop/heel-nederland/',
-            'https://www.funda.nl/huur/heel-nederland/',
-        ];
-    }
-
-    public function shouldCrawl(string $url): bool
-    {
-        if (!Str::startsWith($url, 'https://www.funda.nl')) {
-            return false;
-        }
-
-        if (Str::contains($url, ['/hypotheek', '/nieuwbouw-service', '/mijn-funda'])) {
-            return false;
-        }
-
-        return Str::contains($url, ['/koop/', '/huur/', '/detail/']);
-    }
-
-    public function extractLinks(string $content, string $pageUrl): Collection
+    public function extractLinks(string $content, string $pageUrl): \Illuminate\Support\Collection
     {
         $links = collect();
 
@@ -66,10 +44,20 @@ class FundaCrawler extends WebsiteCrawler
             }
         }
 
+        if (Str::contains($pageUrl, '/zoeken/')) {
+            $currentPage = 1;
+            if (preg_match('/[?&]page=(\d+)/', $pageUrl, $matches)) {
+                $currentPage = (int) $matches[1];
+            }
+
+            if ($currentPage < 1000) {
+                $links->push('?page=' . ($currentPage + 1));
+            }
+        }
+
         return $links
             ->map(fn($url) => $this->normalizeUrl($url, $pageUrl))
             ->filter(fn($url) => !empty($url))
-            ->filter(fn($url) => $this->shouldCrawl($url))
             ->unique()
             ->values();
     }
@@ -167,6 +155,10 @@ class FundaCrawler extends WebsiteCrawler
         } elseif (Str::startsWith($url, '/')) {
             $parsed = parse_url($baseUrl);
             $normalized = ($parsed['scheme'] ?? 'https') . '://' . ($parsed['host'] ?? 'www.funda.nl') . $url;
+        } elseif (Str::startsWith($url, '?')) {
+            $parsed = parse_url($baseUrl);
+            $path = $parsed['path'] ?? '/';
+            $normalized = ($parsed['scheme'] ?? 'https') . '://' . ($parsed['host'] ?? 'www.funda.nl') . $path . $url;
         } else {
             $parsed = parse_url($baseUrl);
             $basePath = dirname($parsed['path'] ?? '/');
@@ -266,11 +258,11 @@ class FundaCrawler extends WebsiteCrawler
 
     private function extractAddition(string $content): ?string
     {
-        if (preg_match('/<h1[^>]*data-global-id[^>]*>.*?<span[^>]*>.*?\s+\d+\s*([A-Za-z\-]+)/s', $content, $matches)) {
-            return trim($matches[1]);
-        }
-        if (preg_match('/([A-Za-z\s]+)\s+\d+([A-Za-z\-]+)/', $content, $matches)) {
-            return trim($matches[2]);
+        if (preg_match('/<h1[^>]*data-global-id[^>]*>.*?<span[^>]*>(.*?)<\/span>/s', $content, $matches)) {
+            $addressLine = $matches[1];
+            if (preg_match('/\d+[\s\-]*([A-Za-z]+)\s*$/i', $addressLine, $additionMatch)) {
+                return trim($additionMatch[1]);
+            }
         }
         return null;
     }

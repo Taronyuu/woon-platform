@@ -26,7 +26,7 @@ class ScrapePageJob implements ShouldQueue
         public string $url
     ) {
         $crawlJob = CrawlJob::find($crawlJobId);
-        $this->onQueue('crawl-' . $crawlJob->website_id);
+        $this->onQueue('crawl-' . ($crawlJob?->website_id ?? 'default'));
     }
 
     public function retryUntil()
@@ -43,15 +43,23 @@ class ScrapePageJob implements ShouldQueue
             return;
         }
 
-        $crawlerClass = $crawlJob->website->crawler_class;
-        $crawler = new $crawlerClass($crawlJob);
+        sleep(rand(2, 5));
+
+        $crawler = $crawlJob->getCrawler();
+
+        $useFlaresolverr = $crawler->shouldUseFlaresolverr();
+        \Log::info("ScrapePageJob: Scraping {$this->url}", [
+            'use_flaresolverr' => $useFlaresolverr,
+            'depth' => $crawledPage->depth,
+            'attempt' => $this->attempts(),
+        ]);
 
         try {
             $data = $firecrawl->scrape(
                 $this->url,
                 ['markdown', 'links', 'html'],
                 true,
-                $crawler->shouldUseFlaresolverr()
+                $useFlaresolverr
             );
 
             $crawledPage->update([
@@ -63,6 +71,12 @@ class ScrapePageJob implements ShouldQueue
                 'scraped_at' => now(),
             ]);
 
+            \Log::info("ScrapePageJob: Successfully scraped {$this->url}", [
+                'status_code' => $data['metadata']['statusCode'] ?? 200,
+                'links_found' => count($data['links'] ?? []),
+                'content_length' => strlen($data['markdown'] ?? ''),
+            ]);
+
             ExtractLinksJob::dispatch($crawlJob->id, $crawledPage->id);
             ParseDataJob::dispatch($crawlJob->id, $crawledPage->id);
 
@@ -70,6 +84,10 @@ class ScrapePageJob implements ShouldQueue
             $crawlJob->increment('total_requests');
 
         } catch (\Exception $e) {
+            \Log::error("ScrapePageJob: Failed to scrape {$this->url}", [
+                'error' => $e->getMessage(),
+                'attempt' => $this->attempts(),
+            ]);
             $crawlJob->increment('pages_failed');
 
             if (str_contains($e->getMessage(), '408')) {

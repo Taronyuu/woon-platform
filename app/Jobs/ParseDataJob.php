@@ -26,8 +26,14 @@ class ParseDataJob implements ShouldQueue
         $crawledPage = CrawledPage::findOrFail($this->crawledPageId);
         $crawlJob = CrawlJob::findOrFail($this->crawlJobId);
 
-        $crawlerClass = $crawlJob->website->crawler_class;
-        $crawler = new $crawlerClass($crawlJob);
+        $crawler = $crawlJob->getCrawler();
+
+        if (!$crawler->isLeafPage($crawledPage->url)) {
+            \Log::info("ParseDataJob: Skipping non-leaf page", [
+                'url' => $crawledPage->url,
+            ]);
+            return;
+        }
 
         $data = $crawler->parseData(
             $crawledPage->raw_html ?? $crawledPage->content ?? '',
@@ -35,11 +41,17 @@ class ParseDataJob implements ShouldQueue
         );
 
         if (empty($data)) {
+            \Log::info("ParseDataJob: No data extracted from leaf page", [
+                'url' => $crawledPage->url,
+            ]);
             return;
         }
 
         $externalId = $data['external_id'] ?? null;
         unset($data['external_id']);
+
+        $sourceUrl = $data['source_url'] ?? $crawledPage->url;
+        unset($data['source_url']);
 
         $propertyUnit = PropertyUnit::firstOrCreate(
             [
@@ -50,14 +62,16 @@ class ParseDataJob implements ShouldQueue
             $data
         );
 
-        $propertyUnit->websites()->syncWithoutDetaching([
-            $crawlJob->website_id => [
-                'external_id' => $externalId,
-                'source_url' => $crawledPage->url,
-                'first_seen_at' => now(),
-                'last_seen_at' => now(),
-            ]
-        ]);
+        if (method_exists($propertyUnit, 'websites')) {
+            $propertyUnit->websites()->syncWithoutDetaching([
+                $crawlJob->website_id => [
+                    'external_id' => $externalId,
+                    'source_url' => $sourceUrl,
+                    'first_seen_at' => now(),
+                    'last_seen_at' => now(),
+                ]
+            ]);
+        }
 
         $crawlJob->increment('properties_extracted');
     }

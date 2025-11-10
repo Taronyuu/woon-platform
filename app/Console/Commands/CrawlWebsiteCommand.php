@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Jobs\InitiateCrawlJob;
 use App\Models\CrawlJob;
-use App\Models\Website;
 use Illuminate\Console\Command;
 
 class CrawlWebsiteCommand extends Command
@@ -48,51 +47,55 @@ class CrawlWebsiteCommand extends Command
 
     protected function listWebsites(): int
     {
-        $websites = Website::all();
+        $websites = config('websites', []);
 
-        if ($websites->isEmpty()) {
+        if (empty($websites)) {
             $this->warn('No websites configured yet.');
             $this->line('');
-            $this->info('Create a website first:');
-            $this->line('  Website::create([');
-            $this->line('    \'name\' => \'Funda\',');
-            $this->line('    \'base_url\' => \'https://www.funda.nl\',');
-            $this->line('    \'crawler_class\' => \'App\\Crawlers\\FundaCrawler\',');
-            $this->line('    \'max_depth\' => 3,');
-            $this->line('    \'delay_ms\' => 1000,');
-            $this->line('    \'use_flaresolverr\' => true,');
-            $this->line('    \'start_urls\' => [\'https://www.funda.nl/koop/heel-nederland/\'],');
-            $this->line('    \'is_active\' => true,');
-            $this->line('  ]);');
+            $this->info('Add websites in config/websites.php');
             return self::SUCCESS;
         }
 
+        $rows = [];
+        foreach ($websites as $id => $config) {
+            $rows[] = [
+                $id,
+                $config['name'] ?? 'Unknown',
+                $config['base_url'] ?? 'N/A',
+                count($config['start_urls'] ?? []),
+                ($config['is_active'] ?? true) ? '✓' : '✗',
+            ];
+        }
+
         $this->table(
-            ['ID', 'Name', 'Base URL', 'Crawler', 'Active'],
-            $websites->map(fn($w) => [
-                $w->id,
-                $w->name,
-                $w->base_url,
-                class_basename($w->crawler_class),
-                $w->is_active ? '✓' : '✗',
-            ])
+            ['ID', 'Name', 'Base URL', 'Start URLs', 'Active'],
+            $rows
         );
 
         return self::SUCCESS;
     }
 
-    protected function findWebsite(string $identifier): ?Website
+    protected function findWebsite(string $identifier): ?string
     {
-        if (is_numeric($identifier)) {
-            return Website::find($identifier);
+        $websites = config('websites', []);
+
+        if (isset($websites[$identifier])) {
+            return $identifier;
         }
 
-        return Website::where('name', 'like', "%{$identifier}%")->first();
+        foreach ($websites as $id => $config) {
+            if (stripos($config['name'] ?? '', $identifier) !== false) {
+                return $id;
+            }
+        }
+
+        return null;
     }
 
     protected function crawlAllWebsites(): int
     {
-        $websites = Website::where('is_active', true)->get();
+        $websites = collect(config('websites', []))
+            ->filter(fn($config) => $config['is_active'] ?? true);
 
         if ($websites->isEmpty()) {
             $this->warn('No active websites found.');
@@ -102,23 +105,30 @@ class CrawlWebsiteCommand extends Command
         $this->info("Crawling {$websites->count()} active website(s)...");
         $this->line('');
 
-        foreach ($websites as $website) {
-            $this->crawlWebsite($website);
+        foreach ($websites->keys() as $websiteId) {
+            $this->crawlWebsite($websiteId);
             $this->line('');
         }
 
         return self::SUCCESS;
     }
 
-    protected function crawlWebsite(Website $website): int
+    protected function crawlWebsite(string $websiteId): int
     {
-        $this->info("Starting crawl for: {$website->name}");
-        $this->line("Base URL: {$website->base_url}");
-        $this->line("Crawler: {$website->crawler_class}");
+        $config = config("websites.{$websiteId}");
+
+        if (!$config) {
+            $this->error("Website configuration not found: {$websiteId}");
+            return self::FAILURE;
+        }
+
+        $this->info("Starting crawl for: {$config['name']}");
+        $this->line("Base URL: {$config['base_url']}");
+        $this->line("Website ID: {$websiteId}");
         $this->line('');
 
         $crawlJob = CrawlJob::create([
-            'website_id' => $website->id,
+            'website_id' => $websiteId,
             'status' => 'pending',
         ]);
 
@@ -139,14 +149,70 @@ class CrawlWebsiteCommand extends Command
         $this->line('');
 
         if (config('queue.default') === 'sync') {
-            $crawlJob->refresh();
+            $previousPagesCrawled = 0;
+            $previousPagesFound = 0;
+            $startTime = now();
+            $lastActivityTime = now();
+            $idleThreshold = 10;
 
+            while (true) {
+                $crawlJob->refresh();
+
+                $totalPages = $crawlJob->crawledPages()->count();
+                $scrapedPages = $crawlJob->crawledPages()->whereNotNull('scraped_at')->count();
+
+                if ($crawlJob->pages_crawled > $previousPagesCrawled) {
+                    $latestPages = $crawlJob->crawledPages()
+                        ->orderBy('scraped_at', 'desc')
+                        ->limit($crawlJob->pages_crawled - $previousPagesCrawled)
+                        ->get();
+
+                    foreach ($latestPages as $page) {
+                        $status = $page->status_code ?? 'pending';
+                        $this->line("  [{$page->depth}] {$status} - {$page->url}");
+                    }
+
+                    $previousPagesCrawled = $crawlJob->pages_crawled;
+                    $lastActivityTime = now();
+                }
+
+                if ($crawlJob->crawledPages()->count() > $previousPagesFound) {
+                    $newCount = $crawlJob->crawledPages()->count() - $previousPagesFound;
+                    $this->comment("  +{$newCount} new pages discovered");
+                    $previousPagesFound = $crawlJob->crawledPages()->count();
+                    $lastActivityTime = now();
+                }
+
+                if (in_array($crawlJob->status, ['completed', 'failed'])) {
+                    break;
+                }
+
+                if ($totalPages > 0 && $totalPages === $scrapedPages && $lastActivityTime->diffInSeconds(now()) >= $idleThreshold) {
+                    $this->line('');
+                    $this->info('All pages scraped, marking as completed...');
+                    $crawlJob->update([
+                        'status' => 'completed',
+                        'completed_at' => now(),
+                    ]);
+                    break;
+                }
+
+                if ($startTime->diffInMinutes(now()) >= 30) {
+                    $this->line('');
+                    $this->warn('Crawl timeout reached (30 minutes)');
+                    break;
+                }
+
+                sleep(1);
+            }
+
+            $this->line('');
             $this->info('Crawl completed!');
             $this->line('');
             $this->displayStats($crawlJob);
         } else {
             $this->info('Jobs are being processed by queue worker.');
-            $this->line("Monitor progress: php artisan queue:monitor crawl-{$website->id}");
+            $this->line("Monitor progress: php artisan queue:monitor crawl-{$websiteId}");
             $this->line("View job: CrawlJob::find({$crawlJob->id})");
         }
 

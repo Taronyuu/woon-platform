@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Crawlers\WebsiteCrawler;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CrawlJob extends Model
@@ -26,9 +26,14 @@ class CrawlJob extends Model
         'completed_at' => 'datetime',
     ];
 
-    public function website(): BelongsTo
+    public function getCrawler(): WebsiteCrawler
     {
-        return $this->belongsTo(Website::class);
+        return new WebsiteCrawler($this->website_id);
+    }
+
+    public function getWebsiteConfig(): array
+    {
+        return config("websites.{$this->website_id}", []);
     }
 
     public function crawledPages(): HasMany

@@ -25,15 +25,19 @@ class ExtractLinksJob implements ShouldQueue
         $crawledPage = CrawledPage::findOrFail($this->crawledPageId);
         $crawlJob = CrawlJob::findOrFail($this->crawlJobId);
 
-        $crawlerClass = $crawlJob->website->crawler_class;
-        $crawler = new $crawlerClass($crawlJob);
+        $crawler = $crawlJob->getCrawler();
 
         $linksFromContent = $crawler->extractLinks(
-            $crawledPage->content ?? '',
+            $crawledPage->raw_html ?? $crawledPage->content ?? '',
             $crawledPage->url
         );
 
         $linksFromFirecrawl = collect($crawledPage->links ?? []);
+
+        \Log::info("ExtractLinksJob: Processing {$crawledPage->url}", [
+            'links_from_content' => $linksFromContent->count(),
+            'links_from_firecrawl' => $linksFromFirecrawl->count(),
+        ]);
 
         $allLinks = $linksFromContent
             ->merge($linksFromFirecrawl)
@@ -41,6 +45,7 @@ class ExtractLinksJob implements ShouldQueue
             ->filter(fn($url) => filter_var($url, FILTER_VALIDATE_URL) !== false)
             ->filter(fn($url) => !str_contains($url, 'javascript:'))
             ->filter(fn($url) => !preg_match('/^#/', $url))
+            ->map(fn($url) => preg_replace('/#.*$/', '', $url))
             ->filter(fn($url) => $crawler->shouldCrawl($url))
             ->unique()
             ->values();
@@ -65,6 +70,12 @@ class ExtractLinksJob implements ShouldQueue
                 $newLinksCount++;
             }
         }
+
+        \Log::info("ExtractLinksJob: Found new links", [
+            'url' => $crawledPage->url,
+            'total_links' => $allLinks->count(),
+            'new_links' => $newLinksCount,
+        ]);
 
         $crawlJob->increment('links_found', $newLinksCount);
     }

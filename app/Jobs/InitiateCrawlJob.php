@@ -21,24 +21,39 @@ class InitiateCrawlJob implements ShouldQueue
     public function handle(): void
     {
         $crawlJob = CrawlJob::findOrFail($this->crawlJobId);
-        $crawlerClass = $crawlJob->website->crawler_class;
-        $crawler = new $crawlerClass($crawlJob);
+        $crawler = $crawlJob->getCrawler();
+
+        $startUrls = $crawler->getStartUrls();
+        \Log::info("InitiateCrawlJob: Starting crawl for {$crawler->getName()}", [
+            'crawl_job_id' => $crawlJob->id,
+            'website_id' => $crawlJob->website_id,
+            'start_urls_count' => count($startUrls),
+            'start_urls' => $startUrls,
+            'max_depth' => $crawler->getMaxDepth(),
+            'use_flaresolverr' => $crawler->shouldUseFlaresolverr(),
+        ]);
 
         $crawlJob->update([
             'status' => 'running',
             'started_at' => now(),
         ]);
 
-        foreach ($crawler->getStartUrls() as $url) {
-            $urlHash = md5($url);
+        foreach ($startUrls as $url) {
+            $normalizedUrl = preg_replace('/#.*$/', '', $url);
+            $urlHash = md5($normalizedUrl);
 
             $crawledPage = CrawledPage::create([
                 'crawl_job_id' => $crawlJob->id,
-                'url' => $url,
+                'url' => $normalizedUrl,
                 'url_hash' => $urlHash,
             ]);
 
-            ScrapePageJob::dispatch($crawlJob->id, $crawledPage->id, $url);
+            \Log::info("InitiateCrawlJob: Dispatching initial scrape", [
+                'url' => $normalizedUrl,
+                'page_id' => $crawledPage->id,
+            ]);
+
+            ScrapePageJob::dispatch($crawlJob->id, $crawledPage->id, $normalizedUrl);
         }
     }
 }

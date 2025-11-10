@@ -47,6 +47,16 @@ class FirecrawlService
 
         $data = $response->json();
 
+        if ($data === null) {
+            Log::error('Firecrawl API returned invalid JSON', [
+                'url' => $url,
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ]);
+
+            throw new \Exception("Firecrawl API returned invalid JSON response");
+        }
+
         if (!$data['success']) {
             throw new \Exception("Firecrawl scrape failed: " . ($data['error'] ?? 'Unknown error'));
         }
