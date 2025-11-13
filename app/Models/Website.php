@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CrawlJob> $crawlJobs
+ * @property-read int|null $crawl_jobs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PropertyUnit> $propertyUnits
+ * @property-read int|null $property_units_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Website newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Website newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Website query()
+ * @mixin \Eloquent
+ */
 class Website extends Model
 {
     protected $fillable = [

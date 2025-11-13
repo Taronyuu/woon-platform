@@ -41,4 +41,9 @@ return [
         'password' => env('FIRECRAWL_PASSWORD'),
     ],
 
+    'scrapfly' => [
+        'api_key' => env('SCRAPFLY_API_KEY', 'scp-live-5eae51ac631d4a1aaecd7258940c8ef3'),
+        'cache_ttl' => env('SCRAPFLY_CACHE_TTL', 86400),
+    ],
+
 ];

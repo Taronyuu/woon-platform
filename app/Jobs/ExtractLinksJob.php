@@ -28,19 +28,15 @@ class ExtractLinksJob implements ShouldQueue
         $crawler = $crawlJob->getCrawler();
 
         $linksFromContent = $crawler->extractLinks(
-            $crawledPage->raw_html ?? $crawledPage->content ?? '',
+            $crawledPage->raw_html ?? '',
             $crawledPage->url
         );
 
-        $linksFromFirecrawl = collect($crawledPage->links ?? []);
-
         \Log::info("ExtractLinksJob: Processing {$crawledPage->url}", [
             'links_from_content' => $linksFromContent->count(),
-            'links_from_firecrawl' => $linksFromFirecrawl->count(),
         ]);
 
         $allLinks = $linksFromContent
-            ->merge($linksFromFirecrawl)
             ->filter(fn($url) => !empty($url) && is_string($url))
             ->filter(fn($url) => filter_var($url, FILTER_VALIDATE_URL) !== false)
             ->filter(fn($url) => !str_contains($url, 'javascript:'))

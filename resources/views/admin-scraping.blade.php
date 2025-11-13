@@ -8,24 +8,7 @@
 </head>
 <body class="bg-gray-50">
 
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="text-2xl font-bold text-blue-600">Wooon.nl Admin</div>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Dashboard</a>
-                    <a href="{{ route('admin.api') }}" class="text-gray-700 hover:text-blue-600">API Connecties</a>
-                    <a href="{{ route('admin.scraping') }}" class="text-blue-600 font-semibold">Scraping</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Gebruikers</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Systeem</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <span class="text-gray-700">Admin</span>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Uitloggen</a>
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('partials.header')
 
     <main class="container mx-auto px-4 py-8">
 

@@ -1,0 +1,37 @@
+<footer class="bg-gray-900 text-white mt-12">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4">Wooon.nl</h4>
+                <p class="text-gray-400">Het complete onafhankelijke woonplatform voor Nederland</p>
+            </div>
+            <div>
+                <h5 class="font-semibold mb-4">Over ons</h5>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="#" class="hover:text-white">Over Wooon</a></li>
+                    <li><a href="#" class="hover:text-white">Contact</a></li>
+                    <li><a href="#" class="hover:text-white">Werken bij</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-semibold mb-4">Voor professionals</h5>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="{{ route('realtor.dashboard') }}" class="hover:text-white">Makelaars</a></li>
+                    <li><a href="#" class="hover:text-white">API-partners</a></li>
+                    <li><a href="#" class="hover:text-white">Adverteren</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-semibold mb-4">Juridisch</h5>
+                <ul class="space-y-2 text-gray-400">
+                    <li><a href="#" class="hover:text-white">Privacy</a></li>
+                    <li><a href="#" class="hover:text-white">Algemene voorwaarden</a></li>
+                    <li><a href="#" class="hover:text-white">Cookie beleid</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
+        </div>
+    </div>
+</footer>

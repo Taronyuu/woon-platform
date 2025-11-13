@@ -1,38 +1,14 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mijn Account - Wooon.nl</title>
-    @vite(["resources/css/app.css", "resources/js/app.js"])
-</head>
-<body class="bg-gray-50">
+@extends('layouts.app')
 
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">Wooon.nl</a>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Koop</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Huur</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Nieuwbouw</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Over ons</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <a href="#" class="text-blue-600 font-semibold">Mijn Account</a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="text-gray-700 hover:text-blue-600">Uitloggen</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </header>
+@section('title', 'Mijn Account - Wooon.nl')
+
+@section('content')
+
 
     <div class="container mx-auto px-4 py-8">
 
         <div class="mb-8">
-            <h1 class="text-3xl font-bold mb-2">Welkom, {{ auth()->user()->name ?? auth()->user()->email }}</h1>
+            <h1 class="text-3xl font-bold mb-2">Welkom, {{ auth()->user()->first_name ?? auth()->user()->email }}</h1>
             <p class="text-gray-600">Beheer je account, zoekprofielen en favoriete woningen</p>
         </div>
 
@@ -45,12 +21,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                         Mijn gegevens
-                    </a>
-                    <a href="#zoekprofielen" class="block px-6 py-4 border-l-4 border-transparent hover:bg-gray-50 hover:border-gray-300 text-gray-700">
-                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        Zoekprofielen
                     </a>
                     <a href="#favorieten" class="block px-6 py-4 border-l-4 border-transparent hover:bg-gray-50 hover:border-gray-300 text-gray-700">
                         <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,236 +43,192 @@
                 <section id="gegevens" class="bg-white rounded-lg shadow p-8 mb-6">
                     <h2 class="text-2xl font-bold mb-6">Mijn gegevens</h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Voornaam</label>
-                            <input type="text" value="{{ auth()->user()->first_name ?? '' }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    @if(session('success'))
+                        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                            {{ session('success') }}
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Achternaam</label>
-                            <input type="text" value="{{ auth()->user()->last_name ?? '' }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    @endif
+
+                    @if($errors->any())
+                        <div class="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+                            <ul class="list-disc list-inside">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">E-mailadres</label>
-                            <input type="email" value="{{ auth()->user()->email }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefoonnummer</label>
-                            <input type="tel" value="{{ auth()->user()->phone ?? '' }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-                    </div>
+                    @endif
 
-                    <div class="mt-6 flex justify-end space-x-4">
-                        <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                            Annuleren
-                        </button>
-                        <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                            Opslaan
-                        </button>
-                    </div>
-                </section>
+                    <form method="POST" action="{{ route('profile.update') }}">
+                        @csrf
 
-                <section id="zoekprofielen" class="bg-white rounded-lg shadow p-8 mb-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold">Zoekprofielen</h2>
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                            + Nieuw zoekprofiel
-                        </button>
-                    </div>
-
-                    <div class="space-y-4">
-
-                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-lg mb-2">Appartement Amsterdam</h3>
-                                    <div class="text-sm text-gray-600 space-y-1">
-                                        <p>📍 Amsterdam centrum</p>
-                                        <p>💰 € 300.000 - € 500.000</p>
-                                        <p>📏 70 - 100 m²</p>
-                                        <p>🛏️ 2-3 kamers</p>
-                                    </div>
-                                    <div class="mt-3 flex items-center space-x-4">
-                                        <span class="inline-flex items-center text-sm text-green-600">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            E-mail alerts aan
-                                        </span>
-                                        <span class="text-sm text-gray-500">12 nieuwe woningen</span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col space-y-2">
-                                    <button class="text-blue-600 hover:text-blue-700 text-sm">Bewerken</button>
-                                    <button class="text-red-600 hover:text-red-700 text-sm">Verwijderen</button>
-                                </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Voornaam</label>
+                                <input type="text" name="first_name" value="{{ old('first_name', auth()->user()->first_name) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('first_name') border-red-500 @enderror">
+                                @error('first_name')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Achternaam</label>
+                                <input type="text" name="last_name" value="{{ old('last_name', auth()->user()->last_name) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('last_name') border-red-500 @enderror">
+                                @error('last_name')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">E-mailadres</label>
+                                <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('email') border-red-500 @enderror">
+                                @error('email')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Telefoonnummer</label>
+                                <input type="tel" name="phone" value="{{ old('phone', auth()->user()->phone) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('phone') border-red-500 @enderror">
+                                @error('phone')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
-                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-lg mb-2">Huurwoning Utrecht</h3>
-                                    <div class="text-sm text-gray-600 space-y-1">
-                                        <p>📍 Utrecht</p>
-                                        <p>💰 € 1.000 - € 1.500 / maand</p>
-                                        <p>📏 80+ m²</p>
-                                        <p>🛏️ 3+ kamers</p>
-                                    </div>
-                                    <div class="mt-3 flex items-center space-x-4">
-                                        <span class="inline-flex items-center text-sm text-gray-600">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            E-mail alerts uit
-                                        </span>
-                                        <span class="text-sm text-gray-500">5 nieuwe woningen</span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col space-y-2">
-                                    <button class="text-blue-600 hover:text-blue-700 text-sm">Bewerken</button>
-                                    <button class="text-red-600 hover:text-red-700 text-sm">Verwijderen</button>
-                                </div>
-                            </div>
+                        <div class="mt-6 flex justify-end space-x-4">
+                            <button type="button" onclick="window.location.reload()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Annuleren
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                Opslaan
+                            </button>
                         </div>
-
-                    </div>
+                    </form>
                 </section>
 
                 <section id="favorieten" class="bg-white rounded-lg shadow p-8 mb-6">
                     <h2 class="text-2xl font-bold mb-6">Mijn favorieten</h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
-                            <div class="bg-gray-300 h-48 flex items-center justify-center relative">
-                                <span class="text-gray-600">Woning foto</span>
-                                <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-                                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-1">€ 425.000</h3>
-                                <p class="text-gray-600 text-sm mb-1">Keizersgracht 123, Amsterdam</p>
-                                <p class="text-gray-500 text-xs">3 kamers • 85 m²</p>
-                                <a href="{{ route('property.show', 1) }}" class="text-blue-600 text-sm hover:text-blue-700 mt-2 inline-block">
-                                    Bekijk woning →
-                                </a>
-                            </div>
+                    @if($favorites->count() > 0)
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach($favorites as $property)
+                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
+                                    <div class="relative h-48 overflow-hidden">
+                                        @if($property->main_image)
+                                            <img src="{{ $property->main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover">
+                                        @else
+                                            <div class="bg-gray-300 h-full flex items-center justify-center">
+                                                <span class="text-gray-600">Geen foto beschikbaar</span>
+                                            </div>
+                                        @endif
+                                        <form action="{{ route('property.unfavorite', $property) }}" method="POST" class="absolute top-4 right-4">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
+                                                <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-lg mb-1">{{ $property->formatted_price }}</h3>
+                                        <p class="text-gray-600 text-sm mb-1">{{ $property->full_address }}</p>
+                                        <p class="text-gray-500 text-xs">
+                                            @if($property->bedrooms)
+                                                {{ $property->bedrooms }} kamers
+                                            @endif
+                                            @if($property->bedrooms && $property->surface)
+                                                •
+                                            @endif
+                                            @if($property->surface)
+                                                {{ $property->surface }} m²
+                                            @endif
+                                        </p>
+                                        <a href="{{ route('property.show', $property) }}" class="text-blue-600 text-sm hover:text-blue-700 mt-2 inline-block">
+                                            Bekijk woning →
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-
-                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
-                            <div class="bg-gray-300 h-48 flex items-center justify-center relative">
-                                <span class="text-gray-600">Woning foto</span>
-                                <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-                                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-1">€ 385.000</h3>
-                                <p class="text-gray-600 text-sm mb-1">Nieuw Noord, Amsterdam</p>
-                                <p class="text-gray-500 text-xs">2 kamers • 65 m²</p>
-                                <a href="#" class="text-blue-600 text-sm hover:text-blue-700 mt-2 inline-block">
-                                    Bekijk woning →
-                                </a>
-                            </div>
+                    @else
+                        <div class="text-center py-12">
+                            <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <p class="text-gray-600 mb-4">Je hebt nog geen favoriete woningen</p>
+                            <a href="{{ route('search') }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                                Bekijk woningen
+                            </a>
                         </div>
-
-                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
-                            <div class="bg-gray-300 h-48 flex items-center justify-center relative">
-                                <span class="text-gray-600">Woning foto</span>
-                                <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-                                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-1">€ 1.250 / maand</h3>
-                                <p class="text-gray-600 text-sm mb-1">Prinsengracht 456, Amsterdam</p>
-                                <p class="text-gray-500 text-xs">4 kamers • 110 m²</p>
-                                <a href="#" class="text-blue-600 text-sm hover:text-blue-700 mt-2 inline-block">
-                                    Bekijk woning →
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
-                            <div class="bg-gray-300 h-48 flex items-center justify-center relative">
-                                <span class="text-gray-600">Woning foto</span>
-                                <button class="absolute top-4 right-4 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100">
-                                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-1">€ 550.000</h3>
-                                <p class="text-gray-600 text-sm mb-1">De Pijp, Amsterdam</p>
-                                <p class="text-gray-500 text-xs">5 kamers • 135 m²</p>
-                                <a href="#" class="text-blue-600 text-sm hover:text-blue-700 mt-2 inline-block">
-                                    Bekijk woning →
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
+                    @endif
                 </section>
 
                 <section id="notificaties" class="bg-white rounded-lg shadow p-8">
                     <h2 class="text-2xl font-bold mb-6">Notificaties</h2>
 
-                    <div class="space-y-4">
+                    @if(session('notification_success'))
+                        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                            {{ session('notification_success') }}
+                        </div>
+                    @endif
 
-                        <div class="flex items-start justify-between py-4 border-b border-gray-200">
-                            <div class="flex-1">
-                                <h3 class="font-semibold mb-1">E-mail alerts voor nieuwe woningen</h3>
-                                <p class="text-sm text-gray-600">Ontvang direct een e-mail wanneer er nieuwe woningen zijn die matchen met je zoekprofielen</p>
+                    <form method="POST" action="{{ route('profile.notifications.update') }}">
+                        @csrf
+
+                        <div class="space-y-4">
+
+                            <div class="flex items-start justify-between py-4 border-b border-gray-200">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold mb-1">E-mail alerts voor nieuwe woningen</h3>
+                                    <p class="text-sm text-gray-600">Ontvang direct een e-mail wanneer er nieuwe woningen zijn die matchen met je zoekprofielen</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="notify_new_properties" value="1" {{ auth()->user()->notify_new_properties ? 'checked' : '' }} class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
                             </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" checked class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                            </label>
+
+                            <div class="flex items-start justify-between py-4 border-b border-gray-200">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold mb-1">Prijswijzigingen favorieten</h3>
+                                    <p class="text-sm text-gray-600">Krijg een melding wanneer de prijs van een favoriet gewijzigd is</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="notify_price_changes" value="1" {{ auth()->user()->notify_price_changes ? 'checked' : '' }} class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-start justify-between py-4 border-b border-gray-200">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold mb-1">Nieuwsbrief</h3>
+                                    <p class="text-sm text-gray-600">Ontvang wekelijks tips, trends en inspiratie over wonen</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="notify_newsletter" value="1" {{ auth()->user()->notify_newsletter ? 'checked' : '' }} class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-start justify-between py-4 border-b border-gray-200">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold mb-1">Marketing e-mails</h3>
+                                    <p class="text-sm text-gray-600">Ontvang aanbiedingen en acties van Wooon.nl en partners</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="notify_marketing" value="1" {{ auth()->user()->notify_marketing ? 'checked' : '' }} class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+
                         </div>
 
-                        <div class="flex items-start justify-between py-4 border-b border-gray-200">
-                            <div class="flex-1">
-                                <h3 class="font-semibold mb-1">Prijswijzigingen favorieten</h3>
-                                <p class="text-sm text-gray-600">Krijg een melding wanneer de prijs van een favoriet gewijzigd is</p>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" checked class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                            </label>
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                Opslaan
+                            </button>
                         </div>
-
-                        <div class="flex items-start justify-between py-4 border-b border-gray-200">
-                            <div class="flex-1">
-                                <h3 class="font-semibold mb-1">Nieuwsbrief</h3>
-                                <p class="text-sm text-gray-600">Ontvang wekelijks tips, trends en inspiratie over wonen</p>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                            </label>
-                        </div>
-
-                        <div class="flex items-start justify-between py-4">
-                            <div class="flex-1">
-                                <h3 class="font-semibold mb-1">Marketing e-mails</h3>
-                                <p class="text-sm text-gray-600">Ontvang aanbiedingen en acties van Wooon.nl en partners</p>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                            </label>
-                        </div>
-
-                    </div>
+                    </form>
                 </section>
 
             </main>
@@ -310,43 +236,4 @@
         </div>
     </div>
 
-    <footer class="bg-gray-900 text-white mt-12">
-        <div class="container mx-auto px-4 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h4 class="text-xl font-bold mb-4">Wooon.nl</h4>
-                    <p class="text-gray-400">Het complete onafhankelijke woonplatform voor Nederland</p>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Over ons</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Over Wooon</a></li>
-                        <li><a href="#" class="hover:text-white">Contact</a></li>
-                        <li><a href="#" class="hover:text-white">Werken bij</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Voor professionals</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="account-makelaar.html" class="hover:text-white">Makelaars</a></li>
-                        <li><a href="#" class="hover:text-white">API-partners</a></li>
-                        <li><a href="#" class="hover:text-white">Adverteren</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Juridisch</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Privacy</a></li>
-                        <li><a href="#" class="hover:text-white">Algemene voorwaarden</a></li>
-                        <li><a href="#" class="hover:text-white">Cookie beleid</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+@endsection

@@ -8,22 +8,7 @@
 </head>
 <body class="bg-gray-50">
 
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="text-2xl font-bold text-blue-600">Wooon.nl</a>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Dashboard</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Support</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Documentatie</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <a href="#" class="text-blue-600 font-semibold">Makelaar Dashboard</a>
-                    <a href="index.html" class="text-gray-700 hover:text-blue-600">Uitloggen</a>
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('partials.header')
 
     <div class="container mx-auto px-4 py-8">
 

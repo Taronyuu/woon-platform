@@ -1,29 +1,9 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registreren - Wooon.nl</title>
-    @vite(["resources/css/app.css", "resources/js/app.js"])
-</head>
-<body class="bg-gray-50">
+@extends('layouts.app')
 
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">Wooon.nl</a>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Koop</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Huur</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Nieuwbouw</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Over ons</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600">Inloggen</a>
-                </div>
-            </div>
-        </div>
-    </header>
+@section('title', 'Registreren - Wooon.nl')
+
+@section('content')
+
 
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-2xl mx-auto">
@@ -174,5 +154,4 @@
         </div>
     </div>
 
-</body>
-</html>
+@endsection

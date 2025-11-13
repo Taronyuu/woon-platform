@@ -36,7 +36,7 @@ class ParseDataJob implements ShouldQueue
         }
 
         $data = $crawler->parseData(
-            $crawledPage->raw_html ?? $crawledPage->content ?? '',
+            $crawledPage->raw_html ?? '',
             $crawledPage->url
         );
 
@@ -53,7 +53,7 @@ class ParseDataJob implements ShouldQueue
         $sourceUrl = $data['source_url'] ?? $crawledPage->url;
         unset($data['source_url']);
 
-        $propertyUnit = PropertyUnit::firstOrCreate(
+        $propertyUnit = PropertyUnit::updateOrCreate(
             [
                 'address_postal_code' => $data['address_postal_code'] ?? null,
                 'address_number' => $data['address_number'] ?? null,

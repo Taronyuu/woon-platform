@@ -18,9 +18,9 @@ class FundaCrawler extends WebsiteCrawler
         $dom = new \DOMDocument();
 
         if (Str::contains($content, '<html')) {
-            $dom->loadHTML($content);
+            $dom->loadHTML($content, LIBXML_NOERROR | LIBXML_NOWARNING);
         } else {
-            $dom->loadHTML('<html><body>' . $content . '</body></html>');
+            $dom->loadHTML('<html><body>' . $content . '</body></html>', LIBXML_NOERROR | LIBXML_NOWARNING);
         }
 
         libxml_clear_errors();
@@ -29,35 +29,17 @@ class FundaCrawler extends WebsiteCrawler
         foreach ($anchorTags as $anchor) {
             if ($anchor->hasAttribute('href')) {
                 $href = $anchor->getAttribute('href');
-                if (!empty($href)) {
+                if (!empty($href) && preg_match('#/detail/(koop|huur)/#', $href)) {
                     $links->push($href);
                 }
-            }
-        }
-
-        preg_match_all('/\[([^\]]+)\]\(([^)]+)\)/', $content, $mdMatches);
-        if (!empty($mdMatches[2])) {
-            foreach ($mdMatches[2] as $url) {
-                if (!empty($url)) {
-                    $links->push($url);
-                }
-            }
-        }
-
-        if (Str::contains($pageUrl, '/zoeken/')) {
-            $currentPage = 1;
-            if (preg_match('/[?&]page=(\d+)/', $pageUrl, $matches)) {
-                $currentPage = (int) $matches[1];
-            }
-
-            if ($currentPage < 1000) {
-                $links->push('?page=' . ($currentPage + 1));
             }
         }
 
         return $links
             ->map(fn($url) => $this->normalizeUrl($url, $pageUrl))
             ->filter(fn($url) => !empty($url))
+            ->filter(fn($url) => preg_match('#/detail/(koop|huur)/.+/\d+/?$#', $url))
+            ->filter(fn($url) => !Str::contains($url, '/en/'))
             ->unique()
             ->values();
     }
@@ -70,6 +52,7 @@ class FundaCrawler extends WebsiteCrawler
 
         $htmlContent = $content;
         $canonicalUrl = $this->normalizePropertyUrl($url);
+        $nuxtData = $this->extractNuxtData($htmlContent);
 
         $street = $this->extractStreet($htmlContent);
         $number = $this->extractNumber($htmlContent);
@@ -82,6 +65,12 @@ class FundaCrawler extends WebsiteCrawler
             $addition,
             $city,
         ])));
+
+        $coordinates = $this->extractCoordinates($nuxtData);
+        $agentInfo = $this->extractAgentInfo($nuxtData);
+        $energyIndex = $this->extractEnergyIndex($nuxtData);
+        $floor = $this->extractFloor($nuxtData);
+        $renovationYear = $this->extractRenovationYear($nuxtData);
 
         return [
             'source_url' => $canonicalUrl,
@@ -103,6 +92,8 @@ class FundaCrawler extends WebsiteCrawler
             'address_province' => $this->extractProvince($htmlContent),
             'neighborhood' => $this->extractNeighborhood($htmlContent),
             'municipality' => $this->extractMunicipality($htmlContent),
+            'latitude' => $coordinates['latitude'] ?? null,
+            'longitude' => $coordinates['longitude'] ?? null,
             'surface' => $this->extractLivingArea($htmlContent),
             'lotsize' => $this->extractPlotArea($htmlContent),
             'volume' => $this->extractVolume($htmlContent),
@@ -112,7 +103,10 @@ class FundaCrawler extends WebsiteCrawler
             'bathrooms' => $this->extractBathrooms($htmlContent),
             'floors' => $this->extractFloors($htmlContent),
             'construction_year' => $this->extractYear($htmlContent),
+            'renovation_year' => $renovationYear,
             'energy_label' => $this->extractEnergyLabel($htmlContent),
+            'energy_index' => $energyIndex,
+            'floor' => $floor,
             'orientation' => $this->extractOrientation($htmlContent),
             'parking_lots_data' => $this->extractParkingData($htmlContent),
             'storages_data' => $this->extractStorageData($htmlContent),
@@ -124,9 +118,12 @@ class FundaCrawler extends WebsiteCrawler
             'features' => $this->extractFeatures($htmlContent),
             'amenities' => $this->extractAmenities($htmlContent),
             'data' => $this->extractAdditionalData($htmlContent),
-            'agent_name' => $this->extractAgentName($htmlContent),
-            'agent_company' => $this->extractAgentCompany($htmlContent),
-            'agent_phone' => $this->extractAgentPhone($htmlContent),
+            'agent_name' => $agentInfo['name'] ?? $this->extractAgentName($htmlContent),
+            'agent_company' => $agentInfo['company'] ?? $this->extractAgentCompany($htmlContent),
+            'agent_phone' => $agentInfo['phone'] ?? $this->extractAgentPhone($htmlContent),
+            'agent_email' => $agentInfo['email'] ?? null,
+            'agent_logo_url' => $agentInfo['logo_url'] ?? null,
+            'agent_url' => $agentInfo['url'] ?? $this->extractAgentUrl($htmlContent),
             'listing_date' => $this->extractListingDate($htmlContent),
             'acceptance_date' => $this->extractAcceptanceDate($htmlContent),
             'first_seen_at' => now(),
@@ -375,10 +372,26 @@ class FundaCrawler extends WebsiteCrawler
     private function extractImages(string $content): array
     {
         preg_match_all('/<img[^>]+src="([^"]+)"/', $content, $matches);
-        return array_filter($matches[1], fn($url) =>
+
+        $filtered = array_filter($matches[1], fn($url) =>
             Str::contains($url, ['funda']) &&
-            !Str::contains($url, ['logo', 'icon'])
+            !Str::contains($url, ['logo', 'icon', 'pixel', 'akam', 'tracking', 'analytics', 'beacon', 'marketinsightsassets']) &&
+            !Str::endsWith(strtolower(parse_url($url, PHP_URL_PATH) ?: ''), '.png')
         );
+
+        $uniqueImages = [];
+        $seenBaseUrls = [];
+
+        foreach ($filtered as $url) {
+            $baseUrl = preg_replace('/\?.*$/', '', $url);
+
+            if (!isset($seenBaseUrls[$baseUrl])) {
+                $uniqueImages[] = $url;
+                $seenBaseUrls[$baseUrl] = true;
+            }
+        }
+
+        return $uniqueImages;
     }
 
     private function extractFeatures(string $content): array
@@ -578,8 +591,22 @@ class FundaCrawler extends WebsiteCrawler
     private function extractFloorPlans(string $content): ?array
     {
         preg_match_all('/https:\/\/cloud\.funda\.nl\/[^"]+\.png/', $content, $matches);
-        $plans = array_filter($matches[0], fn($url) => !Str::contains($url, 'logo'));
-        return !empty($plans) ? array_values(array_unique($plans)) : null;
+
+        $plans = [];
+        foreach ($matches[0] as $url) {
+            if (Str::contains($url, ['logo', '{id}'])) {
+                continue;
+            }
+
+            $cleanUrl = preg_replace('/\?.*$/', '', $url);
+            $cleanUrl = trim(explode(' ', $cleanUrl)[0]);
+
+            if (!empty($cleanUrl)) {
+                $plans[$cleanUrl] = $cleanUrl;
+            }
+        }
+
+        return !empty($plans) ? array_values($plans) : null;
     }
 
     private function extractVirtualTourUrl(string $content): ?string
@@ -680,6 +707,19 @@ class FundaCrawler extends WebsiteCrawler
         return null;
     }
 
+    private function extractAgentUrl(string $content): ?string
+    {
+        if (preg_match('/href="(\/makelaar\/[^"]+)"/', $content, $matches)) {
+            return 'https://www.funda.nl' . $matches[1];
+        }
+
+        if (preg_match('/brokerID=(\d+)/', $content, $matches)) {
+            return 'https://www.funda.nl/makelaar/' . $matches[1];
+        }
+
+        return null;
+    }
+
     private function extractListingDate(string $content): ?string
     {
         if (preg_match('/>Op Funda<\/dt>.*?<dd[^>]*>(.*?)<\/dd>/is', $content, $matches)) {
@@ -707,5 +747,157 @@ class FundaCrawler extends WebsiteCrawler
             return $matches[1];
         }
         return $url;
+    }
+
+    private function extractNuxtData(string $content): ?array
+    {
+        if (preg_match('/<script[^>]*id="__NUXT_DATA__"[^>]*>(.*?)<\/script>/s', $content, $matches)) {
+            try {
+                $jsonData = json_decode($matches[1], true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($jsonData)) {
+                    $rootData = isset($jsonData[3]) ? $jsonData[3] : null;
+                    if ($rootData && is_array($rootData) && isset($rootData['cachedListingData_nl'])) {
+                        $visited = [];
+                        $cachedData = $this->resolveNuxtValue($rootData['cachedListingData_nl'], $jsonData, $visited);
+                        return is_array($cachedData) ? $cachedData : null;
+                    }
+                }
+            } catch (\Exception $e) {
+            }
+        }
+        return null;
+    }
+
+    private function resolveNuxtValue($value, array $data, array &$visited = [])
+    {
+        if (is_int($value)) {
+            if (isset($visited[$value])) {
+                return null;
+            }
+            if (isset($data[$value])) {
+                $visited[$value] = true;
+                return $this->resolveNuxtValue($data[$value], $data, $visited);
+            }
+        }
+        if (is_array($value)) {
+            $resolved = [];
+            foreach ($value as $k => $v) {
+                $resolved[$k] = $this->resolveNuxtValue($v, $data, $visited);
+            }
+            return $resolved;
+        }
+        return $value;
+    }
+
+    private function findInNuxtData(array $data, string $key)
+    {
+        if (isset($data[$key])) {
+            return $data[$key];
+        }
+
+        foreach ($data as $value) {
+            if (is_array($value)) {
+                $result = $this->findInNuxtData($value, $key);
+                if ($result !== null) {
+                    return $result;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private function extractCoordinates(?array $nuxtData): array
+    {
+        if (!$nuxtData) {
+            return ['latitude' => null, 'longitude' => null];
+        }
+
+        $coordinates = $this->findInNuxtData($nuxtData, 'coordinates');
+        if ($coordinates && is_array($coordinates)) {
+            return [
+                'latitude' => $coordinates['lat'] ?? $coordinates['latitude'] ?? null,
+                'longitude' => $coordinates['lng'] ?? $coordinates['longitude'] ?? null,
+            ];
+        }
+
+        return ['latitude' => null, 'longitude' => null];
+    }
+
+    private function extractAgentInfo(?array $nuxtData): array
+    {
+        if (!$nuxtData) {
+            return [];
+        }
+
+        $broker = $this->findInNuxtData($nuxtData, 'broker');
+        if (!$broker || !is_array($broker)) {
+            $advertising = $this->findInNuxtData($nuxtData, 'advertising');
+            if ($advertising && is_array($advertising)) {
+                $broker = $advertising['broker'] ?? null;
+            }
+        }
+
+        if (!$broker || !is_array($broker)) {
+            $promo = $this->findInNuxtData($nuxtData, 'promo');
+            if ($promo && is_array($promo)) {
+                $broker = $promo['broker'] ?? null;
+            }
+        }
+
+        if (!$broker || !is_array($broker)) {
+            return [];
+        }
+
+        return [
+            'name' => $broker['name'] ?? null,
+            'company' => $broker['companyName'] ?? null,
+            'phone' => $broker['phone'] ?? null,
+            'email' => $broker['email'] ?? null,
+            'logo_url' => $broker['logoUrl'] ?? null,
+            'url' => $broker['profileUrl'] ?? $broker['url'] ?? null,
+        ];
+    }
+
+    private function extractEnergyIndex(?array $nuxtData): ?float
+    {
+        if (!$nuxtData) {
+            return null;
+        }
+
+        $energyIndex = $this->findInNuxtData($nuxtData, 'energyIndex');
+        if ($energyIndex !== null && is_numeric($energyIndex)) {
+            return (float) $energyIndex;
+        }
+
+        return null;
+    }
+
+    private function extractFloor(?array $nuxtData): ?string
+    {
+        if (!$nuxtData) {
+            return null;
+        }
+
+        $floor = $this->findInNuxtData($nuxtData, 'floor');
+        if ($floor !== null && is_string($floor)) {
+            return $floor;
+        }
+
+        return null;
+    }
+
+    private function extractRenovationYear(?array $nuxtData): ?int
+    {
+        if (!$nuxtData) {
+            return null;
+        }
+
+        $renovationYear = $this->findInNuxtData($nuxtData, 'renovationYear');
+        if ($renovationYear !== null && is_numeric($renovationYear)) {
+            return (int) $renovationYear;
+        }
+
+        return null;
     }
 }

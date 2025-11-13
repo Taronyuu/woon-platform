@@ -12,10 +12,10 @@ return [
         'use_flaresolverr' => true,
         'is_active' => true,
 
-        'start_urls' => [
-            'https://www.funda.nl/zoeken/koop/',
-            'https://www.funda.nl/zoeken/huur/',
-        ],
+        'start_urls' => array_merge(
+            array_map(fn($page) => "https://www.funda.nl/zoeken/koop/?page={$page}", range(1, 700)),
+            array_map(fn($page) => "https://www.funda.nl/zoeken/huur/?page={$page}", range(1, 300)),
+        ),
 
         'should_crawl' => function (string $url): bool {
             if (!Str::startsWith($url, 'https://www.funda.nl')) {
@@ -24,16 +24,16 @@ return [
 
             \Log::info('should_crawl check', ['url' => $url]);
 
-            if (Str::contains($url, ['/koop/', '/huur/', '/zoeken/koop', '/zoeken/huur'])) {
-                if (preg_match('#/detail/[^/]+/[^/]+/[^/]+/\d+/.+#', $url)) {
-                    \Log::info('should_crawl: Rejecting detail sub-page', ['url' => $url]);
-                    return false;
+            if (preg_match('#/detail/(koop|huur)/#', $url)) {
+                if (preg_match('#/detail/[^/]+/[^/]+/[^/]+/\d+/$#', $url)) {
+                    \Log::info('should_crawl: Accepting detail page', ['url' => $url]);
+                    return true;
                 }
-                \Log::info('should_crawl: Accepting', ['url' => $url]);
-                return true;
+                \Log::info('should_crawl: Rejecting detail sub-page', ['url' => $url]);
+                return false;
             }
 
-            \Log::info('should_crawl: Rejecting (no match)', ['url' => $url]);
+            \Log::info('should_crawl: Rejecting (not a detail page)', ['url' => $url]);
             return false;
         },
 

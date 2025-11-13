@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\CrawlJob;
 use App\Models\CrawledPage;
-use App\Services\FirecrawlService;
+use App\Services\ScrapflyService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,47 +34,37 @@ class ScrapePageJob implements ShouldQueue
         return now()->addMinutes(30);
     }
 
-    public function handle(FirecrawlService $firecrawl): void
+    public function handle(ScrapflyService $scrapfly): void
     {
         $crawledPage = CrawledPage::findOrFail($this->crawledPageId);
         $crawlJob = CrawlJob::findOrFail($this->crawlJobId);
 
-        if ($crawledPage->scraped_at) {
+        if ($crawledPage->scraped_at && $crawledPage->raw_html) {
+            \Log::info("ScrapePageJob: Using cached HTML for {$this->url}");
+            ExtractLinksJob::dispatch($crawlJob->id, $crawledPage->id);
+            ParseDataJob::dispatch($crawlJob->id, $crawledPage->id);
             return;
         }
 
         sleep(rand(2, 5));
 
-        $crawler = $crawlJob->getCrawler();
-
-        $useFlaresolverr = $crawler->shouldUseFlaresolverr();
         \Log::info("ScrapePageJob: Scraping {$this->url}", [
-            'use_flaresolverr' => $useFlaresolverr,
-            'depth' => $crawledPage->depth,
             'attempt' => $this->attempts(),
         ]);
 
         try {
-            $data = $firecrawl->scrape(
-                $this->url,
-                ['markdown', 'links', 'html'],
-                true,
-                $useFlaresolverr
-            );
+            $data = $scrapfly->scrape($this->url);
 
             $crawledPage->update([
-                'content' => $data['markdown'] ?? null,
-                'raw_html' => $data['html'] ?? null,
-                'links' => $data['links'] ?? [],
-                'metadata' => $data['metadata'] ?? [],
-                'status_code' => $data['metadata']['statusCode'] ?? 200,
+                'raw_html' => $data['html'],
+                'status_code' => $data['status_code'],
                 'scraped_at' => now(),
             ]);
 
             \Log::info("ScrapePageJob: Successfully scraped {$this->url}", [
-                'status_code' => $data['metadata']['statusCode'] ?? 200,
-                'links_found' => count($data['links'] ?? []),
-                'content_length' => strlen($data['markdown'] ?? ''),
+                'status_code' => $data['status_code'],
+                'duration' => $data['duration'],
+                'html_length' => strlen($data['html']),
             ]);
 
             ExtractLinksJob::dispatch($crawlJob->id, $crawledPage->id);
@@ -90,7 +80,7 @@ class ScrapePageJob implements ShouldQueue
             ]);
             $crawlJob->increment('pages_failed');
 
-            if (str_contains($e->getMessage(), '408')) {
+            if (str_contains($e->getMessage(), '408') || str_contains($e->getMessage(), '429')) {
                 if ($this->attempts() < $this->tries) {
                     $this->release($this->backoff[$this->attempts() - 1] ?? 120);
                     return;

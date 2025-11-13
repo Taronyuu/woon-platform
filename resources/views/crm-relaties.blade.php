@@ -8,24 +8,7 @@
 </head>
 <body class="bg-gray-50">
 
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="text-2xl font-bold text-blue-600">Wooon.nl</div>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="{{ route('realtor.dashboard') }}" class="text-gray-700 hover:text-blue-600">Dashboard</a>
-                    <a href="{{ route('realtor.properties.create') }}" class="text-gray-700 hover:text-blue-600">Woningen</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Projecten</a>
-                    <a href="{{ route('realtor.crm') }}" class="text-blue-600 font-semibold">Relaties</a>
-                    <a href="{{ route('realtor.messages') }}" class="text-gray-700 hover:text-blue-600">Berichten</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <span class="text-gray-700">Makelaar Account</span>
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Uitloggen</a>
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('partials.header')
 
     <main class="container mx-auto px-4 py-8">
 

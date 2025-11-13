@@ -1,31 +1,8 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wooon.nl - Vind je ideale woning</title>
-    @vite(["resources/css/app.css", "resources/js/app.js"])
-</head>
-<body class="bg-gray-50">
+@extends('layouts.app')
 
-    <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Wooon.nl</div>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Koop</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Huur</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Nieuwbouw</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Over ons</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Inloggen</a>
-                    <a href="{{ route('register') }}" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200 font-semibold">Account aanmaken</a>
-                </div>
-            </div>
-        </div>
-    </header>
+@section('title', 'Wooon.nl - Vind je ideale woning')
 
+@section('content')
     <main class="container mx-auto px-4 py-8">
 
         <section class="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white rounded-3xl p-12 mb-12 overflow-hidden">
@@ -37,103 +14,119 @@
                 <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">Vind je ideale woning</h1>
                 <p class="text-xl mb-10 text-blue-100">Het complete onafhankelijke platform voor koop, huur en nieuwbouw</p>
 
-                <div class="bg-white/95 backdrop-blur-lg rounded-2xl p-6 shadow-2xl">
+                <form action="{{ route('search') }}" method="GET" class="bg-white/95 backdrop-blur-lg rounded-2xl p-6 shadow-2xl">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <input type="text" placeholder="Plaats of postcode" class="px-5 py-4 border-2 border-gray-200 rounded-xl text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all">
-                        <select class="px-5 py-4 border-2 border-gray-200 rounded-xl text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all">
-                            <option>Koop / Huur / Nieuwbouw</option>
-                            <option>Koop</option>
-                            <option>Huur</option>
-                            <option>Nieuwbouw</option>
+                        <div class="relative" x-data="cityAutocomplete">
+                            <input
+                                type="text"
+                                name="search"
+                                placeholder="Plaats of postcode"
+                                class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                                x-model="search"
+                                @input.debounce.300ms="filter()"
+                                @keydown="handleKeydown($event)"
+                                @focus="filter()"
+                                @click.away="isOpen = false"
+                                autocomplete="off"
+                            >
+                            <div
+                                x-show="isOpen"
+                                x-cloak
+                                class="absolute z-50 w-full mt-2 bg-white rounded-xl shadow-2xl border-2 border-gray-100 max-h-64 overflow-y-auto"
+                            >
+                                <template x-for="(city, index) in filteredCities" :key="city.id">
+                                    <div
+                                        @click="selectCity(city)"
+                                        :class="{'bg-purple-50': index === selectedIndex}"
+                                        class="px-5 py-3 hover:bg-purple-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 text-gray-900"
+                                        x-text="city.name"
+                                    ></div>
+                                </template>
+                                <div
+                                    x-show="filteredCities.length === 0 && search.length >= 2"
+                                    class="px-5 py-3 text-gray-500 text-sm"
+                                >
+                                    Geen steden gevonden
+                                </div>
+                            </div>
+                        </div>
+                        <select name="type" class="px-5 py-4 border-2 border-gray-200 rounded-xl text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all">
+                            <option value="">Koop / Huur / Nieuwbouw</option>
+                            <option value="koop">Koop</option>
+                            <option value="huur">Huur</option>
+                            <option value="nieuwbouw">Nieuwbouw</option>
                         </select>
-                        <input type="text" placeholder="Prijsrange" class="px-5 py-4 border-2 border-gray-200 rounded-xl text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all">
+                        <input type="text" name="max_price" placeholder="Max prijs" class="px-5 py-4 border-2 border-gray-200 rounded-xl text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all">
                     </div>
-                    <button class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-200">
+                    <button type="submit" class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-200">
                         🔍 Zoeken
                     </button>
-                </div>
+                </form>
             </div>
         </section>
 
         <section class="mb-12">
             <div class="flex items-center justify-between mb-8">
                 <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Uitgelicht aanbod</h2>
-                <a href="#" class="text-blue-600 hover:text-purple-600 font-semibold flex items-center group">
+                <a href="{{ route('search') }}" class="text-blue-600 hover:text-purple-600 font-semibold flex items-center group">
                     Bekijk alles
                     <svg class="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-100">
-                        <div class="relative h-56 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop" alt="Modern appartement" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <div class="absolute top-3 right-3">
-                                <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">✨ Nieuwbouw</span>
+            @if($featuredProperties->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @foreach($featuredProperties as $property)
+                        <a href="{{ route('property.show', $property) }}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-100">
+                            <div class="relative h-56 overflow-hidden">
+                                @if($property->main_image)
+                                    <img src="{{ $property->main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                @else
+                                    <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                                        <span class="text-gray-400">Geen foto beschikbaar</span>
+                                    </div>
+                                @endif
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                @if($property->days_online !== null && $property->days_online <= 3)
+                                    <div class="absolute top-3 right-3">
+                                        <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">✨ Nieuw</span>
+                                    </div>
+                                @endif
+                                <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button class="bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-2 rounded-full text-sm font-semibold hover:bg-white transition-all">Bekijk details</button>
+                                </div>
                             </div>
-                            <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button class="bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-2 rounded-full text-sm font-semibold hover:bg-white transition-all">Bekijk details</button>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">{{ $property->title ?? $property->full_address }}</h3>
+                                @if($property->address_city || $property->address_postal_code)
+                                    <p class="text-gray-600 text-sm mb-2">
+                                        @if($property->address_postal_code){{ $property->address_postal_code }}@endif
+                                        @if($property->address_city && $property->address_postal_code), @endif
+                                        @if($property->address_city){{ $property->address_city }}@endif
+                                    </p>
+                                @endif
+                                <p class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold text-2xl mb-3">{{ $property->formatted_price }}</p>
+                                <div class="flex items-center text-sm text-gray-600 space-x-4">
+                                    @if($property->bedrooms)
+                                        <span class="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                                            {{ $property->bedrooms }} kamers
+                                        </span>
+                                    @endif
+                                    @if($property->surface)
+                                        <span class="bg-gray-50 px-3 py-1.5 rounded-lg">{{ $property->surface }} m²</span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-xl mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">Modern appartement Amsterdam</h3>
-                            <p class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold text-2xl mb-3">€ 425.000</p>
-                            <div class="flex items-center text-sm text-gray-600 space-x-4">
-                                <span class="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                                    3 kamers
-                                </span>
-                                <span class="bg-gray-50 px-3 py-1.5 rounded-lg">85 m²</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-100">
-                        <div class="relative h-56 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop" alt="Huurwoning Rotterdam" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <div class="absolute top-3 right-3">
-                                <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">🏠 Te huur</span>
-                            </div>
-                            <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button class="bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-2 rounded-full text-sm font-semibold hover:bg-white transition-all">Bekijk details</button>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-xl mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">Ruime huurwoning Rotterdam</h3>
-                            <p class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold text-2xl mb-3">€ 1.250 <span class="text-sm text-gray-500">/ maand</span></p>
-                            <div class="flex items-center text-sm text-gray-600 space-x-4">
-                                <span class="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                                    4 kamers
-                                </span>
-                                <span class="bg-gray-50 px-3 py-1.5 rounded-lg">110 m²</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-100">
-                        <div class="relative h-56 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&h=400&fit=crop" alt="Woning Utrecht" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <div class="absolute top-3 right-3">
-                                <span class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">💎 Te koop</span>
-                            </div>
-                            <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button class="bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-2 rounded-full text-sm font-semibold hover:bg-white transition-all">Bekijk details</button>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-xl mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">Sfeervolle woning Utrecht</h3>
-                            <p class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold text-2xl mb-3">€ 550.000</p>
-                            <div class="flex items-center text-sm text-gray-600 space-x-4">
-                                <span class="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                                    5 kamers
-                                </span>
-                                <span class="bg-gray-50 px-3 py-1.5 rounded-lg">135 m²</span>
-                            </div>
-                        </div>
-                    </div>
+                        </a>
+                    @endforeach
                 </div>
+            @else
+                <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+                    <div class="text-6xl mb-4">🏠</div>
+                    <h3 class="text-2xl font-bold mb-2">Nog geen woningen beschikbaar</h3>
+                    <p class="text-gray-600">Binnenkort tonen we hier onze uitgelichte woningen</p>
+                </div>
+            @endif
         </section>
         </section>
 
@@ -176,22 +169,47 @@
             </a>
         </section>
 
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            <div class="bg-white rounded-lg p-8 shadow">
-                <h3 class="text-xl font-semibold mb-4">Bereken je woningwaarde</h3>
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <a href="{{ route('mortgage.calculator') }}" class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                <div class="bg-gradient-to-br from-green-500 to-emerald-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-green-600 transition-colors">Bereken je maandlasten</h3>
+                <p class="text-gray-600 mb-6">Bereken eenvoudig je hypotheeklasten per maand met actuele rentetarieven</p>
+                <span class="inline-flex items-center text-green-600 hover:text-green-700 font-semibold group">
+                    Start calculator
+                    <svg class="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </span>
+            </a>
+            <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                <div class="bg-gradient-to-br from-orange-500 to-red-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-gray-900">Bereken je woningwaarde</h3>
                 <p class="text-gray-600 mb-6">Krijg direct inzicht in de waarde van je woning met onze waardecheck</p>
-                <input type="text" placeholder="Postcode" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                <input type="text" placeholder="Huisnummer" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                <button class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                <input type="text" placeholder="Postcode" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all">
+                <input type="text" placeholder="Huisnummer" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all">
+                <button class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
                     Waarde berekenen
                 </button>
             </div>
-            <div class="bg-white rounded-lg p-8 shadow">
-                <h3 class="text-xl font-semibold mb-4">Plan afspraak met makelaar</h3>
+            <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                <div class="bg-gradient-to-br from-purple-500 to-pink-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-gray-900">Plan afspraak met makelaar</h3>
                 <p class="text-gray-600 mb-6">Laat je begeleiden door een erkende makelaar uit ons netwerk</p>
-                <input type="text" placeholder="Naam" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                <input type="email" placeholder="E-mailadres" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                <button class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                <input type="text" placeholder="Naam" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all">
+                <input type="email" placeholder="E-mailadres" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-4 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all">
+                <button class="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
                     Afspraak maken
                 </button>
             </div>
@@ -246,44 +264,4 @@
         </section>
 
     </main>
-
-    <footer class="bg-gray-900 text-white mt-12">
-        <div class="container mx-auto px-4 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h4 class="text-xl font-bold mb-4">Wooon.nl</h4>
-                    <p class="text-gray-400">Het complete onafhankelijke woonplatform voor Nederland</p>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Over ons</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Over Wooon</a></li>
-                        <li><a href="#" class="hover:text-white">Contact</a></li>
-                        <li><a href="#" class="hover:text-white">Werken bij</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Voor professionals</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="{{ route('realtor.dashboard') }}" class="hover:text-white">Makelaars</a></li>
-                        <li><a href="#" class="hover:text-white">API-partners</a></li>
-                        <li><a href="#" class="hover:text-white">Adverteren</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-semibold mb-4">Juridisch</h5>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Privacy</a></li>
-                        <li><a href="#" class="hover:text-white">Algemene voorwaarden</a></li>
-                        <li><a href="#" class="hover:text-white">Cookie beleid</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+@endsection
