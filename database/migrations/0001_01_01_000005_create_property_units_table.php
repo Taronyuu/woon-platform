@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('property_units', function (Blueprint $table) {
             $table->id();
+            $table->string('slug')->nullable()->unique();
 
             $table->string('name')->nullable();
             $table->string('title');
@@ -110,6 +108,7 @@ return new class extends Migration
             $table->string('agent_phone')->nullable();
             $table->string('agent_email')->nullable();
             $table->string('agent_logo_url')->nullable();
+            $table->string('agent_url')->nullable();
 
             $table->json('features')->nullable();
             $table->json('amenities')->nullable();
@@ -124,6 +123,7 @@ return new class extends Migration
             $table->timestamp('last_changed_at')->nullable();
             $table->timestamps();
 
+            $table->index('slug');
             $table->index(['transaction_type', 'status']);
             $table->index(['address_city']);
             $table->index(['address_postal_code']);
@@ -136,9 +136,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('property_units');

@@ -6,15 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('property_unit_website', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_unit_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('website_id')->constrained()->cascadeOnDelete();
+            $table->string('website_id');
             $table->string('external_id')->nullable();
             $table->text('source_url');
             $table->timestamp('first_seen_at');
@@ -26,9 +23,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('property_unit_website');

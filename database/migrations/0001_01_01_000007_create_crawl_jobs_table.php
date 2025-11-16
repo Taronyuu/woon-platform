@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('crawl_jobs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('website_id')->constrained()->cascadeOnDelete();
+            $table->string('website_id');
             $table->enum('status', ['pending', 'running', 'completed', 'failed', 'cancelled'])->default('pending');
             $table->integer('pages_crawled')->default(0);
             $table->integer('pages_failed')->default(0);
@@ -30,9 +27,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('crawl_jobs');

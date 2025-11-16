@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('crawled_pages', function (Blueprint $table) {
@@ -16,10 +13,7 @@ return new class extends Migration
             $table->foreignId('crawl_job_id')->constrained()->cascadeOnDelete();
             $table->text('url');
             $table->string('url_hash', 64)->index();
-            $table->longText('content')->nullable();
             $table->longText('raw_html')->nullable();
-            $table->json('links')->nullable();
-            $table->json('metadata')->nullable();
             $table->integer('status_code')->nullable();
             $table->string('content_hash', 64)->nullable();
             $table->string('mime_type')->default('text/html');
@@ -32,9 +26,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('crawled_pages');
