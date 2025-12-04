@@ -3,8 +3,8 @@
         @foreach($properties as $property)
             <a href="{{ route('property.show', $property) }}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-100">
                 <div class="relative h-56 overflow-hidden">
-                    @if($property->main_image)
-                        <img src="{{ $property->main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    @if($property->proxied_main_image)
+                        <img src="{{ $property->proxied_main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     @else
                         <div class="w-full h-full bg-gray-200 flex items-center justify-center">
                             <span class="text-gray-400">Geen foto beschikbaar</span>
@@ -28,6 +28,9 @@
                             </svg>
                         </button>
                     </div>
+                    @if($property->title)
+                        <h4 class="text-lg font-semibold text-gray-800 mb-1">{{ $property->title }}</h4>
+                    @endif
                     <p class="text-gray-700 font-medium mb-2">{{ $property->full_address }}</p>
                     <div class="flex items-center flex-wrap gap-2 text-sm text-gray-600 mb-4">
                         @if($property->property_type_label)

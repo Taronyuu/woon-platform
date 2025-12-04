@@ -26,6 +26,15 @@ class ParseDataJob implements ShouldQueue
         $crawledPage = CrawledPage::findOrFail($this->crawledPageId);
         $crawlJob = CrawlJob::findOrFail($this->crawlJobId);
 
+        if ($crawlJob->hasReachedPropertyLimit()) {
+            \Log::info("ParseDataJob: Property limit reached, skipping", [
+                'url' => $crawledPage->url,
+                'limit' => $crawlJob->property_limit,
+                'extracted' => $crawlJob->properties_extracted,
+            ]);
+            return;
+        }
+
         $crawler = $crawlJob->getCrawler();
 
         if (!$crawler->isLeafPage($crawledPage->url)) {

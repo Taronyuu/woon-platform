@@ -4,7 +4,6 @@ namespace Tests\Unit\Models;
 
 use App\Models\CrawlJob;
 use App\Models\CrawledPage;
-use App\Models\Website;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,35 +11,10 @@ class CrawlJobTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_website_relationship(): void
-    {
-        $website = Website::create([
-            'name' => 'Test Website',
-            'base_url' => 'https://example.com',
-            'crawler_class' => 'App\Crawlers\FundaCrawler',
-            'start_urls' => ['https://example.com'],
-        ]);
-
-        $crawlJob = CrawlJob::create([
-            'website_id' => $website->id,
-            'status' => 'pending',
-        ]);
-
-        $this->assertInstanceOf(Website::class, $crawlJob->website);
-        $this->assertEquals('Test Website', $crawlJob->website->name);
-    }
-
     public function test_crawled_pages_relationship(): void
     {
-        $website = Website::create([
-            'name' => 'Test Website',
-            'base_url' => 'https://example.com',
-            'crawler_class' => 'App\Crawlers\FundaCrawler',
-            'start_urls' => ['https://example.com'],
-        ]);
-
         $crawlJob = CrawlJob::create([
-            'website_id' => $website->id,
+            'website_id' => 'funda',
             'status' => 'pending',
         ]);
 
@@ -56,25 +30,18 @@ class CrawlJobTest extends TestCase
 
     public function test_status_values(): void
     {
-        $website = Website::create([
-            'name' => 'Test Website',
-            'base_url' => 'https://example.com',
-            'crawler_class' => 'App\Crawlers\FundaCrawler',
-            'start_urls' => ['https://example.com'],
-        ]);
-
         $pendingJob = CrawlJob::create([
-            'website_id' => $website->id,
+            'website_id' => 'funda',
             'status' => 'pending',
         ]);
 
         $runningJob = CrawlJob::create([
-            'website_id' => $website->id,
+            'website_id' => 'funda',
             'status' => 'running',
         ]);
 
         $completedJob = CrawlJob::create([
-            'website_id' => $website->id,
+            'website_id' => 'funda',
             'status' => 'completed',
         ]);
 
@@ -85,15 +52,8 @@ class CrawlJobTest extends TestCase
 
     public function test_casts_datetime_fields(): void
     {
-        $website = Website::create([
-            'name' => 'Test Website',
-            'base_url' => 'https://example.com',
-            'crawler_class' => 'App\Crawlers\FundaCrawler',
-            'start_urls' => ['https://example.com'],
-        ]);
-
         $crawlJob = CrawlJob::create([
-            'website_id' => $website->id,
+            'website_id' => 'funda',
             'status' => 'running',
             'started_at' => now(),
             'completed_at' => now(),

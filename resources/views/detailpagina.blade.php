@@ -1,6 +1,24 @@
 @extends('layouts.app')
 
 @section('title', ($property->title ?? $property->full_address) . ' - Wooon.nl')
+@section('meta_description', Str::limit($property->description ?? 'Bekijk deze woning: ' . $property->full_address . ' - ' . $property->formatted_price, 160))
+
+@section('meta')
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ $property->title ?? $property->full_address }} - Wooon.nl">
+<meta property="og:description" content="{{ Str::limit($property->description ?? 'Bekijk deze woning: ' . $property->full_address . ' - ' . $property->formatted_price, 200) }}">
+<meta property="og:url" content="{{ url()->current() }}">
+@if($property->proxied_main_image)
+<meta property="og:image" content="{{ $property->proxied_main_image }}">
+<meta property="og:image:alt" content="{{ $property->full_address }}">
+@endif
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $property->title ?? $property->full_address }}">
+<meta name="twitter:description" content="{{ Str::limit($property->description ?? 'Bekijk deze woning: ' . $property->full_address, 200) }}">
+@if($property->proxied_main_image)
+<meta name="twitter:image" content="{{ $property->proxied_main_image }}">
+@endif
+@endsection
 
 @if($property->latitude && $property->longitude)
 @push('styles')
@@ -12,7 +30,7 @@
 <div x-data="{
     lightboxOpen: false,
     currentIndex: 0,
-    images: {{ json_encode($property->all_images) }},
+    images: {{ json_encode($property->proxied_all_images) }},
     openLightbox(index) {
         this.currentIndex = index;
         this.lightboxOpen = true;
@@ -47,8 +65,8 @@
 
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-6 border border-gray-100">
                     <div class="relative h-96 overflow-hidden group cursor-pointer" @click="images.length > 0 && openLightbox(0)">
-                        @if($property->main_image)
-                            <img src="{{ $property->main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        @if($property->proxied_main_image)
+                            <img src="{{ $property->proxied_main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         @else
                             <div class="w-full h-full bg-gray-200 flex items-center justify-center">
                                 <span class="text-gray-400 text-lg">Geen foto beschikbaar</span>
@@ -87,16 +105,16 @@
                             </div>
                         @endauth
                     </div>
-                    @if($property->images && count($property->images) > 1)
+                    @if($property->proxied_images && count($property->proxied_images) > 1)
                         <div class="grid grid-cols-4 gap-2 p-4">
-                            @foreach(array_slice($property->images, 1, 3) as $index => $image)
+                            @foreach(array_slice($property->proxied_images, 1, 3) as $index => $image)
                                 <div class="relative h-24 rounded-xl overflow-hidden group cursor-pointer" @click="openLightbox({{ $index + 1 }})">
                                     <img src="{{ $image }}" alt="Foto" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                 </div>
                             @endforeach
-                            @if(count($property->images) > 4)
+                            @if(count($property->proxied_images) > 4)
                                 <div class="relative h-24 rounded-xl overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform duration-200" @click="openLightbox(4)">
-                                    <span class="text-white font-bold text-lg">+{{ count($property->images) - 4 }} foto's</span>
+                                    <span class="text-white font-bold text-lg">+{{ count($property->proxied_images) - 4 }} foto's</span>
                                 </div>
                             @endif
                         </div>
@@ -133,8 +151,8 @@
                     @if($property->description)
                         <div class="mt-8">
                             <h2 class="text-2xl font-bold mb-6 text-gray-900">Beschrijving</h2>
-                            <div class="text-gray-700 leading-relaxed text-base whitespace-pre-line">
-                                {{ $property->formatted_description }}
+                            <div class="prose prose-gray max-w-none prose-p:text-gray-700 prose-p:leading-relaxed prose-headings:text-gray-900 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-li:marker:text-gray-400">
+                                {!! $property->formatted_description !!}
                             </div>
                         </div>
                     @endif
@@ -260,11 +278,11 @@
                     </div>
                 </div>
 
-                @if($property->floor_plans && count($property->floor_plans) > 0)
+                @if($property->proxied_floor_plans && count($property->proxied_floor_plans) > 0)
                     <div class="bg-white rounded-lg shadow p-8 mb-6">
                         <h2 class="text-xl font-semibold mb-4">Plattegrond</h2>
-                        @foreach($property->floor_plans as $index => $floorPlan)
-                            <img src="{{ $floorPlan }}" alt="Plattegrond" class="w-full rounded-lg mb-4 cursor-pointer hover:opacity-90 transition-opacity" @click="openLightbox({{ count($property->images ?: []) + $index }})">
+                        @foreach($property->proxied_floor_plans as $index => $floorPlan)
+                            <img src="{{ $floorPlan }}" alt="Plattegrond" class="w-full rounded-lg mb-4 cursor-pointer hover:opacity-90 transition-opacity" @click="openLightbox({{ count($property->proxied_images ?: []) + $index }})">
                         @endforeach
                     </div>
                 @endif
@@ -307,14 +325,38 @@
                         💰 Bereken maandlasten
                     </a>
 
-                    @if($property->agent_url)
+                    @if($property->agent_name || $property->agent_phone || $property->agent_email)
+                        <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                            <h4 class="font-semibold text-gray-900 mb-3">Contact makelaar</h4>
+                            @if($property->agent_name || $property->agent_company)
+                                <p class="font-medium text-gray-800">
+                                    {{ $property->agent_name }}
+                                    @if($property->agent_company)
+                                        <span class="text-gray-500 text-sm block">{{ $property->agent_company }}</span>
+                                    @endif
+                                </p>
+                            @endif
+                            @if($property->agent_phone)
+                                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $property->agent_phone) }}" class="flex items-center text-blue-600 hover:text-blue-700 mt-2">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                    </svg>
+                                    {{ $property->agent_phone }}
+                                </a>
+                            @endif
+                            @if($property->agent_email)
+                                <a href="mailto:{{ $property->agent_email }}" class="flex items-center text-blue-600 hover:text-blue-700 mt-2">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                    {{ $property->agent_email }}
+                                </a>
+                            @endif
+                        </div>
+                    @elseif($property->agent_url)
                         <a href="{{ $property->agent_url }}" target="_blank" class="w-full bg-white border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition mb-3 block text-center">
-                            Stel een vraag
+                            Contact makelaar
                         </a>
-                    @else
-                        <button disabled class="w-full bg-gray-300 border-2 border-gray-400 text-gray-500 px-6 py-3 rounded-lg font-semibold cursor-not-allowed mb-3">
-                            Stel een vraag
-                        </button>
                     @endif
 
                     @auth

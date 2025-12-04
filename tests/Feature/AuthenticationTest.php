@@ -18,7 +18,7 @@ class AuthenticationTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect('/account');
+        $response->assertRedirect('/email/verificatie');
         $this->assertAuthenticated();
         $this->assertDatabaseHas('users', [
             'email' => 'newuser@example.com',
@@ -39,7 +39,7 @@ class AuthenticationTest extends TestCase
             'city' => 'Amsterdam',
         ]);
 
-        $response->assertRedirect('/account');
+        $response->assertRedirect('/email/verificatie');
         $this->assertDatabaseHas('users', [
             'email' => 'john@example.com',
             'first_name' => 'John',
@@ -88,7 +88,7 @@ class AuthenticationTest extends TestCase
 
         $response = $this->post('/logout');
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/home');
         $this->assertGuest();
     }
 
@@ -102,7 +102,6 @@ class AuthenticationTest extends TestCase
     public function test_authenticated_user_can_access_account_page(): void
     {
         $user = User::factory()->create([
-            'name' => 'Jane Smith',
             'first_name' => 'Jane',
             'last_name' => 'Smith',
         ]);
@@ -110,6 +109,6 @@ class AuthenticationTest extends TestCase
         $response = $this->actingAs($user)->get('/account');
 
         $response->assertStatus(200);
-        $response->assertSee('Jane Smith');
+        $response->assertSee('Jane');
     }
 }

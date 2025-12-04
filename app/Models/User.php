@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -49,9 +50,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -111,5 +111,15 @@ class User extends Authenticatable
     public function hasFavorited(PropertyUnit $property): bool
     {
         return $this->favoriteProperties()->where('property_unit_id', $property->id)->exists();
+    }
+
+    public function searchProfiles(): HasMany
+    {
+        return $this->hasMany(SearchProfile::class);
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        \App\Http\Controllers\Auth\EmailVerificationController::sendVerificationEmail($this);
     }
 }

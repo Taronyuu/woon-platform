@@ -25,6 +25,15 @@ class ExtractLinksJob implements ShouldQueue
         $crawledPage = CrawledPage::findOrFail($this->crawledPageId);
         $crawlJob = CrawlJob::findOrFail($this->crawlJobId);
 
+        if ($crawlJob->hasReachedPropertyLimit()) {
+            \Log::info("ExtractLinksJob: Property limit reached, skipping link extraction", [
+                'url' => $crawledPage->url,
+                'limit' => $crawlJob->property_limit,
+                'extracted' => $crawlJob->properties_extracted,
+            ]);
+            return;
+        }
+
         $crawler = $crawlJob->getCrawler();
 
         $linksFromContent = $crawler->extractLinks(

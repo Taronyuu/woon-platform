@@ -18,7 +18,7 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request): RedirectResponse
     {
-        $user = User::create([
+        $user = User::query()->create([
             'email' => $request->email,
             'password' => $request->password,
             'first_name' => $request->first_name,
@@ -30,8 +30,10 @@ class RegisterController extends Controller
             'type' => 'consumer',
         ]);
 
+        $user->sendEmailVerificationNotification();
+
         Auth::login($user);
 
-        return redirect()->route('account.consumer');
+        return redirect()->route('verification.notice');
     }
 }

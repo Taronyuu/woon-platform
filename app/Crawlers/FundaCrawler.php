@@ -77,7 +77,7 @@ class FundaCrawler extends WebsiteCrawler
             'external_id' => $this->extractFundaId($canonicalUrl),
             'name' => $name,
             'title' => $this->extractTitle($htmlContent),
-            'description' => $this->extractDescription($htmlContent),
+            'original_description' => $this->extractDescription($htmlContent),
             'property_type' => $this->extractPropertyType($htmlContent),
             'transaction_type' => Str::contains($url, '/koop/') ? 'sale' : 'rent',
             'living_type' => $this->extractLivingType($htmlContent),

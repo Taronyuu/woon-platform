@@ -13,6 +13,12 @@
             </div>
 
             <div class="bg-white rounded-lg shadow p-8">
+                @if(session('status'))
+                    <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
@@ -47,16 +53,21 @@
                             @enderror
                         </div>
 
-                        <div class="flex items-center">
-                            <input
-                                type="checkbox"
-                                id="remember"
-                                name="remember"
-                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                            >
-                            <label for="remember" class="ml-2 text-sm text-gray-700">
-                                Onthoud mij
-                            </label>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id="remember"
+                                    name="remember"
+                                    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                >
+                                <label for="remember" class="ml-2 text-sm text-gray-700">
+                                    Onthoud mij
+                                </label>
+                            </div>
+                            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:text-blue-700">
+                                Wachtwoord vergeten?
+                            </a>
                         </div>
                     </div>
 

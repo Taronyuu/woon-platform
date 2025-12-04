@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Zoekresultaten - Wooon.nl')
+@section('title', 'Woningen zoeken - Wooon.nl')
+@section('meta_description', 'Zoek en vind je ideale woning op Wooon.nl. Filter op prijs, locatie, oppervlakte en meer. Bekijk alle beschikbare koop- en huurwoningen.')
+
+@section('meta')
+<meta property="og:type" content="website">
+<meta property="og:title" content="Woningen zoeken - Wooon.nl">
+<meta property="og:description" content="Zoek en vind je ideale woning. Filter op prijs, locatie, oppervlakte en meer.">
+<meta property="og:url" content="{{ url()->current() }}">
+@endsection
 
 @section('content')
     <div class="container mx-auto px-4 py-8" x-data="propertyFilters()" x-init="init()">

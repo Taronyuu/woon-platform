@@ -44,6 +44,7 @@ class CrawlJob extends Model
 {
     protected $fillable = [
         'website_id',
+        'property_limit',
         'status',
         'pages_crawled',
         'pages_failed',
@@ -73,5 +74,14 @@ class CrawlJob extends Model
     public function crawledPages(): HasMany
     {
         return $this->hasMany(CrawledPage::class);
+    }
+
+    public function hasReachedPropertyLimit(): bool
+    {
+        if (!$this->property_limit) {
+            return false;
+        }
+
+        return $this->properties_extracted >= $this->property_limit;
     }
 }

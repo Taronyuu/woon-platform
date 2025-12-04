@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Auth;
@@ -175,11 +176,14 @@ use Illuminate\Support\Str;
  */
 class PropertyUnit extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'slug',
         'name',
         'title',
         'description',
+        'original_description',
         'property_type',
         'transaction_type',
         'status',
@@ -389,14 +393,17 @@ class PropertyUnit extends Model
 
         $text = $this->description;
 
-        $text = preg_replace('/•\s*/', "\n• ", $text);
-        $text = preg_replace('/([.!?])\s+([A-Z][a-z]+(?:\s+[a-z]+)?:)/u', "$1\n\n$2", $text);
+        $text = preg_replace('/^```[a-z]*\s*/', '', $text);
+        $text = preg_replace('/\s*```$/', '', $text);
+
+        $text = preg_replace('/•\s*/', "\n- ", $text);
+        $text = preg_replace('/([.!?])\s+([A-Z][a-z]+(?:\s+[a-z]+)?:)/u', "$1\n\n**$2**", $text);
         $text = preg_replace('/([.!?])\s+([A-Z][a-z]{2,})\s+([A-Z])/u', "$1\n\n$2 $3", $text);
         $text = preg_replace('/\s{2,}/', "\n\n", $text);
 
         $text = trim($text);
 
-        return $text;
+        return \Illuminate\Support\Str::markdown($text);
     }
 
     public function getPropertyTypeLabelAttribute(): string
@@ -558,5 +565,31 @@ class PropertyUnit extends Model
         }
 
         return $uniqueImages;
+    }
+
+    public function getProxiedMainImageAttribute(): ?string
+    {
+        return proxied_image_url($this->main_image);
+    }
+
+    public function getProxiedImagesAttribute(): array
+    {
+        $images = $this->images ?: [];
+
+        return array_map(fn($url) => proxied_image_url($url), $images);
+    }
+
+    public function getProxiedFloorPlansAttribute(): array
+    {
+        $floorPlans = $this->floor_plans ?: [];
+
+        return array_map(fn($url) => proxied_image_url($url), $floorPlans);
+    }
+
+    public function getProxiedAllImagesAttribute(): array
+    {
+        $allImages = $this->all_images;
+
+        return array_map(fn($url) => proxied_image_url($url), $allImages);
     }
 }

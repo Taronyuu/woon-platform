@@ -24,11 +24,18 @@ class InitiateCrawlJob implements ShouldQueue
         $crawler = $crawlJob->getCrawler();
 
         $startUrls = $crawler->getStartUrls();
+        shuffle($startUrls);
+
+        if ($crawlJob->property_limit) {
+            $startUrlCount = max(1, (int) ceil($crawlJob->property_limit / 10));
+            $startUrls = array_slice($startUrls, 0, $startUrlCount);
+        }
+
         \Log::info("InitiateCrawlJob: Starting crawl for {$crawler->getName()}", [
             'crawl_job_id' => $crawlJob->id,
             'website_id' => $crawlJob->website_id,
+            'property_limit' => $crawlJob->property_limit,
             'start_urls_count' => count($startUrls),
-            'start_urls' => $startUrls,
             'max_depth' => $crawler->getMaxDepth(),
             'use_flaresolverr' => $crawler->shouldUseFlaresolverr(),
         ]);

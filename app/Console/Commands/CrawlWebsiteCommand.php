@@ -11,7 +11,8 @@ class CrawlWebsiteCommand extends Command
     protected $signature = 'crawl:website
                             {website? : The website ID or name to crawl}
                             {--all : Crawl all active websites}
-                            {--list : List all available websites}';
+                            {--list : List all available websites}
+                            {--limit= : Limit the number of properties to extract}';
 
     protected $description = 'Crawl a website using the configured crawler';
 
@@ -127,8 +128,11 @@ class CrawlWebsiteCommand extends Command
         $this->line("Website ID: {$websiteId}");
         $this->line('');
 
+        $limit = $this->option('limit') ? (int) $this->option('limit') : null;
+
         $crawlJob = CrawlJob::create([
             'website_id' => $websiteId,
+            'property_limit' => $limit,
             'status' => 'pending',
         ]);
 

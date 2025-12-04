@@ -3,41 +3,12 @@
 namespace Tests\Unit\Models;
 
 use App\Models\PropertyUnit;
-use App\Models\Website;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PropertyUnitTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function test_websites_relationship(): void
-    {
-        $propertyUnit = PropertyUnit::create([
-            'title' => 'Test Property',
-            'property_type' => 'house',
-            'transaction_type' => 'sale',
-            'first_seen_at' => now(),
-            'last_seen_at' => now(),
-        ]);
-
-        $website = Website::create([
-            'name' => 'Test Website',
-            'base_url' => 'https://example.com',
-            'crawler_class' => 'App\Crawlers\FundaCrawler',
-            'start_urls' => ['https://example.com'],
-        ]);
-
-        $propertyUnit->websites()->attach($website->id, [
-            'external_id' => '12345',
-            'source_url' => 'https://example.com/property/12345',
-            'first_seen_at' => now(),
-            'last_seen_at' => now(),
-        ]);
-
-        $this->assertCount(1, $propertyUnit->websites);
-        $this->assertEquals('Test Website', $propertyUnit->websites->first()->name);
-    }
 
     public function test_fillable_fields(): void
     {

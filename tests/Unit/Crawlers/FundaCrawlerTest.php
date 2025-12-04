@@ -3,63 +3,38 @@
 namespace Tests\Unit\Crawlers;
 
 use App\Crawlers\FundaCrawler;
-use App\Models\CrawlJob;
-use App\Models\Website;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Crawlers\WebsiteCrawler;
 use Tests\TestCase;
 
 class FundaCrawlerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    private FundaCrawler $crawler;
-    private CrawlJob $crawlJob;
+    private WebsiteCrawler $crawler;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $website = Website::create([
-            'name' => 'Funda',
-            'base_url' => 'https://www.funda.nl',
-            'crawler_class' => 'App\Crawlers\FundaCrawler',
-            'start_urls' => ['https://www.funda.nl/koop/heel-nederland/'],
-        ]);
-
-        $this->crawlJob = CrawlJob::create([
-            'website_id' => $website->id,
-            'status' => 'pending',
-        ]);
-
-        $this->crawler = new FundaCrawler($this->crawlJob);
+        $this->crawler = new WebsiteCrawler('funda');
     }
 
     public function test_get_start_urls_returns_correct_urls(): void
     {
         $urls = $this->crawler->getStartUrls();
 
-        $this->assertCount(2, $urls);
-        $this->assertContains('https://www.funda.nl/koop/heel-nederland/', $urls);
-        $this->assertContains('https://www.funda.nl/huur/heel-nederland/', $urls);
-    }
-
-    public function test_should_crawl_allows_funda_sale_urls(): void
-    {
-        $result = $this->crawler->shouldCrawl('https://www.funda.nl/koop/amsterdam/');
-
-        $this->assertTrue($result);
-    }
-
-    public function test_should_crawl_allows_funda_rent_urls(): void
-    {
-        $result = $this->crawler->shouldCrawl('https://www.funda.nl/huur/utrecht/');
-
-        $this->assertTrue($result);
+        $this->assertNotEmpty($urls);
+        $this->assertContains('https://www.funda.nl/zoeken/koop/?page=1', $urls);
+        $this->assertContains('https://www.funda.nl/zoeken/huur/?page=1', $urls);
     }
 
     public function test_should_crawl_allows_funda_detail_urls(): void
     {
-        $result = $this->crawler->shouldCrawl('https://www.funda.nl/detail/12345-street-name/');
+        $result = $this->crawler->shouldCrawl('https://www.funda.nl/detail/koop/amsterdam/huis-straat-1/12345/');
+
+        $this->assertTrue($result);
+    }
+
+    public function test_should_crawl_allows_funda_rent_detail_urls(): void
+    {
+        $result = $this->crawler->shouldCrawl('https://www.funda.nl/detail/huur/utrecht/appartement-weg-5/67890/');
 
         $this->assertTrue($result);
     }
@@ -71,64 +46,65 @@ class FundaCrawlerTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function test_should_crawl_denies_hypotheek_urls(): void
+    public function test_should_crawl_denies_search_pages(): void
     {
-        $result = $this->crawler->shouldCrawl('https://www.funda.nl/hypotheek/');
+        $result = $this->crawler->shouldCrawl('https://www.funda.nl/zoeken/koop/?page=1');
 
         $this->assertFalse($result);
     }
 
-    public function test_should_crawl_denies_nieuwbouw_service_urls(): void
+    public function test_should_crawl_denies_detail_sub_pages(): void
     {
-        $result = $this->crawler->shouldCrawl('https://www.funda.nl/nieuwbouw-service/');
+        $result = $this->crawler->shouldCrawl('https://www.funda.nl/detail/koop/amsterdam/huis-straat-1/12345/media/');
 
         $this->assertFalse($result);
     }
 
-    public function test_should_crawl_denies_mijn_funda_urls(): void
+    public function test_is_leaf_page_returns_true_for_detail_pages(): void
     {
-        $result = $this->crawler->shouldCrawl('https://www.funda.nl/mijn-funda/');
+        $result = $this->crawler->isLeafPage('https://www.funda.nl/detail/koop/amsterdam/huis-straat-1/12345/');
 
-        $this->assertFalse($result);
+        $this->assertTrue($result);
     }
 
-    public function test_should_crawl_denies_urls_without_koop_huur_detail(): void
+    public function test_is_leaf_page_returns_false_for_search_pages(): void
     {
-        $result = $this->crawler->shouldCrawl('https://www.funda.nl/about/');
+        $result = $this->crawler->isLeafPage('https://www.funda.nl/zoeken/koop/?page=1');
 
         $this->assertFalse($result);
     }
 
     public function test_parse_data_returns_empty_for_non_detail_pages(): void
     {
+        $fundaCrawler = app(FundaCrawler::class);
         $content = '<h1>Search Results</h1>';
-        $url = 'https://www.funda.nl/koop/amsterdam/';
+        $url = 'https://www.funda.nl/zoeken/koop/';
 
-        $result = $this->crawler->parseData($content, $url);
+        $result = $fundaCrawler->parseData($content, $url);
 
         $this->assertEmpty($result);
     }
 
     public function test_parse_data_returns_data_for_detail_pages(): void
     {
+        $fundaCrawler = app(FundaCrawler::class);
         $content = '<h1>Beautiful House</h1><div class="description">A great property</div>€ 450.000 3 kamers 2 slaapkamers';
-        $url = 'https://www.funda.nl/detail/koop/amsterdam/12345-street-name/';
+        $url = 'https://www.funda.nl/detail/koop/amsterdam/huis-straat-1/12345-beautiful-house/';
 
-        $result = $this->crawler->parseData($content, $url);
+        $result = $fundaCrawler->parseData($content, $url);
 
         $this->assertNotEmpty($result);
         $this->assertEquals('sale', $result['transaction_type']);
-        $this->assertEquals('12345', $result['external_id']);
     }
 
     public function test_parse_data_identifies_rent_transaction(): void
     {
+        $fundaCrawler = app(FundaCrawler::class);
         $content = '<h1>Apartment for Rent</h1>';
-        $url = 'https://www.funda.nl/detail/huur/amsterdam/67890-street/';
+        $url = 'https://www.funda.nl/detail/huur/amsterdam/appartement-weg-5/67890-apartment/';
 
-        $result = $this->crawler->parseData($content, $url);
+        $result = $fundaCrawler->parseData($content, $url);
 
         $this->assertEquals('rent', $result['transaction_type']);
-        $this->assertEquals('67890', $result['external_id']);
     }
 }

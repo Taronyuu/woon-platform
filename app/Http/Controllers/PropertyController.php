@@ -24,16 +24,32 @@ class PropertyController extends Controller
         }
 
         if ($minPrice = $request->input('min_price')) {
-            $query->where(function ($q) use ($minPrice) {
-                $q->where('buyprice', '>=', $minPrice)
-                    ->orWhere('rentprice_month', '>=', $minPrice);
+            $query->where(function ($q) use ($minPrice, $type) {
+                if ($type === 'sale') {
+                    $q->where('buyprice', '>=', $minPrice);
+                } elseif ($type === 'rent') {
+                    $q->where('rentprice_month', '>=', $minPrice);
+                } else {
+                    $q->where(function ($sq) use ($minPrice) {
+                        $sq->where('buyprice', '>=', $minPrice)
+                            ->orWhere('rentprice_month', '>=', $minPrice);
+                    });
+                }
             });
         }
 
         if ($maxPrice = $request->input('max_price')) {
-            $query->where(function ($q) use ($maxPrice) {
-                $q->where('buyprice', '<=', $maxPrice)
-                    ->orWhere('rentprice_month', '<=', $maxPrice);
+            $query->where(function ($q) use ($maxPrice, $type) {
+                if ($type === 'sale') {
+                    $q->where('buyprice', '<=', $maxPrice);
+                } elseif ($type === 'rent') {
+                    $q->where('rentprice_month', '<=', $maxPrice);
+                } else {
+                    $q->where(function ($sq) use ($maxPrice) {
+                        $sq->where('buyprice', '<=', $maxPrice)
+                            ->orWhere('rentprice_month', '<=', $maxPrice);
+                    });
+                }
             });
         }
 

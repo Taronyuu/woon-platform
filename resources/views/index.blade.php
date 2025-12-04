@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Wooon.nl - Vind je ideale woning')
+@section('title', 'Wooon.nl - Vind je ideale woning in Nederland')
+@section('meta_description', 'Wooon.nl is het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek. Gratis zoekprofielen en meldingen.')
+
+@section('meta')
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wooon.nl - Vind je ideale woning in Nederland">
+<meta property="og:description" content="Het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek.">
+<meta property="og:url" content="{{ url('/') }}">
+@endsection
 
 @section('content')
     <main class="container mx-auto px-4 py-8">
@@ -78,8 +86,8 @@
                     @foreach($featuredProperties as $property)
                         <a href="{{ route('property.show', $property) }}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-100">
                             <div class="relative h-56 overflow-hidden">
-                                @if($property->main_image)
-                                    <img src="{{ $property->main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                @if($property->proxied_main_image)
+                                    <img src="{{ $property->proxied_main_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                 @else
                                     <div class="w-full h-full bg-gray-200 flex items-center justify-center">
                                         <span class="text-gray-400">Geen foto beschikbaar</span>

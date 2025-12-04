@@ -8,25 +8,21 @@
             <div>
                 <h5 class="font-semibold mb-4">Over ons</h5>
                 <ul class="space-y-2 text-gray-400">
-                    <li><a href="#" class="hover:text-white">Over Wooon</a></li>
-                    <li><a href="#" class="hover:text-white">Contact</a></li>
-                    <li><a href="#" class="hover:text-white">Werken bij</a></li>
+                    <li><a href="{{ route('about') }}" class="hover:text-white">Over Wooon</a></li>
+                    <li><a href="{{ route('contact') }}" class="hover:text-white">Contact</a></li>
                 </ul>
             </div>
             <div>
                 <h5 class="font-semibold mb-4">Voor professionals</h5>
                 <ul class="space-y-2 text-gray-400">
                     <li><a href="{{ route('realtor.dashboard') }}" class="hover:text-white">Makelaars</a></li>
-                    <li><a href="#" class="hover:text-white">API-partners</a></li>
-                    <li><a href="#" class="hover:text-white">Adverteren</a></li>
                 </ul>
             </div>
             <div>
                 <h5 class="font-semibold mb-4">Juridisch</h5>
                 <ul class="space-y-2 text-gray-400">
-                    <li><a href="#" class="hover:text-white">Privacy</a></li>
-                    <li><a href="#" class="hover:text-white">Algemene voorwaarden</a></li>
-                    <li><a href="#" class="hover:text-white">Cookie beleid</a></li>
+                    <li><a href="{{ route('privacy') }}" class="hover:text-white">Privacy</a></li>
+                    <li><a href="{{ route('terms') }}" class="hover:text-white">Algemene voorwaarden</a></li>
                 </ul>
             </div>
         </div>
