@@ -22,7 +22,7 @@ class VerifyEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bevestig je e-mailadres - Wooon.nl',
+            subject: 'Bevestig je e-mailadres - Oxxen.nl',
         );
     }
 

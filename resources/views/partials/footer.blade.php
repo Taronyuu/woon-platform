@@ -2,13 +2,13 @@
     <div class="container mx-auto px-4 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <h4 class="text-xl font-bold mb-4">Wooon.nl</h4>
+                <h4 class="text-xl font-bold mb-4">Oxxen.nl</h4>
                 <p class="text-gray-400">Het complete onafhankelijke woonplatform voor Nederland</p>
             </div>
             <div>
                 <h5 class="font-semibold mb-4">Over ons</h5>
                 <ul class="space-y-2 text-gray-400">
-                    <li><a href="{{ route('about') }}" class="hover:text-white">Over Wooon</a></li>
+                    <li><a href="{{ route('about') }}" class="hover:text-white">Over Oxxen</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-white">Contact</a></li>
                 </ul>
             </div>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
+            <p>&copy; 2025 Oxxen.nl - Alle rechten voorbehouden</p>
         </div>
     </div>
 </footer>

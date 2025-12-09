@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact - Wooon.nl')
+@section('title', 'Contact - Oxxen.nl')
 
 @section('content')
 <div class="bg-gradient-to-r from-orange-500 to-red-500 py-12">
@@ -26,7 +26,7 @@
                         <div>
                             <h3 class="font-semibold text-gray-900">E-mail</h3>
                             <p class="text-gray-600">Algemene vragen</p>
-                            <a href="mailto:info@wooon.nl" class="text-orange-500 hover:text-orange-600">info@wooon.nl</a>
+                            <a href="mailto:info@oxxen.nl" class="text-orange-500 hover:text-orange-600">info@oxxen.nl</a>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                         <div>
                             <h3 class="font-semibold text-gray-900">Adres</h3>
                             <p class="text-gray-600">
-                                Wooon.nl B.V.<br>
+                                Oxxen.nl B.V.<br>
                                 Herengracht 100<br>
                                 1015 BS Amsterdam
                             </p>
@@ -82,8 +82,8 @@
                     </div>
 
                     <div>
-                        <h3 class="font-semibold text-gray-900 mb-1">Is Wooon.nl gratis?</h3>
-                        <p class="text-gray-600 text-sm">Ja, het gebruik van Wooon.nl is volledig gratis voor woningzoekers. U kunt onbeperkt zoeken, favorieten opslaan en zoekprofielen aanmaken.</p>
+                        <h3 class="font-semibold text-gray-900 mb-1">Is Oxxen.nl gratis?</h3>
+                        <p class="text-gray-600 text-sm">Ja, het gebruik van Oxxen.nl is volledig gratis voor woningzoekers. U kunt onbeperkt zoeken, favorieten opslaan en zoekprofielen aanmaken.</p>
                     </div>
                 </div>
             </div>
@@ -92,10 +92,10 @@
         <div class="bg-gray-50 rounded-lg p-8 mt-8">
             <h2 class="text-xl font-bold text-gray-900 mb-4">Voor makelaars en professionals</h2>
             <p class="text-gray-600 mb-4">
-                Bent u makelaar of projectontwikkelaar en wilt u uw woningen op Wooon.nl plaatsen? Neem contact met ons op voor meer informatie over onze partnermogelijkheden.
+                Bent u makelaar of projectontwikkelaar en wilt u uw woningen op Oxxen.nl plaatsen? Neem contact met ons op voor meer informatie over onze partnermogelijkheden.
             </p>
-            <a href="mailto:partners@wooon.nl" class="inline-flex items-center text-orange-500 hover:text-orange-600 font-medium">
-                partners@wooon.nl
+            <a href="mailto:partners@oxxen.nl" class="inline-flex items-center text-orange-500 hover:text-orange-600 font-medium">
+                partners@oxxen.nl
                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                 </svg>

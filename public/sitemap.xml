@@ -16,7 +16,7 @@
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://localhost/over-wooon</loc>
+    <loc>http://localhost/over-oxxen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
             </url>
@@ -37,109 +37,109 @@
             </url>
     <url>
     <loc>http://localhost/woningen/amsterdam-1083AV-van-boshuizenstraat</loc>
-    <lastmod>2025-12-04T14:21:59+00:00</lastmod>
+    <lastmod>2025-12-04T14:33:41+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/drunen-5151CG-abraham-kuyperhof</loc>
-    <lastmod>2025-12-04T14:24:36+00:00</lastmod>
+    <lastmod>2025-12-04T14:33:50+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/putten-3882AN-mennestraat</loc>
-    <lastmod>2025-12-04T14:24:46+00:00</lastmod>
+    <lastmod>2025-12-04T14:33:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/barendrecht-2992ED-brahmsstraat</loc>
-    <lastmod>2025-12-04T14:24:56+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:04+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/hoogeveen-7908XL-eikepage</loc>
-    <lastmod>2025-12-04T14:25:02+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/berlicum-5258JJ-helster</loc>
-    <lastmod>2025-12-04T14:25:10+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:18+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/helmond-5702XJ-pieter-brueghelstraat</loc>
-    <lastmod>2025-12-04T14:25:18+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:23+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/veghel-5467DL-fazantendonk</loc>
-    <lastmod>2025-12-04T14:25:27+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:33+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/oss-5341CE-hooghuisstraat</loc>
-    <lastmod>2025-12-04T14:04:20+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:41+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/deventer-7412AA-zwolseweg</loc>
-    <lastmod>2025-12-04T14:04:24+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:47+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/schoonhoven-2871SH-oude-singel</loc>
-    <lastmod>2025-12-04T14:04:30+00:00</lastmod>
+    <lastmod>2025-12-04T14:34:52+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/oss-5344SP-thorbeckestraat</loc>
-    <lastmod>2025-12-04T14:04:35+00:00</lastmod>
+    <lastmod>2025-12-04T14:35:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/amsterdam-1023XR-medemblikstraat</loc>
-    <lastmod>2025-12-04T14:04:43+00:00</lastmod>
+    <lastmod>2025-12-04T14:35:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/almere-1363KK-francisco-pizarrostraat</loc>
-    <lastmod>2025-12-04T14:04:49+00:00</lastmod>
+    <lastmod>2025-12-04T14:35:10+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/wemeldinge-4424BC-wilhelminastraat</loc>
-    <lastmod>2025-12-04T14:04:58+00:00</lastmod>
+    <lastmod>2025-12-04T14:35:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/den-haag-2564EV-amandelstraat</loc>
-    <lastmod>2025-12-04T14:05:12+00:00</lastmod>
+    <lastmod>2025-12-04T14:35:22+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/katwijk-zh-2221HK-salomon-huygenslaan</loc>
-    <lastmod>2025-12-04T14:05:19+00:00</lastmod>
+    <lastmod>2025-12-04T14:35:29+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/woningen/scherpenzeel-ge-3925BM-prinsenlaan</loc>
-    <lastmod>2025-12-04T14:05:26+00:00</lastmod>
+    <lastmod>2025-12-04T14:35:33+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>

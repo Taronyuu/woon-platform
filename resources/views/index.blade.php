@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Wooon.nl - Vind je ideale woning in Nederland')
-@section('meta_description', 'Wooon.nl is het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek. Gratis zoekprofielen en meldingen.')
+@section('title', 'Oxxen.nl - Vind je ideale woning in Nederland')
+@section('meta_description', 'Oxxen.nl is het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek. Gratis zoekprofielen en meldingen.')
 
 @section('meta')
 <meta property="og:type" content="website">
-<meta property="og:title" content="Wooon.nl - Vind je ideale woning in Nederland">
+<meta property="og:title" content="Oxxen.nl - Vind je ideale woning in Nederland">
 <meta property="og:description" content="Het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek.">
 <meta property="og:url" content="{{ url('/') }}">
 @endsection

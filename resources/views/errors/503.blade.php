@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Even geduld - Wooon.nl</title>
+    <title>Even geduld - Oxxen.nl</title>
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center">
@@ -25,7 +25,7 @@
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <p class="text-sm text-gray-500">
                     Heb je een dringende vraag? Stuur een e-mail naar<br>
-                    <a href="mailto:info@wooon.nl" class="text-orange-500 hover:text-orange-600 font-medium">info@wooon.nl</a>
+                    <a href="mailto:info@oxxen.nl" class="text-orange-500 hover:text-orange-600 font-medium">info@oxxen.nl</a>
                 </p>
             </div>
         </div>

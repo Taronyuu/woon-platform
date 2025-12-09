@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Registreren - Wooon.nl')
+@section('title', 'Registreren - Oxxen.nl')
 
 @section('content')
 

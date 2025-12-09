@@ -1,8 +1,8 @@
-# Wooon.nl MVP Test Plan
+# Oxxen.nl MVP Test Plan
 
 ## Overview
 
-This document outlines the comprehensive test plan for the Wooon.nl MVP (Frontend + Consumer Accounts only).
+This document outlines the comprehensive test plan for the Oxxen.nl MVP (Frontend + Consumer Accounts only).
 
 **Scope:** Frontend functionality, consumer authentication, account management, property browsing
 **Out of Scope:** Admin panel, realtor features, API integrations, scraping functionality
@@ -213,11 +213,11 @@ This document outlines the comprehensive test plan for the Wooon.nl MVP (Fronten
 | Content present | View page | Dutch terms text |
 | Privacy link | Click privacy link in content | Navigates to privacy page |
 
-### 4.3 About Page (/over-wooon)
+### 4.3 About Page (/over-oxxen)
 
 | Test Case | Steps | Expected Result |
 |-----------|-------|-----------------|
-| Page loads | Navigate to /over-wooon | About page displayed |
+| Page loads | Navigate to /over-oxxen | About page displayed |
 | Content sections | View page | Mission, features, CTA shown |
 | Register CTA | Click register button | Navigates to registration |
 
@@ -239,7 +239,7 @@ This document outlines the comprehensive test plan for the Wooon.nl MVP (Fronten
 
 | Test Case | Steps | Expected Result |
 |-----------|-------|-----------------|
-| Logo link | Click Wooon.nl logo | Navigate to homepage |
+| Logo link | Click Oxxen.nl logo | Navigate to homepage |
 | Koop link | Click "Koop" | Navigate to /zoeken?type=sale |
 | Huur link | Click "Huur" | Navigate to /zoeken?type=rent |
 | Nieuwbouw link | Click "Nieuwbouw" | Navigate appropriately |
@@ -266,7 +266,7 @@ This document outlines the comprehensive test plan for the Wooon.nl MVP (Fronten
 | Test Case | Steps | Expected Result |
 |-----------|-------|-----------------|
 | Footer visible | Scroll to bottom | Footer displayed |
-| Over Wooon link | Click link | Navigate to /over-wooon |
+| Over Oxxen link | Click link | Navigate to /over-oxxen |
 | Contact link | Click link | Navigate to /contact |
 | Privacy link | Click link | Navigate to /privacy |
 | Voorwaarden link | Click link | Navigate to /voorwaarden |
@@ -359,9 +359,9 @@ This document outlines the comprehensive test plan for the Wooon.nl MVP (Fronten
 
 | Test Case | Steps | Expected Result |
 |-----------|-------|-----------------|
-| Homepage title | View page source | "Wooon.nl - Vind je ideale woning" |
+| Homepage title | View page source | "Oxxen.nl - Vind je ideale woning" |
 | Homepage description | View meta description | Appropriate description |
-| Search page title | View /zoeken source | "Woningen zoeken - Wooon.nl" |
+| Search page title | View /zoeken source | "Woningen zoeken - Oxxen.nl" |
 | Property detail title | View property page | Property address in title |
 | OG tags present | View page source | og:title, og:description, og:image |
 | Property OG image | Share property link | Property image shown in preview |

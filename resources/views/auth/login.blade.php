@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Inloggen - Wooon.nl')
+@section('title', 'Inloggen - Oxxen.nl')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <div class="max-w-md mx-auto">
             <div class="mb-8 text-center">
                 <h1 class="text-3xl font-bold mb-2">Inloggen</h1>
-                <p class="text-gray-600">Log in op je Wooon.nl account</p>
+                <p class="text-gray-600">Log in op je Oxxen.nl account</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-8">

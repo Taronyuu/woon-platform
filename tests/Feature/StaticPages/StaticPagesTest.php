@@ -41,17 +41,17 @@ class StaticPagesTest extends TestCase
 
     public function test_about_page_loads_successfully(): void
     {
-        $response = $this->get('/over-wooon');
+        $response = $this->get('/over-oxxen');
 
         $response->assertStatus(200);
     }
 
     public function test_about_page_contains_mission_content(): void
     {
-        $response = $this->get('/over-wooon');
+        $response = $this->get('/over-oxxen');
 
         $response->assertStatus(200);
-        $response->assertSee('Wooon');
+        $response->assertSee('Oxxen');
     }
 
     public function test_contact_page_loads_successfully(): void
@@ -78,18 +78,18 @@ class StaticPagesTest extends TestCase
 
     public function test_all_static_pages_have_header(): void
     {
-        $pages = ['/privacy', '/voorwaarden', '/over-wooon', '/contact'];
+        $pages = ['/privacy', '/voorwaarden', '/over-oxxen', '/contact'];
 
         foreach ($pages as $page) {
             $response = $this->get($page);
             $response->assertStatus(200);
-            $response->assertSee('Wooon');
+            $response->assertSee('Oxxen');
         }
     }
 
     public function test_all_static_pages_have_footer(): void
     {
-        $pages = ['/privacy', '/voorwaarden', '/over-wooon', '/contact'];
+        $pages = ['/privacy', '/voorwaarden', '/over-oxxen', '/contact'];
 
         foreach ($pages as $page) {
             $response = $this->get($page);
@@ -112,7 +112,7 @@ class StaticPagesTest extends TestCase
 
     public function test_about_page_accessible_from_anywhere(): void
     {
-        $response = $this->get('/over-wooon');
+        $response = $this->get('/over-oxxen');
         $response->assertStatus(200);
     }
 }

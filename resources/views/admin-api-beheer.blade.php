@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Connecties Beheer - Wooon.nl Admin</title>
+    <title>API Connecties Beheer - Oxxen.nl Admin</title>
     @vite(["resources/css/app.css", "resources/js/app.js"])
 </head>
 <body class="bg-gray-50">
@@ -505,7 +505,7 @@
     <footer class="bg-gray-900 text-white mt-12">
         <div class="container mx-auto px-4 py-8">
             <div class="text-center text-gray-400">
-                <p>&copy; 2025 Wooon.nl - Alle rechten voorbehouden</p>
+                <p>&copy; 2025 Oxxen.nl - Alle rechten voorbehouden</p>
             </div>
         </div>
     </footer>

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', ($property->title ?? $property->full_address) . ' - Wooon.nl')
+@section('title', ($property->title ?? $property->full_address) . ' - Oxxen.nl')
 @section('meta_description', Str::limit($property->description ?? 'Bekijk deze woning: ' . $property->full_address . ' - ' . $property->formatted_price, 160))
 
 @section('meta')
 <meta property="og:type" content="website">
-<meta property="og:title" content="{{ $property->title ?? $property->full_address }} - Wooon.nl">
+<meta property="og:title" content="{{ $property->title ?? $property->full_address }} - Oxxen.nl">
 <meta property="og:description" content="{{ Str::limit($property->description ?? 'Bekijk deze woning: ' . $property->full_address . ' - ' . $property->formatted_price, 200) }}">
 <meta property="og:url" content="{{ url()->current() }}">
 @if($property->proxied_main_image)
@@ -522,7 +522,7 @@
                     @endif
                     <script>
                         const shareUrl = window.location.href;
-                        const shareTitle = '{{ addslashes($property->address_street) }} {{ $property->address_number }}{{ $property->address_addition }} - Wooon.nl';
+                        const shareTitle = '{{ addslashes($property->address_street) }} {{ $property->address_number }}{{ $property->address_addition }} - Oxxen.nl';
                         const shareText = 'Bekijk deze woning: {{ addslashes($property->address_street) }} {{ $property->address_number }}{{ $property->address_addition }} in {{ addslashes($property->address_city) }} voor {{ $property->formatted_price }}';
 
                         function shareOnFacebook() {

@@ -21,7 +21,7 @@ class ResetPasswordMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Wachtwoord herstellen - Wooon.nl',
+            subject: 'Wachtwoord herstellen - Oxxen.nl',
         );
     }
 

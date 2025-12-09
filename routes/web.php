@@ -46,7 +46,7 @@ Route::get('/zoeken', [PropertyController::class, 'index'])->name('search');
 
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/voorwaarden', [PageController::class, 'terms'])->name('terms');
-Route::get('/over-wooon', [PageController::class, 'about'])->name('about');
+Route::get('/over-oxxen', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 Route::get('/woningen/{property:slug}', [PropertyController::class, 'show'])->name('property.show');

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mijn Account - Wooon.nl')
+@section('title', 'Mijn Account - Oxxen.nl')
 
 @section('content')
 <div x-data="searchProfileManager()" class="container mx-auto px-4 py-8">
@@ -322,7 +322,7 @@
                         <div class="flex items-start justify-between py-4 border-b border-gray-200">
                             <div class="flex-1">
                                 <h3 class="font-semibold mb-1">Marketing e-mails</h3>
-                                <p class="text-sm text-gray-600">Ontvang aanbiedingen en acties van Wooon.nl en partners</p>
+                                <p class="text-sm text-gray-600">Ontvang aanbiedingen en acties van Oxxen.nl en partners</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" name="notify_marketing" value="1" {{ auth()->user()->notify_marketing ? 'checked' : '' }} class="sr-only peer">

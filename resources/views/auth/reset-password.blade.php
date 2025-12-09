@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Nieuw wachtwoord instellen - Wooon.nl')
+@section('title', 'Nieuw wachtwoord instellen - Oxxen.nl')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
     <div class="max-w-md w-full">
         <div class="text-center mb-8">
             <a href="{{ route('home') }}" class="inline-block">
-                <span class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Wooon.nl</span>
+                <span class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Oxxen.nl</span>
             </a>
             <h2 class="mt-6 text-2xl font-bold text-gray-900">Nieuw wachtwoord instellen</h2>
             <p class="mt-2 text-gray-600">Kies een nieuw wachtwoord voor je account.</p>

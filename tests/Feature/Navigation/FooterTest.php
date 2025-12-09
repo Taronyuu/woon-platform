@@ -9,12 +9,12 @@ class FooterTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_footer_contains_over_wooon_link(): void
+    public function test_footer_contains_over_oxxen_link(): void
     {
         $response = $this->get('/home');
 
         $response->assertStatus(200);
-        $response->assertSee('Over Wooon');
+        $response->assertSee('Over Oxxen');
     }
 
     public function test_footer_contains_contact_link(): void
@@ -47,7 +47,7 @@ class FooterTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee(date('Y'));
-        $response->assertSee('Wooon');
+        $response->assertSee('Oxxen');
     }
 
     public function test_footer_is_present_on_all_pages(): void
@@ -62,7 +62,7 @@ class FooterTest extends TestCase
 
     public function test_footer_links_work(): void
     {
-        $response = $this->get('/over-wooon');
+        $response = $this->get('/over-oxxen');
         $response->assertStatus(200);
 
         $response = $this->get('/contact');

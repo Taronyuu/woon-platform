@@ -143,7 +143,7 @@ Examples:
 
 All updates were committed to the SQLite database at:
 ```
-/Users/zander/Documents/Workspace/wooon-nl/database/database.sqlite
+/Users/zander/Documents/Workspace/oxxen-nl/database/database.sqlite
 ```
 
 ### Updated Tables

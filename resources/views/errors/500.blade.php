@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Er ging iets mis - Wooon.nl</title>
+    <title>Er ging iets mis - Oxxen.nl</title>
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
@@ -30,7 +30,7 @@
                 </div>
 
                 <p class="text-sm text-gray-500 mt-8">
-                    Als dit probleem aanhoudt, neem dan contact met ons op via <a href="mailto:info@wooon.nl" class="text-orange-500 hover:text-orange-600">info@wooon.nl</a>
+                    Als dit probleem aanhoudt, neem dan contact met ons op via <a href="mailto:info@oxxen.nl" class="text-orange-500 hover:text-orange-600">info@oxxen.nl</a>
                 </p>
             </div>
         </div>

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Over Wooon.nl')
+@section('title', 'Over Oxxen.nl')
 
 @section('content')
 <div class="bg-gradient-to-r from-orange-500 to-red-500 py-12">
     <div class="container mx-auto px-4">
-        <h1 class="text-3xl md:text-4xl font-bold text-white">Over Wooon.nl</h1>
+        <h1 class="text-3xl md:text-4xl font-bold text-white">Over Oxxen.nl</h1>
         <p class="text-white/80 mt-2">Het complete onafhankelijke woonplatform voor Nederland</p>
     </div>
 </div>
@@ -15,7 +15,7 @@
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-4">Onze missie</h2>
             <p class="text-gray-600 text-lg leading-relaxed">
-                Wooon.nl maakt het zoeken naar een nieuwe woning eenvoudig en overzichtelijk. Als onafhankelijk platform verzamelen wij woningen van alle bronnen op één plek: nieuwbouwprojecten, huurwoningen en bestaande koopwoningen. Zo heeft u altijd het complete overzicht en hoeft u niet meer meerdere websites te bezoeken.
+                Oxxen.nl maakt het zoeken naar een nieuwe woning eenvoudig en overzichtelijk. Als onafhankelijk platform verzamelen wij woningen van alle bronnen op één plek: nieuwbouwprojecten, huurwoningen en bestaande koopwoningen. Zo heeft u altijd het complete overzicht en hoeft u niet meer meerdere websites te bezoeken.
             </p>
         </div>
 
@@ -52,13 +52,13 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Waarom Wooon.nl?</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Waarom Oxxen.nl?</h2>
             <div class="space-y-4 text-gray-600">
                 <p>
-                    De Nederlandse woningmarkt is complex en versnipperd. Woningen staan verspreid over tientallen websites van makelaars, projectontwikkelaars en verhuurders. Wooon.nl brengt al deze woningen samen op één overzichtelijk platform.
+                    De Nederlandse woningmarkt is complex en versnipperd. Woningen staan verspreid over tientallen websites van makelaars, projectontwikkelaars en verhuurders. Oxxen.nl brengt al deze woningen samen op één overzichtelijk platform.
                 </p>
                 <p>
-                    Of u nu een starter bent die zijn eerste huurwoning zoekt, een gezin dat een ruimer koophuis wil, of iemand die geïnteresseerd is in een nieuwbouwproject - bij Wooon.nl vindt u het allemaal.
+                    Of u nu een starter bent die zijn eerste huurwoning zoekt, een gezin dat een ruimer koophuis wil, of iemand die geïnteresseerd is in een nieuwbouwproject - bij Oxxen.nl vindt u het allemaal.
                 </p>
                 <p>
                     Met handige functies zoals zoekprofielen en meldingen mist u nooit meer uw droomwoning. Sla uw favoriete woningen op, vergelijk ze met elkaar en neem direct contact op met de verkopende partij.

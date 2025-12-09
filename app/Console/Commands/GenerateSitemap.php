@@ -38,7 +38,7 @@ class GenerateSitemap extends Command
         );
 
         $sitemap->add(
-            Url::create('/over-wooon')
+            Url::create('/over-oxxen')
                 ->setPriority(0.5)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
         );

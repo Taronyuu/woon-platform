@@ -127,7 +127,7 @@ The script (`fill_property_metadata.php`) extracted data from crawled pages usin
 ## Script Location
 
 The extraction script is located at:
-`/Users/zander/Documents/Workspace/wooon-nl/fill_property_metadata.php`
+`/Users/zander/Documents/Workspace/oxxen-nl/fill_property_metadata.php`
 
 To re-run the script:
 ```bash

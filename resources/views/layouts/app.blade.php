@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Wooon.nl - Vind je ideale woning')</title>
-    <meta name="description" content="@yield('meta_description', 'Wooon.nl - Het complete onafhankelijke woonplatform voor Nederland. Vind je ideale koop- of huurwoning.')">
+    <title>@yield('title', 'Oxxen.nl - Vind je ideale woning')</title>
+    <meta name="description" content="@yield('meta_description', 'Oxxen.nl - Het complete onafhankelijke woonplatform voor Nederland. Vind je ideale koop- of huurwoning.')">
     @yield('meta')
-    <meta property="og:site_name" content="Wooon.nl">
+    <meta property="og:site_name" content="Oxxen.nl">
     <meta property="og:locale" content="nl_NL">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')

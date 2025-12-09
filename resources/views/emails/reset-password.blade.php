@@ -12,7 +12,7 @@
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                     <tr>
                         <td style="background: linear-gradient(to right, #2563eb, #9333ea); padding: 32px; text-align: center;">
-                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">Wooon.nl</h1>
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">Oxxen.nl</h1>
                         </td>
                     </tr>
                     <tr>
@@ -45,7 +45,7 @@
                     <tr>
                         <td style="background-color: #f9fafb; padding: 24px 32px; text-align: center;">
                             <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                                &copy; {{ date('Y') }} Wooon.nl - Alle rechten voorbehouden
+                                &copy; {{ date('Y') }} Oxxen.nl - Alle rechten voorbehouden
                             </p>
                         </td>
                     </tr>

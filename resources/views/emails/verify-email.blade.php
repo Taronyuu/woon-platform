@@ -12,15 +12,15 @@
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                     <tr>
                         <td style="background: linear-gradient(to right, #2563eb, #9333ea); padding: 32px; text-align: center;">
-                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">Wooon.nl</h1>
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">Oxxen.nl</h1>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding: 40px 32px;">
-                            <h2 style="margin: 0 0 16px 0; color: #111827; font-size: 24px;">Welkom bij Wooon.nl!</h2>
+                            <h2 style="margin: 0 0 16px 0; color: #111827; font-size: 24px;">Welkom bij Oxxen.nl!</h2>
                             <p style="margin: 0 0 24px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
                                 Hallo{{ $user->first_name ? ' ' . $user->first_name : '' }},<br><br>
-                                Bedankt voor je registratie bij Wooon.nl. Klik op de onderstaande knop om je e-mailadres te bevestigen en je account te activeren.
+                                Bedankt voor je registratie bij Oxxen.nl. Klik op de onderstaande knop om je e-mailadres te bevestigen en je account te activeren.
                             </p>
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                                 <tr>
@@ -32,7 +32,7 @@
                                 </tr>
                             </table>
                             <p style="margin: 24px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
-                                Deze link is 60 minuten geldig. Als je geen account hebt aangemaakt bij Wooon.nl, kun je deze e-mail negeren.
+                                Deze link is 60 minuten geldig. Als je geen account hebt aangemaakt bij Oxxen.nl, kun je deze e-mail negeren.
                             </p>
                             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
                             <p style="margin: 0; color: #9ca3af; font-size: 12px;">
@@ -46,7 +46,7 @@
                     <tr>
                         <td style="background-color: #f9fafb; padding: 24px 32px; text-align: center;">
                             <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                                &copy; {{ date('Y') }} Wooon.nl - Alle rechten voorbehouden
+                                &copy; {{ date('Y') }} Oxxen.nl - Alle rechten voorbehouden
                             </p>
                         </td>
                     </tr>
