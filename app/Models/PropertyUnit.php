@@ -393,8 +393,13 @@ class PropertyUnit extends Model
             return '€ ' . number_format($this->buyprice, 0, ',', '.');
         }
 
-        if ($this->transaction_type === 'rent' && $this->rentprice_month) {
-            return '€ ' . number_format($this->rentprice_month, 0, ',', '.') . ' p/m';
+        if ($this->transaction_type === 'rent') {
+            if ($this->rentprice_month) {
+                return '€ ' . number_format($this->rentprice_month, 0, ',', '.') . ' p/m';
+            }
+            if ($this->buyprice) {
+                return '€ ' . number_format($this->buyprice, 0, ',', '.') . ' p/m';
+            }
         }
 
         if ($this->buyprice_label) {

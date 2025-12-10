@@ -72,6 +72,9 @@ class FundaCrawler extends WebsiteCrawler
         $floor = $this->extractFloor($nuxtData);
         $renovationYear = $this->extractRenovationYear($nuxtData);
 
+        $isRental = Str::contains($url, '/huur/');
+        $price = $this->extractPrice($htmlContent);
+
         return [
             'source_url' => $canonicalUrl,
             'external_id' => $this->extractFundaId($canonicalUrl),
@@ -79,9 +82,10 @@ class FundaCrawler extends WebsiteCrawler
             'title' => $this->extractTitle($htmlContent),
             'original_description' => $this->extractDescription($htmlContent),
             'property_type' => $this->extractPropertyType($htmlContent),
-            'transaction_type' => Str::contains($url, '/koop/') ? 'sale' : 'rent',
+            'transaction_type' => $isRental ? 'rent' : 'sale',
             'living_type' => $this->extractLivingType($htmlContent),
-            'buyprice' => $this->extractPrice($htmlContent),
+            'buyprice' => $isRental ? null : $price,
+            'rentprice_month' => $isRental ? $price : null,
             'buyprice_label' => $this->extractPriceLabel($htmlContent),
             'ground_lease' => $this->extractGroundLease($htmlContent),
             'address_street' => $street,

@@ -71,14 +71,30 @@ class ParseDataJob implements ShouldQueue
             $data
         );
 
-        if (method_exists($propertyUnit, 'websites')) {
-            $propertyUnit->websites()->syncWithoutDetaching([
-                $crawlJob->website_id => [
+        $existingPivot = \DB::table('property_unit_website')
+            ->where('property_unit_id', $propertyUnit->id)
+            ->where('website_id', $crawlJob->website_id)
+            ->first();
+
+        if ($existingPivot) {
+            \DB::table('property_unit_website')
+                ->where('id', $existingPivot->id)
+                ->update([
                     'external_id' => $externalId,
                     'source_url' => $sourceUrl,
-                    'first_seen_at' => now(),
                     'last_seen_at' => now(),
-                ]
+                    'updated_at' => now(),
+                ]);
+        } else {
+            \DB::table('property_unit_website')->insert([
+                'property_unit_id' => $propertyUnit->id,
+                'website_id' => $crawlJob->website_id,
+                'external_id' => $externalId,
+                'source_url' => $sourceUrl,
+                'first_seen_at' => now(),
+                'last_seen_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
