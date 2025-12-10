@@ -11,6 +11,7 @@ use App\Http\Controllers\ImageProxyController;
 use App\Http\Controllers\MortgageCalculatorController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\RealtorAppointmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/img/{token}', [ImageProxyController::class, 'show'])
@@ -27,6 +28,10 @@ Route::post('/notify', function () {
     return back()->with('success', true);
 })->name('notify.store')->middleware('throttle:5,1');
 
+Route::post('/makelaar-afspraak', [RealtorAppointmentController::class, 'store'])
+    ->name('realtor.appointment.store')
+    ->middleware('throttle:5,1');
+
 Route::get('/home', function () {
     $featuredProperties = \App\Models\PropertyUnit::query()
         ->where('status', 'available')
@@ -34,7 +39,16 @@ Route::get('/home', function () {
         ->limit(6)
         ->get();
 
-    return view('index', ['featuredProperties' => $featuredProperties]);
+    $blogPosts = \App\Models\BlogPost::query()
+        ->published()
+        ->latest('published_at')
+        ->limit(3)
+        ->get();
+
+    return view('index', [
+        'featuredProperties' => $featuredProperties,
+        'blogPosts' => $blogPosts,
+    ]);
 })->name('home');
 
 Route::get('/maandlasten', [MortgageCalculatorController::class, 'index'])->name('mortgage.calculator');
@@ -43,6 +57,13 @@ Route::get('/api/interest-rate', [MortgageCalculatorController::class, 'getInter
 Route::get('/api/cities', [CityController::class, 'index']);
 
 Route::get('/zoeken', [PropertyController::class, 'index'])->name('search');
+
+Route::get('/blog/{blogPost:slug}', function (\App\Models\BlogPost $blogPost) {
+    if (!$blogPost->is_published) {
+        abort(404);
+    }
+    return view('blog.show', ['post' => $blogPost]);
+})->name('blog.show');
 
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/voorwaarden', [PageController::class, 'terms'])->name('terms');

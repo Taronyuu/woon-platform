@@ -11,20 +11,22 @@
 @endsection
 
 @section('content')
-    <main class="container mx-auto px-4 py-8">
-
-        <section class="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white rounded-3xl p-12 mb-12 overflow-hidden">
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
-            <div class="max-w-3xl mx-auto text-center relative z-10">
-                <div class="inline-block mb-4">
-                    <span class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold">🏡 Onafhankelijk & Compleet</span>
+    <section class="relative text-white py-20 md:py-28 overflow-hidden -mt-8">
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/hero-bg.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-purple-900/70 to-blue-900/80"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="inline-block mb-6">
+                    <span class="bg-white/20 backdrop-blur-sm text-white px-5 py-2.5 rounded-full text-sm font-semibold border border-white/20">🏡 Onafhankelijk & Compleet</span>
                 </div>
-                <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">Vind je ideale woning</h1>
-                <p class="text-xl mb-10 text-blue-100">Het complete onafhankelijke platform voor koop, huur en nieuwbouw</p>
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
+                    Vind je <span class="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">ideale</span> woning
+                </h1>
+                <p class="text-xl md:text-2xl mb-12 text-blue-100 max-w-2xl mx-auto">Het complete onafhankelijke platform voor koop, huur en nieuwbouw in heel Nederland</p>
 
-                <form action="{{ route('search') }}" method="GET" class="bg-white/95 backdrop-blur-lg rounded-2xl p-6 shadow-2xl">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="relative" x-data="cityAutocomplete">
+                <form action="{{ route('search') }}" method="GET" class="bg-white/95 backdrop-blur-lg rounded-2xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="relative md:col-span-2" x-data="cityAutocomplete">
                             <input
                                 type="text"
                                 name="search"
@@ -67,11 +69,29 @@
                         <input type="text" name="max_price" placeholder="Max prijs" class="px-5 py-4 border-2 border-gray-200 rounded-xl text-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all">
                     </div>
                     <button type="submit" class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-200">
-                        🔍 Zoeken
+                        Zoeken
                     </button>
                 </form>
+
+                <div class="mt-10 flex flex-wrap justify-center gap-6 text-sm text-blue-100">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <span>10.000+ woningen</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>100% onafhankelijk</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <span>Gratis zoekmeldingen</span>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-12">
 
         <section class="mb-12">
             <div class="flex items-center justify-between mb-8">
@@ -177,7 +197,7 @@
             </a>
         </section>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <a href="{{ route('mortgage.calculator') }}" class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
                 <div class="bg-gradient-to-br from-green-500 to-emerald-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -187,27 +207,13 @@
                 <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-green-600 transition-colors">Bereken je maandlasten</h3>
                 <p class="text-gray-600 mb-6">Bereken eenvoudig je hypotheeklasten per maand met actuele rentetarieven</p>
                 <span class="inline-flex items-center text-green-600 hover:text-green-700 font-semibold group">
-                    Start calculator
+                    Start berekening
                     <svg class="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </span>
             </a>
-            <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-                <div class="bg-gradient-to-br from-orange-500 to-red-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-3 text-gray-900">Bereken je woningwaarde</h3>
-                <p class="text-gray-600 mb-6">Krijg direct inzicht in de waarde van je woning met onze waardecheck</p>
-                <input type="text" placeholder="Postcode" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all">
-                <input type="text" placeholder="Huisnummer" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all">
-                <button class="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
-                    Waarde berekenen
-                </button>
-            </div>
-            <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+            <div id="makelaar-afspraak" class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
                 <div class="bg-gradient-to-br from-purple-500 to-pink-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -215,61 +221,62 @@
                 </div>
                 <h3 class="text-xl font-bold mb-3 text-gray-900">Plan afspraak met makelaar</h3>
                 <p class="text-gray-600 mb-6">Laat je begeleiden door een erkende makelaar uit ons netwerk</p>
-                <input type="text" placeholder="Naam" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all">
-                <input type="email" placeholder="E-mailadres" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-4 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all">
-                <button class="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
-                    Afspraak maken
-                </button>
+                @if(session('appointment_success'))
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+                        <svg class="w-12 h-12 text-green-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-green-800 font-semibold mb-1">Bedankt voor je aanvraag!</p>
+                        <p class="text-green-700 text-sm">We nemen zo snel mogelijk contact met je op.</p>
+                    </div>
+                @else
+                    <form action="{{ route('realtor.appointment.store') }}" method="POST">
+                        @csrf
+                        <input type="text" name="name" placeholder="Naam" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all @error('name') border-red-500 @enderror" value="{{ old('name') }}">
+                        @error('name')
+                            <p class="text-red-500 text-sm mb-3 -mt-2">{{ $message }}</p>
+                        @enderror
+                        <input type="email" name="email" placeholder="E-mailadres" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl mb-4 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all @error('email') border-red-500 @enderror" value="{{ old('email') }}">
+                        @error('email')
+                            <p class="text-red-500 text-sm mb-4 -mt-3">{{ $message }}</p>
+                        @enderror
+                        <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200">
+                            Afspraak maken
+                        </button>
+                    </form>
+                @endif
             </div>
         </section>
 
+        @if($blogPosts->count() > 0)
         <section class="mb-12">
             <h2 class="text-2xl font-bold mb-6">Informatie & inspiratie</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group">
+                @foreach($blogPosts as $post)
+                <a href="{{ route('blog.show', $post) }}" class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop" alt="Nieuwbouw tips" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        @if($post->featured_image)
+                            <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        @else
+                            <div class="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                                <svg class="w-16 h-16 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                            </div>
+                        @endif
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     </div>
                     <div class="p-6">
-                        <h3 class="font-bold text-lg mb-2 text-gray-900">Tips voor het kopen van een nieuwbouwwoning</h3>
-                        <p class="text-gray-600 text-sm mb-4">Ontdek waar je op moet letten bij de aankoop van een nieuwbouwwoning</p>
-                        <a href="#" class="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center">
+                        <h3 class="font-bold text-lg mb-2 text-gray-900">{{ $post->title }}</h3>
+                        <p class="text-gray-600 text-sm mb-4">{{ $post->excerpt ?? Str::limit(strip_tags($post->content), 100) }}</p>
+                        <span class="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center">
                             Lees meer
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                        </a>
+                        </span>
                     </div>
-                </div>
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop" alt="Energielabel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg mb-2 text-gray-900">Duurzaam wonen: energielabels uitgelegd</h3>
-                        <p class="text-gray-600 text-sm mb-4">Alles wat je moet weten over energielabels en duurzaamheid</p>
-                        <a href="#" class="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center">
-                            Lees meer
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?w=600&h=400&fit=crop" alt="Woningmarkt 2025" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg mb-2 text-gray-900">De woningmarkt in 2025</h3>
-                        <p class="text-gray-600 text-sm mb-4">Trends en ontwikkelingen op de Nederlandse woningmarkt</p>
-                        <a href="#" class="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center">
-                            Lees meer
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                        </a>
-                    </div>
-                </div>
+                </a>
+                @endforeach
             </div>
         </section>
+        @endif
 
     </main>
 @endsection

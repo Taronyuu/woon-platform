@@ -2,6 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\CrawlerHealthWidget;
+use App\Filament\Widgets\InquiryWidget;
+use App\Filament\Widgets\PropertyStatsWidget;
+use App\Filament\Widgets\UserStatsWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -38,6 +42,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
+                PropertyStatsWidget::class,
+                CrawlerHealthWidget::class,
+                InquiryWidget::class,
+                UserStatsWidget::class,
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
 /**
  * @property int $id
@@ -50,7 +52,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, FilamentUser
 {
     use HasFactory, Notifiable;
 
@@ -69,6 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'postal_code',
         'city',
         'type',
+        'is_admin',
         'notify_new_properties',
         'notify_price_changes',
         'notify_newsletter',
@@ -95,11 +98,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
             'notify_new_properties' => 'boolean',
             'notify_price_changes' => 'boolean',
             'notify_newsletter' => 'boolean',
             'notify_marketing' => 'boolean',
         ];
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_admin;
     }
 
     public function favoriteProperties(): BelongsToMany
@@ -116,6 +125,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function searchProfiles(): HasMany
     {
         return $this->hasMany(SearchProfile::class);
+    }
+
+    public function getNameAttribute(): string
+    {
+        return trim(($this->first_name ?? '') . ' ' . ($this->last_name ?? '')) ?: $this->email;
     }
 
     public function sendEmailVerificationNotification(): void

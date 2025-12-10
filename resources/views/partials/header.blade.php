@@ -5,7 +5,7 @@
             <nav class="hidden md:flex space-x-6">
                 <a href="{{ route('search', ['type' => 'sale']) }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Koop</a>
                 <a href="{{ route('search', ['type' => 'rent']) }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Huur</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Nieuwbouw</a>
+                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center gap-1.5">Nieuwbouw <span class="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-px rounded font-normal">soon</span></a>
                 <a href="{{ route('mortgage.calculator') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Maandlasten</a>
             </nav>
             <div class="hidden md:flex items-center space-x-4">
@@ -43,7 +43,7 @@
         <nav class="container mx-auto px-4 py-4 space-y-2">
             <a href="{{ route('search', ['type' => 'sale']) }}" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Koop</a>
             <a href="{{ route('search', ['type' => 'rent']) }}" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Huur</a>
-            <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Nieuwbouw</a>
+            <a href="#" class="flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Nieuwbouw <span class="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-px rounded font-normal">soon</span></a>
             <a href="{{ route('mortgage.calculator') }}" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-lg font-medium transition-colors">Maandlasten</a>
             <div class="border-t border-gray-200 pt-4 mt-4 space-y-2">
                 @auth

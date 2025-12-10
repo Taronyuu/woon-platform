@@ -17,84 +17,84 @@ class PropertyUnitsTable
         return $table
             ->columns([
                 ImageColumn::make('main_image')
-                    ->label('Foto')
+                    ->label('Photo')
                     ->circular()
                     ->defaultImageUrl('/images/no-property.png'),
                 TextColumn::make('title')
-                    ->label('Titel')
+                    ->label('Title')
                     ->searchable()
                     ->sortable()
                     ->limit(40),
                 TextColumn::make('full_address')
-                    ->label('Adres')
+                    ->label('Address')
                     ->searchable(['address_street', 'address_city', 'address_postal_code'])
                     ->limit(30),
                 TextColumn::make('formatted_price')
-                    ->label('Prijs')
+                    ->label('Price')
                     ->sortable(['buyprice', 'rentprice_month']),
                 TextColumn::make('property_type_label')
                     ->label('Type')
                     ->badge(),
                 TextColumn::make('transaction_type_label')
-                    ->label('Transactie')
+                    ->label('Transaction')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Te koop' => 'success',
-                        'Te huur' => 'info',
-                        'Veiling' => 'warning',
+                        'For Sale' => 'success',
+                        'For Rent' => 'info',
+                        'Auction' => 'warning',
                         default => 'gray',
                     }),
                 TextColumn::make('status_label')
                     ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Beschikbaar' => 'success',
-                        'Verkocht' => 'danger',
-                        'Verhuurd' => 'warning',
-                        'In optie' => 'info',
+                        'Available' => 'success',
+                        'Sold' => 'danger',
+                        'Rented' => 'warning',
+                        'Pending' => 'info',
                         default => 'gray',
                     }),
                 TextColumn::make('surface')
-                    ->label('Oppervlakte')
+                    ->label('Surface')
                     ->suffix(' m²')
                     ->sortable(),
                 TextColumn::make('bedrooms')
-                    ->label('Kamers')
+                    ->label('Rooms')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Aangemaakt')
+                    ->label('Created')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('transaction_type')
-                    ->label('Transactietype')
+                    ->label('Transaction Type')
                     ->options([
-                        'sale' => 'Koop',
-                        'rent' => 'Huur',
-                        'auction' => 'Veiling',
+                        'sale' => 'Sale',
+                        'rent' => 'Rent',
+                        'auction' => 'Auction',
                     ]),
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
-                        'available' => 'Beschikbaar',
-                        'sold' => 'Verkocht',
-                        'rented' => 'Verhuurd',
-                        'pending' => 'In optie',
-                        'withdrawn' => 'Uit de handel',
+                        'available' => 'Available',
+                        'sold' => 'Sold',
+                        'rented' => 'Rented',
+                        'pending' => 'Pending',
+                        'withdrawn' => 'Withdrawn',
                     ]),
                 SelectFilter::make('property_type')
-                    ->label('Type woning')
+                    ->label('Property Type')
                     ->options([
-                        'house' => 'Woonhuis',
-                        'apartment' => 'Appartement',
+                        'house' => 'House',
+                        'apartment' => 'Apartment',
                         'villa' => 'Villa',
-                        'townhouse' => 'Herenhuis',
-                        'farm' => 'Boerderij',
-                        'commercial' => 'Bedrijfspand',
-                        'land' => 'Bouwgrond',
-                        'parking' => 'Parkeerplaats',
+                        'townhouse' => 'Townhouse',
+                        'farm' => 'Farm',
+                        'commercial' => 'Commercial',
+                        'land' => 'Land',
+                        'parking' => 'Parking',
                     ]),
             ])
             ->defaultSort('created_at', 'desc')

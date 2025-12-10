@@ -178,6 +178,49 @@ class PropertyUnit extends Model
 {
     use HasFactory;
 
+    protected function decodeHtmlEntities(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+        return html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    }
+
+    public function getAddressStreetAttribute(?string $value): ?string
+    {
+        return $this->decodeHtmlEntities($value);
+    }
+
+    public function getTitleAttribute(?string $value): ?string
+    {
+        return $this->decodeHtmlEntities($value);
+    }
+
+    public function getNameAttribute(?string $value): ?string
+    {
+        return $this->decodeHtmlEntities($value);
+    }
+
+    public function getNeighborhoodAttribute(?string $value): ?string
+    {
+        return $this->decodeHtmlEntities($value);
+    }
+
+    public function getAgentNameAttribute(?string $value): ?string
+    {
+        return $this->decodeHtmlEntities($value);
+    }
+
+    public function getAgentCompanyAttribute(?string $value): ?string
+    {
+        return $this->decodeHtmlEntities($value);
+    }
+
+    public function getAddressCityAttribute(?string $value): ?string
+    {
+        return $this->decodeHtmlEntities($value);
+    }
+
     protected $fillable = [
         'slug',
         'name',

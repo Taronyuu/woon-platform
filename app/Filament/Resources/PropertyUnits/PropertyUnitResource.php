@@ -20,6 +20,12 @@ class PropertyUnitResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Properties';
+
+    protected static ?string $modelLabel = 'Property';
+
+    protected static ?string $pluralModelLabel = 'Properties';
+
     public static function form(Schema $schema): Schema
     {
         return PropertyUnitForm::configure($schema);
@@ -33,7 +39,6 @@ class PropertyUnitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 
