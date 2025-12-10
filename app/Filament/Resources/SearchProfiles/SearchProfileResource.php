@@ -19,11 +19,11 @@ class SearchProfileResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMagnifyingGlass;
 
-    protected static ?string $navigationLabel = 'Zoekprofielen';
+    protected static ?string $navigationLabel = 'Search Profiles';
 
-    protected static ?string $modelLabel = 'Zoekprofiel';
+    protected static ?string $modelLabel = 'Search Profile';
 
-    protected static ?string $pluralModelLabel = 'Zoekprofielen';
+    protected static ?string $pluralModelLabel = 'Search Profiles';
 
     public static function form(Schema $schema): Schema
     {

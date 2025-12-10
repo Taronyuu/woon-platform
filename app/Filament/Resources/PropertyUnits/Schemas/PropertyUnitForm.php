@@ -19,16 +19,16 @@ class PropertyUnitForm
     {
         return $schema
             ->components([
-                Tabs::make('Woning')
+                Tabs::make('Property')
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Algemeen')
+                        Tab::make('General')
                             ->schema([
-                                Section::make('Basis informatie')
+                                Section::make('Basic Information')
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('title')
-                                            ->label('Titel')
+                                            ->label('Title')
                                             ->required()
                                             ->maxLength(255)
                                             ->live(onBlur: true)
@@ -41,82 +41,82 @@ class PropertyUnitForm
                                             ->maxLength(255)
                                             ->unique(ignoreRecord: true),
                                         Select::make('property_type')
-                                            ->label('Woningtype')
+                                            ->label('Property Type')
                                             ->options([
-                                                'house' => 'Woonhuis',
-                                                'apartment' => 'Appartement',
+                                                'house' => 'House',
+                                                'apartment' => 'Apartment',
                                                 'villa' => 'Villa',
-                                                'townhouse' => 'Herenhuis',
-                                                'farm' => 'Boerderij',
-                                                'commercial' => 'Bedrijfspand',
-                                                'land' => 'Bouwgrond',
-                                                'parking' => 'Parkeerplaats',
-                                                'other' => 'Overig',
+                                                'townhouse' => 'Townhouse',
+                                                'farm' => 'Farm',
+                                                'commercial' => 'Commercial',
+                                                'land' => 'Land',
+                                                'parking' => 'Parking',
+                                                'other' => 'Other',
                                             ])
                                             ->required(),
                                         Select::make('transaction_type')
-                                            ->label('Transactietype')
+                                            ->label('Transaction Type')
                                             ->options([
-                                                'sale' => 'Koop',
-                                                'rent' => 'Huur',
-                                                'auction' => 'Veiling',
+                                                'sale' => 'Sale',
+                                                'rent' => 'Rent',
+                                                'auction' => 'Auction',
                                             ])
                                             ->required(),
                                         Select::make('status')
                                             ->label('Status')
                                             ->options([
-                                                'available' => 'Beschikbaar',
-                                                'sold' => 'Verkocht',
-                                                'rented' => 'Verhuurd',
-                                                'pending' => 'In optie',
-                                                'withdrawn' => 'Uit de handel',
+                                                'available' => 'Available',
+                                                'sold' => 'Sold',
+                                                'rented' => 'Rented',
+                                                'pending' => 'Pending',
+                                                'withdrawn' => 'Withdrawn',
                                             ])
                                             ->required(),
                                         Select::make('living_type')
-                                            ->label('Woonsituatie')
+                                            ->label('Living Type')
                                             ->options([
-                                                'permanent' => 'Permanente bewoning',
-                                                'recreational' => 'Recreatie',
+                                                'permanent' => 'Permanent',
+                                                'recreational' => 'Recreational',
                                             ]),
                                     ]),
-                                Section::make('Beschrijving')
+                                Section::make('Description')
                                     ->schema([
                                         RichEditor::make('description')
-                                            ->label('Beschrijving')
+                                            ->label('Description')
                                             ->columnSpanFull(),
                                     ]),
                             ]),
-                        Tab::make('Locatie')
+                        Tab::make('Location')
                             ->schema([
-                                Section::make('Adres')
+                                Section::make('Address')
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('address_street')
-                                            ->label('Straat')
+                                            ->label('Street')
                                             ->maxLength(255),
                                         TextInput::make('address_number')
-                                            ->label('Huisnummer')
+                                            ->label('House Number')
                                             ->maxLength(20),
                                         TextInput::make('address_addition')
-                                            ->label('Toevoeging')
+                                            ->label('Addition')
                                             ->maxLength(20),
                                         TextInput::make('address_postal_code')
-                                            ->label('Postcode')
+                                            ->label('Postal Code')
                                             ->maxLength(10),
                                         TextInput::make('address_city')
-                                            ->label('Plaats')
+                                            ->label('City')
                                             ->maxLength(255),
                                         TextInput::make('address_province')
-                                            ->label('Provincie')
+                                            ->label('Province')
                                             ->maxLength(255),
                                         TextInput::make('neighborhood')
-                                            ->label('Buurt')
+                                            ->label('Neighborhood')
                                             ->maxLength(255),
                                         TextInput::make('municipality')
-                                            ->label('Gemeente')
+                                            ->label('Municipality')
                                             ->maxLength(255),
                                     ]),
-                                Section::make('Coordinaten')
+                                Section::make('Coordinates')
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('latitude')
@@ -127,57 +127,57 @@ class PropertyUnitForm
                                             ->numeric(),
                                     ]),
                             ]),
-                        Tab::make('Prijs')
+                        Tab::make('Price')
                             ->schema([
-                                Section::make('Koopprijs')
+                                Section::make('Sale Price')
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('buyprice')
-                                            ->label('Vraagprijs')
+                                            ->label('Asking Price')
                                             ->numeric()
                                             ->prefix('€'),
                                         TextInput::make('buyprice_label')
-                                            ->label('Prijslabel')
+                                            ->label('Price Label')
                                             ->maxLength(255)
-                                            ->placeholder('bijv. Prijs op aanvraag'),
+                                            ->placeholder('e.g. Price on request'),
                                         TextInput::make('land_costs')
-                                            ->label('Grondkosten')
+                                            ->label('Land Costs')
                                             ->numeric()
                                             ->prefix('€'),
                                         TextInput::make('contract_price')
-                                            ->label('Contractprijs')
+                                            ->label('Contract Price')
                                             ->numeric()
                                             ->prefix('€'),
                                     ]),
-                                Section::make('Huurprijs')
+                                Section::make('Rent Price')
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('rentprice_month')
-                                            ->label('Huurprijs per maand')
+                                            ->label('Rent per Month')
                                             ->numeric()
                                             ->prefix('€'),
                                         TextInput::make('service_fee_month')
-                                            ->label('Servicekosten per maand')
+                                            ->label('Service Fee per Month')
                                             ->numeric()
                                             ->prefix('€'),
                                         TextInput::make('total_rent_month')
-                                            ->label('Totale huur per maand')
+                                            ->label('Total Rent per Month')
                                             ->numeric()
                                             ->prefix('€'),
                                     ]),
-                                Section::make('Overige kosten')
+                                Section::make('Other Costs')
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('property_tax')
-                                            ->label('OZB')
+                                            ->label('Property Tax')
                                             ->numeric()
                                             ->prefix('€'),
                                         TextInput::make('hoa_fees')
-                                            ->label('VvE bijdrage')
+                                            ->label('HOA Fees')
                                             ->numeric()
                                             ->prefix('€'),
                                         TextInput::make('ground_lease')
-                                            ->label('Erfpacht')
+                                            ->label('Ground Lease')
                                             ->maxLength(255),
                                         TextInput::make('canon')
                                             ->label('Canon')
@@ -185,58 +185,58 @@ class PropertyUnitForm
                                             ->prefix('€'),
                                     ]),
                             ]),
-                        Tab::make('Kenmerken')
+                        Tab::make('Features')
                             ->schema([
-                                Section::make('Afmetingen')
+                                Section::make('Dimensions')
                                     ->columns(3)
                                     ->schema([
                                         TextInput::make('surface')
-                                            ->label('Woonoppervlakte')
+                                            ->label('Living Area')
                                             ->numeric()
                                             ->suffix('m²'),
                                         TextInput::make('lotsize')
-                                            ->label('Perceeloppervlakte')
+                                            ->label('Lot Size')
                                             ->numeric()
                                             ->suffix('m²'),
                                         TextInput::make('volume')
-                                            ->label('Inhoud')
+                                            ->label('Volume')
                                             ->numeric()
                                             ->suffix('m³'),
                                         TextInput::make('outdoor_surface')
-                                            ->label('Buitenruimte')
+                                            ->label('Outdoor Space')
                                             ->numeric()
                                             ->suffix('m²'),
                                     ]),
-                                Section::make('Indeling')
+                                Section::make('Layout')
                                     ->columns(3)
                                     ->schema([
                                         TextInput::make('bedrooms')
-                                            ->label('Kamers')
+                                            ->label('Rooms')
                                             ->numeric(),
                                         TextInput::make('sleepingrooms')
-                                            ->label('Slaapkamers')
+                                            ->label('Bedrooms')
                                             ->numeric(),
                                         TextInput::make('bathrooms')
-                                            ->label('Badkamers')
+                                            ->label('Bathrooms')
                                             ->numeric(),
                                         TextInput::make('floors')
-                                            ->label('Verdiepingen')
+                                            ->label('Floors')
                                             ->numeric(),
                                         TextInput::make('floor')
-                                            ->label('Verdieping')
+                                            ->label('Floor')
                                             ->maxLength(50),
                                     ]),
-                                Section::make('Bouw')
+                                Section::make('Construction')
                                     ->columns(3)
                                     ->schema([
                                         TextInput::make('construction_year')
-                                            ->label('Bouwjaar')
+                                            ->label('Year Built')
                                             ->numeric(),
                                         TextInput::make('renovation_year')
-                                            ->label('Renovatiejaar')
+                                            ->label('Renovation Year')
                                             ->numeric(),
                                         Select::make('energy_label')
-                                            ->label('Energielabel')
+                                            ->label('Energy Label')
                                             ->options([
                                                 'A++++' => 'A++++',
                                                 'A+++' => 'A+++',
@@ -251,24 +251,24 @@ class PropertyUnitForm
                                                 'G' => 'G',
                                             ]),
                                         TextInput::make('energy_index')
-                                            ->label('Energie-index')
+                                            ->label('Energy Index')
                                             ->numeric(),
                                     ]),
-                                Section::make('Voorzieningen')
+                                Section::make('Amenities')
                                     ->columns(3)
                                     ->schema([
                                         Toggle::make('garage')
                                             ->label('Garage'),
                                         Toggle::make('has_parking')
-                                            ->label('Parkeerplaats'),
+                                            ->label('Parking'),
                                         Toggle::make('has_elevator')
-                                            ->label('Lift'),
+                                            ->label('Elevator'),
                                         Toggle::make('has_ac')
-                                            ->label('Airco'),
+                                            ->label('Air Conditioning'),
                                         Toggle::make('has_alarm')
-                                            ->label('Alarmsysteem'),
+                                            ->label('Alarm System'),
                                         Toggle::make('berth')
-                                            ->label('Ligplaats'),
+                                            ->label('Berth'),
                                     ]),
                             ]),
                         Tab::make('Media')
@@ -277,7 +277,7 @@ class PropertyUnitForm
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('virtual_tour_url')
-                                            ->label('Virtuele tour URL')
+                                            ->label('Virtual Tour URL')
                                             ->url()
                                             ->maxLength(500),
                                         TextInput::make('brochure_url')
@@ -286,23 +286,23 @@ class PropertyUnitForm
                                             ->maxLength(500),
                                     ]),
                             ]),
-                        Tab::make('Makelaar')
+                        Tab::make('Agent')
                             ->schema([
-                                Section::make('Makelaar gegevens')
+                                Section::make('Agent Details')
                                     ->columns(2)
                                     ->schema([
                                         TextInput::make('agent_name')
-                                            ->label('Naam')
+                                            ->label('Name')
                                             ->maxLength(255),
                                         TextInput::make('agent_company')
-                                            ->label('Bedrijf')
+                                            ->label('Company')
                                             ->maxLength(255),
                                         TextInput::make('agent_phone')
-                                            ->label('Telefoon')
+                                            ->label('Phone')
                                             ->tel()
                                             ->maxLength(50),
                                         TextInput::make('agent_email')
-                                            ->label('E-mail')
+                                            ->label('Email')
                                             ->email()
                                             ->maxLength(255),
                                         TextInput::make('agent_url')
@@ -315,20 +315,20 @@ class PropertyUnitForm
                                             ->maxLength(500),
                                     ]),
                             ]),
-                        Tab::make('Datums')
+                        Tab::make('Dates')
                             ->schema([
-                                Section::make('Datums')
+                                Section::make('Dates')
                                     ->columns(2)
                                     ->schema([
                                         DatePicker::make('listing_date')
-                                            ->label('Publicatiedatum'),
+                                            ->label('Listing Date'),
                                         DatePicker::make('viewing_date')
-                                            ->label('Bezichtigingsdatum'),
+                                            ->label('Viewing Date'),
                                         DatePicker::make('first_seen_at')
-                                            ->label('Eerst gezien')
+                                            ->label('First Seen')
                                             ->disabled(),
                                         DatePicker::make('last_seen_at')
-                                            ->label('Laatst gezien')
+                                            ->label('Last Seen')
                                             ->disabled(),
                                     ]),
                             ]),

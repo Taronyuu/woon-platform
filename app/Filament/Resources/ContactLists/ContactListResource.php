@@ -17,11 +17,11 @@ class ContactListResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelopeOpen;
 
-    protected static ?string $navigationLabel = 'Contactlijst';
+    protected static ?string $navigationLabel = 'Contact List';
 
     protected static ?string $modelLabel = 'Contact';
 
-    protected static ?string $pluralModelLabel = 'Contactlijst';
+    protected static ?string $pluralModelLabel = 'Contact List';
 
     public static function form(Schema $schema): Schema
     {

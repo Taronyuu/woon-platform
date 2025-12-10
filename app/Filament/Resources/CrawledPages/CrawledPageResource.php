@@ -18,11 +18,11 @@ class CrawledPageResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected static ?string $navigationLabel = 'Gescrapete paginas';
+    protected static ?string $navigationLabel = 'Crawled Pages';
 
-    protected static ?string $modelLabel = 'Gescrapete pagina';
+    protected static ?string $modelLabel = 'Crawled Page';
 
-    protected static ?string $pluralModelLabel = 'Gescrapete paginas';
+    protected static ?string $pluralModelLabel = 'Crawled Pages';
 
     protected static UnitEnum|string|null $navigationGroup = 'Crawler';
 

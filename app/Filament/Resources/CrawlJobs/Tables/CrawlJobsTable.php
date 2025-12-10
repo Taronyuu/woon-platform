@@ -28,39 +28,39 @@ class CrawlJobsTable
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'pending' => 'Wachtend',
-                        'running' => 'Bezig',
-                        'completed' => 'Voltooid',
-                        'failed' => 'Mislukt',
-                        'cancelled' => 'Geannuleerd',
+                        'pending' => 'Pending',
+                        'running' => 'Running',
+                        'completed' => 'Completed',
+                        'failed' => 'Failed',
+                        'cancelled' => 'Cancelled',
                         default => ucfirst($state),
                     }),
                 TextColumn::make('pages_crawled')
-                    ->label('Paginas')
+                    ->label('Pages')
                     ->sortable()
-                    ->formatStateUsing(fn ($record) => $record->pages_crawled . ' / ' . $record->pages_failed . ' mislukt'),
+                    ->formatStateUsing(fn ($record) => $record->pages_crawled . ' / ' . $record->pages_failed . ' failed'),
                 TextColumn::make('properties_extracted')
-                    ->label('Woningen')
+                    ->label('Properties')
                     ->sortable(),
                 TextColumn::make('property_limit')
-                    ->label('Limiet')
+                    ->label('Limit')
                     ->sortable()
                     ->placeholder('-'),
                 TextColumn::make('avg_response_time_ms')
-                    ->label('Gem. respons')
+                    ->label('Avg. Response')
                     ->suffix(' ms')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('started_at')
-                    ->label('Gestart')
-                    ->dateTime('d-m-Y H:i')
+                    ->label('Started')
+                    ->dateTime('Y-m-d H:i')
                     ->sortable(),
                 TextColumn::make('completed_at')
-                    ->label('Voltooid')
-                    ->dateTime('d-m-Y H:i')
+                    ->label('Completed')
+                    ->dateTime('Y-m-d H:i')
                     ->sortable(),
                 TextColumn::make('duration')
-                    ->label('Duur')
+                    ->label('Duration')
                     ->getStateUsing(function ($record) {
                         if (!$record->started_at || !$record->completed_at) {
                             return '-';
@@ -76,11 +76,11 @@ class CrawlJobsTable
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
-                        'pending' => 'Wachtend',
-                        'running' => 'Bezig',
-                        'completed' => 'Voltooid',
-                        'failed' => 'Mislukt',
-                        'cancelled' => 'Geannuleerd',
+                        'pending' => 'Pending',
+                        'running' => 'Running',
+                        'completed' => 'Completed',
+                        'failed' => 'Failed',
+                        'cancelled' => 'Cancelled',
                     ]),
                 SelectFilter::make('website_id')
                     ->label('Website')

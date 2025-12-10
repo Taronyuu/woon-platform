@@ -35,16 +35,16 @@ class CrawledPagesTable
                         default => 'gray',
                     }),
                 TextColumn::make('mime_type')
-                    ->label('MIME type')
+                    ->label('MIME Type')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('scraped_at')
-                    ->label('Gescraped op')
-                    ->dateTime('d-m-Y H:i')
+                    ->label('Scraped At')
+                    ->dateTime('Y-m-d H:i')
                     ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('status_code')
-                    ->label('Status code')
+                    ->label('Status Code')
                     ->options([
                         '200' => '200 OK',
                         '301' => '301 Redirect',
@@ -54,7 +54,7 @@ class CrawledPagesTable
                         '500' => '500 Server Error',
                     ]),
                 SelectFilter::make('crawl_job_id')
-                    ->label('Crawl job')
+                    ->label('Crawl Job')
                     ->relationship('crawlJob', 'id')
                     ->searchable()
                     ->preload(),

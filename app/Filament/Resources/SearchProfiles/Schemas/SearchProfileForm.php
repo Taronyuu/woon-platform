@@ -3,9 +3,8 @@
 namespace App\Filament\Resources\SearchProfiles\Schemas;
 
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class SearchProfileForm
@@ -14,33 +13,33 @@ class SearchProfileForm
     {
         return $schema
             ->components([
-                Section::make('Gebruiker')
+                Section::make('User')
                     ->columns(2)
                     ->schema([
                         Placeholder::make('user_email')
-                            ->label('Gebruiker')
+                            ->label('User')
                             ->content(fn ($record) => $record->user?->email ?? '-'),
                         Placeholder::make('created_at_display')
-                            ->label('Aangemaakt op')
-                            ->content(fn ($record) => $record->created_at?->format('d-m-Y H:i') ?? '-'),
+                            ->label('Created At')
+                            ->content(fn ($record) => $record->created_at?->format('Y-m-d H:i') ?? '-'),
                     ]),
-                Section::make('Zoekcriteria')
+                Section::make('Search Criteria')
                     ->columns(2)
                     ->schema([
                         Placeholder::make('name_display')
-                            ->label('Naam')
+                            ->label('Name')
                             ->content(fn ($record) => $record->name ?? '-'),
                         Placeholder::make('transaction_type_display')
-                            ->label('Transactietype')
+                            ->label('Transaction Type')
                             ->content(fn ($record) => $record->transaction_type_label ?? '-'),
                         Placeholder::make('cities_display')
-                            ->label('Steden')
+                            ->label('Cities')
                             ->content(fn ($record) => is_array($record->cities) ? implode(', ', $record->cities) : '-'),
                         Placeholder::make('property_type_display')
-                            ->label('Woningtype')
+                            ->label('Property Type')
                             ->content(fn ($record) => $record->property_type ?? '-'),
                         Placeholder::make('price_display')
-                            ->label('Prijsrange')
+                            ->label('Price Range')
                             ->content(function ($record) {
                                 $parts = [];
                                 if ($record->min_price) {
@@ -52,7 +51,7 @@ class SearchProfileForm
                                 return $parts ? implode(' - ', $parts) : '-';
                             }),
                         Placeholder::make('surface_display')
-                            ->label('Oppervlakte')
+                            ->label('Surface')
                             ->content(function ($record) {
                                 $parts = [];
                                 if ($record->min_surface) {
@@ -64,16 +63,16 @@ class SearchProfileForm
                                 return $parts ? implode(' - ', $parts) : '-';
                             }),
                         Placeholder::make('bedrooms_display')
-                            ->label('Min. kamers')
+                            ->label('Min. Rooms')
                             ->content(fn ($record) => $record->min_bedrooms ?? '-'),
                         Placeholder::make('energy_label_display')
-                            ->label('Energielabel')
+                            ->label('Energy Label')
                             ->content(fn ($record) => $record->energy_label ?? '-'),
                     ]),
                 Section::make('Status')
                     ->schema([
                         Toggle::make('is_active')
-                            ->label('Actief'),
+                            ->label('Active'),
                     ]),
             ]);
     }

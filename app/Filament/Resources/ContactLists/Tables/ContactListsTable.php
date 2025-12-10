@@ -16,20 +16,20 @@ class ContactListsTable
         return $table
             ->columns([
                 TextColumn::make('email')
-                    ->label('E-mail')
+                    ->label('Email')
                     ->searchable()
                     ->sortable()
                     ->copyable(),
                 TextColumn::make('created_at')
-                    ->label('Aangemeld op')
-                    ->dateTime('d-m-Y H:i')
+                    ->label('Subscribed At')
+                    ->dateTime('Y-m-d H:i')
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->toolbarActions([
                 BulkActionGroup::make([
                     BulkAction::make('export')
-                        ->label('Exporteer naar CSV')
+                        ->label('Export to CSV')
                         ->icon('heroicon-o-arrow-down-tray')
                         ->action(function (Collection $records) {
                             $csv = "email,created_at\n";

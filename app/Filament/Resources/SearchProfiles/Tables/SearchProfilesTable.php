@@ -18,28 +18,28 @@ class SearchProfilesTable
         return $table
             ->columns([
                 TextColumn::make('user.email')
-                    ->label('Gebruiker')
+                    ->label('User')
                     ->searchable()
                     ->sortable()
                     ->url(fn ($record) => $record->user ? route('filament.admin.resources.users.edit', $record->user) : null),
                 TextColumn::make('name')
-                    ->label('Naam')
+                    ->label('Name')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('transaction_type_label')
                     ->label('Type')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Koop' => 'success',
-                        'Huur' => 'info',
+                        'Sale' => 'success',
+                        'Rent' => 'info',
                         default => 'gray',
                     }),
                 TextColumn::make('cities')
-                    ->label('Steden')
+                    ->label('Cities')
                     ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', array_slice($state, 0, 3)) . (count($state) > 3 ? '...' : '') : '-')
                     ->limit(30),
                 TextColumn::make('price_range')
-                    ->label('Prijsrange')
+                    ->label('Price Range')
                     ->getStateUsing(function ($record) {
                         $parts = [];
                         if ($record->min_price) {
@@ -51,33 +51,33 @@ class SearchProfilesTable
                         return $parts ? implode(' - ', $parts) : '-';
                     }),
                 TextColumn::make('min_bedrooms')
-                    ->label('Min. kamers')
+                    ->label('Min. Rooms')
                     ->placeholder('-'),
                 IconColumn::make('is_active')
-                    ->label('Actief')
+                    ->label('Active')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger'),
                 TextColumn::make('created_at')
-                    ->label('Aangemaakt')
-                    ->dateTime('d-m-Y')
+                    ->label('Created')
+                    ->dateTime('Y-m-d')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('transaction_type')
-                    ->label('Transactietype')
+                    ->label('Transaction Type')
                     ->options([
-                        'sale' => 'Koop',
-                        'rent' => 'Huur',
+                        'sale' => 'Sale',
+                        'rent' => 'Rent',
                     ]),
                 TernaryFilter::make('is_active')
-                    ->label('Actief')
-                    ->placeholder('Alle')
-                    ->trueLabel('Actief')
-                    ->falseLabel('Inactief'),
+                    ->label('Active')
+                    ->placeholder('All')
+                    ->trueLabel('Active')
+                    ->falseLabel('Inactive'),
             ])
             ->defaultSort('created_at', 'desc')
             ->recordActions([
