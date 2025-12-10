@@ -9,5 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('sitemap:generate')->daily();
-Schedule::command('property:convert-descriptions --limit=10')->hourly();
-Schedule::command('crawl:website funda --limit=20')->daily();
+Schedule::command('property:convert-descriptions --limit=50')->hourly();
+Schedule::command('crawl:website funda --limit=40')->hourly();
