@@ -88,8 +88,6 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $last_changed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Website> $websites
- * @property-read int|null $websites_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PropertyUnit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PropertyUnit newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PropertyUnit query()
@@ -366,13 +364,6 @@ class PropertyUnit extends Model
             ->where('property_unit_id', $this->id)
             ->orderBy('first_seen_at', 'asc')
             ->value('source_url');
-    }
-
-    public function websites(): BelongsToMany
-    {
-        return $this->belongsToMany(Website::class)
-            ->withPivot('external_id', 'source_url', 'first_seen_at', 'last_seen_at')
-            ->withTimestamps();
     }
 
     public function getFullAddressAttribute(): string

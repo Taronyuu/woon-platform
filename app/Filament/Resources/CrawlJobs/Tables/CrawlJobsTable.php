@@ -84,7 +84,7 @@ class CrawlJobsTable
                     ]),
                 SelectFilter::make('website_id')
                     ->label('Website')
-                    ->options(fn () => \App\Models\Website::query()->pluck('name', 'id')->toArray()),
+                    ->options(fn () => collect(array_keys(config('websites', [])))->mapWithKeys(fn ($key) => [$key => ucfirst($key)])->toArray()),
             ])
             ->defaultSort('created_at', 'desc');
     }
