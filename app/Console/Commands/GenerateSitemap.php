@@ -79,7 +79,7 @@ class GenerateSitemap extends Command
                 }
             });
 
-        $sitemap->writeToFile(public_path('sitemap.xml'));
+        $sitemap->writeToFile(public_path('sitemap/sitemap.xml'));
 
         $this->info("Sitemap generated successfully with {$propertyCount} properties!");
         $this->info('Saved to: ' . public_path('sitemap.xml'));
