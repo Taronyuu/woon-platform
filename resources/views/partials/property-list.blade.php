@@ -11,11 +11,16 @@
                         </div>
                     @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    @if($property->days_online !== null && $property->days_online <= 7)
-                        <div class="absolute top-3 right-3">
+                    <div class="absolute top-3 right-3 flex flex-col gap-2 items-end">
+                        @if($property->days_online !== null && $property->days_online <= 7)
                             <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">✨ Nieuw</span>
-                        </div>
-                    @endif
+                        @endif
+                        @if($property->status === 'reserved')
+                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">{{ $property->status_label }}</span>
+                        @elseif($property->status === 'unavailable')
+                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">{{ $property->status_label }}</span>
+                        @endif
+                    </div>
                 </div>
                 <div class="p-6">
                     <div class="flex items-start justify-between mb-2">

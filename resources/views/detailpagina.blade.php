@@ -152,9 +152,20 @@ $breadcrumbItems = [
                             <p class="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                                 {{ $property->formatted_price }}
                             </p>
-                            <span class="inline-block bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg">
-                                ✓ {{ $property->transaction_type_label }}
-                            </span>
+                            <div class="flex flex-col items-end gap-2">
+                                <span class="inline-block bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg">
+                                    ✓ {{ $property->transaction_type_label }}
+                                </span>
+                                @if($property->status === 'reserved')
+                                    <span class="inline-block bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg">
+                                        {{ $property->status_label }}
+                                    </span>
+                                @elseif($property->status === 'unavailable')
+                                    <span class="inline-block bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg">
+                                        {{ $property->status_label }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
