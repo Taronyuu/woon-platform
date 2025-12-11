@@ -2,6 +2,10 @@
 
 @section('title', 'Mijn Account - Oxxen.nl')
 
+@section('meta')
+<meta name="robots" content="noindex, nofollow">
+@endsection
+
 @section('content')
 <div x-data="searchProfileManager()" class="container mx-auto px-4 py-8">
 

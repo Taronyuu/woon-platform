@@ -1,6 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Over Oxxen.nl')
+@section('title', 'Over Oxxen.nl - Het onafhankelijke woonplatform')
+@section('meta_description', 'Leer meer over Oxxen.nl - het onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek.')
+
+@section('canonical')
+<link rel="canonical" href="{{ route('about') }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Over Oxxen.nl', 'url' => route('about')]
+];
+@endphp
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
+
+@section('meta')
+<meta property="og:type" content="website">
+<meta property="og:title" content="Over Oxxen.nl - Het onafhankelijke woonplatform">
+<meta property="og:description" content="Leer meer over Oxxen.nl - het onafhankelijke woonplatform voor Nederland.">
+<meta property="og:url" content="{{ route('about') }}">
+@endsection
 
 @section('content')
 <div class="bg-gradient-to-r from-orange-500 to-red-500 py-12">

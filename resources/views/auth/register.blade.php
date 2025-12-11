@@ -2,6 +2,10 @@
 
 @section('title', 'Registreren - Oxxen.nl')
 
+@section('meta')
+<meta name="robots" content="noindex, nofollow">
+@endsection
+
 @section('content')
 
 

@@ -1,6 +1,31 @@
 @extends('layouts.app')
 
-@section('title', 'Bereken je maandlasten - Oxxen.nl')
+@section('title', 'Hypotheek berekenen - Maandlasten calculator | Oxxen.nl')
+@section('meta_description', 'Bereken eenvoudig je hypotheek maandlasten met de Oxxen.nl calculator. Actuele rentetarieven, annuïteiten- en lineaire hypotheek berekening.')
+
+@section('canonical')
+<link rel="canonical" href="{{ route('mortgage.calculator') }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Maandlasten berekenen', 'url' => route('mortgage.calculator')]
+];
+@endphp
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
+
+@section('meta')
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hypotheek berekenen - Maandlasten calculator | Oxxen.nl">
+<meta property="og:description" content="Bereken eenvoudig je hypotheek maandlasten met de Oxxen.nl calculator. Actuele rentetarieven.">
+<meta property="og:url" content="{{ route('mortgage.calculator') }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hypotheek berekenen - Oxxen.nl">
+<meta name="twitter:description" content="Bereken eenvoudig je hypotheek maandlasten met actuele rentetarieven.">
+@endsection
 
 @section('content')
 

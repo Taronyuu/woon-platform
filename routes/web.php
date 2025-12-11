@@ -19,20 +19,6 @@ Route::get('/img/{token}', [ImageProxyController::class, 'show'])
     ->where('token', '.*');
 
 Route::get('/', function () {
-    return view('oxxen');
-})->name('oxxen');
-
-Route::post('/notify', function () {
-    request()->validate(['email' => 'required|email|unique:contact_list,email']);
-    \App\Models\ContactList::query()->create(['email' => request('email')]);
-    return back()->with('success', true);
-})->name('notify.store')->middleware('throttle:5,1');
-
-Route::post('/makelaar-afspraak', [RealtorAppointmentController::class, 'store'])
-    ->name('realtor.appointment.store')
-    ->middleware('throttle:5,1');
-
-Route::get('/home', function () {
     $featuredProperties = \App\Models\PropertyUnit::query()
         ->where('status', 'available')
         ->latest()
@@ -50,6 +36,16 @@ Route::get('/home', function () {
         'blogPosts' => $blogPosts,
     ]);
 })->name('home');
+
+Route::post('/notify', function () {
+    request()->validate(['email' => 'required|email|unique:contact_list,email']);
+    \App\Models\ContactList::query()->create(['email' => request('email')]);
+    return back()->with('success', true);
+})->name('notify.store')->middleware('throttle:5,1');
+
+Route::post('/makelaar-afspraak', [RealtorAppointmentController::class, 'store'])
+    ->name('realtor.appointment.store')
+    ->middleware('throttle:5,1');
 
 Route::get('/maandlasten', [MortgageCalculatorController::class, 'index'])->name('mortgage.calculator');
 Route::get('/api/interest-rate', [MortgageCalculatorController::class, 'getInterestRate'])->name('api.interest-rate');

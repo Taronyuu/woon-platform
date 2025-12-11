@@ -3,15 +3,40 @@
 @section('title', $post->title . ' - Oxxen.nl')
 @section('meta_description', Str::limit($post->excerpt ?? strip_tags($post->content), 160))
 
+@section('canonical')
+<link rel="canonical" href="{{ route('blog.show', $post) }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Blog', 'url' => route('home')],
+    ['name' => $post->title, 'url' => route('blog.show', $post)]
+];
+@endphp
+<x-seo.article-schema :post="$post" />
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
+
 @section('meta')
 <meta property="og:type" content="article">
 <meta property="og:title" content="{{ $post->title }} - Oxxen.nl">
 <meta property="og:description" content="{{ Str::limit($post->excerpt ?? strip_tags($post->content), 200) }}">
-<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:url" content="{{ route('blog.show', $post) }}">
 @if($post->featured_image)
 <meta property="og:image" content="{{ asset('storage/' . $post->featured_image) }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 @endif
+<meta property="article:published_time" content="{{ $post->published_at?->toIso8601String() }}">
+<meta property="article:modified_time" content="{{ $post->updated_at->toIso8601String() }}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $post->title }}">
+<meta name="twitter:description" content="{{ Str::limit($post->excerpt ?? strip_tags($post->content), 200) }}">
+@if($post->featured_image)
+<meta name="twitter:image" content="{{ asset('storage/' . $post->featured_image) }}">
+@endif
 @endsection
 
 @section('content')

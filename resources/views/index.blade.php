@@ -3,11 +3,25 @@
 @section('title', 'Oxxen.nl - Vind je ideale woning in Nederland')
 @section('meta_description', 'Oxxen.nl is het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek. Gratis zoekprofielen en meldingen.')
 
+@section('canonical')
+<link rel="canonical" href="{{ config('app.url') }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [['name' => 'Home', 'url' => config('app.url')]];
+@endphp
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
+
 @section('meta')
 <meta property="og:type" content="website">
 <meta property="og:title" content="Oxxen.nl - Vind je ideale woning in Nederland">
 <meta property="og:description" content="Het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek.">
-<meta property="og:url" content="{{ url('/') }}">
+<meta property="og:url" content="{{ config('app.url') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Oxxen.nl - Vind je ideale woning in Nederland">
+<meta name="twitter:description" content="Het complete onafhankelijke woonplatform voor Nederland. Vind koopwoningen, huurwoningen en nieuwbouw op één plek.">
 @endsection
 
 @section('content')

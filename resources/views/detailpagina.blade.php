@@ -3,6 +3,23 @@
 @section('title', ($property->title ?? $property->full_address) . ' - Oxxen.nl')
 @section('meta_description', Str::limit($property->description ?? 'Bekijk deze woning: ' . $property->full_address . ' - ' . $property->formatted_price, 160))
 
+@section('canonical')
+<link rel="canonical" href="{{ route('property.show', $property) }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Woningen zoeken', 'url' => route('search')],
+    ['name' => $property->address_city, 'url' => route('search', ['search' => $property->address_city])],
+    ['name' => $property->full_address, 'url' => route('property.show', $property)]
+];
+@endphp
+<x-seo.real-estate-schema :property="$property" />
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
+
 @section('meta')
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ $property->title ?? $property->full_address }} - Oxxen.nl">
@@ -11,6 +28,8 @@
 @if($property->proxied_main_image)
 <meta property="og:image" content="{{ $property->proxied_main_image }}">
 <meta property="og:image:alt" content="{{ $property->full_address }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 @endif
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ $property->title ?? $property->full_address }}">
@@ -309,7 +328,7 @@
                     <h3 class="text-xl font-semibold mb-4">Interesse in deze woning?</h3>
 
                     @if($property->source_url)
-                        <a href="{{ $property->source_url }}" target="_blank" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition mb-3 block text-center flex items-center justify-center gap-2">
+                        <a href="{{ $property->source_url }}" target="_blank" rel="nofollow noopener noreferrer" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition mb-3 block text-center flex items-center justify-center gap-2">
                             <span>Bekijk woning</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
@@ -354,7 +373,7 @@
                             @endif
                         </div>
                     @elseif($property->agent_url)
-                        <a href="{{ $property->agent_url }}" target="_blank" class="w-full bg-white border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition mb-3 block text-center">
+                        <a href="{{ $property->agent_url }}" target="_blank" rel="nofollow noopener noreferrer" class="w-full bg-white border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition mb-3 block text-center">
                             Contact makelaar
                         </a>
                     @endif

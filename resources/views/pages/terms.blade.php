@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
 @section('title', 'Algemene Voorwaarden - Oxxen.nl')
+@section('meta_description', 'Lees de algemene voorwaarden van Oxxen.nl. Deze voorwaarden zijn van toepassing op het gebruik van ons woonplatform.')
+
+@section('canonical')
+<link rel="canonical" href="{{ route('terms') }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Algemene Voorwaarden', 'url' => route('terms')]
+];
+@endphp
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
+
+@section('meta')
+<meta name="robots" content="noindex, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Algemene Voorwaarden - Oxxen.nl">
+<meta property="og:description" content="Algemene voorwaarden van Oxxen.nl.">
+<meta property="og:url" content="{{ route('terms') }}">
+@endsection
 
 @section('content')
 <div class="bg-gradient-to-r from-orange-500 to-red-500 py-12">

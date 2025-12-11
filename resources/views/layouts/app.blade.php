@@ -6,9 +6,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Oxxen.nl - Vind je ideale woning')</title>
     <meta name="description" content="@yield('meta_description', 'Oxxen.nl - Het complete onafhankelijke woonplatform voor Nederland. Vind je ideale koop- of huurwoning.')">
+    @yield('canonical')
+    <link rel="alternate" hreflang="nl-NL" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
     @yield('meta')
     <meta property="og:site_name" content="Oxxen.nl">
     <meta property="og:locale" content="nl_NL">
+    <x-seo.organization-schema />
+    <x-seo.website-schema />
+    @yield('structured-data')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>

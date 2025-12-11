@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
 @section('title', 'Privacybeleid - Oxxen.nl')
+@section('meta_description', 'Lees het privacybeleid van Oxxen.nl. Wij respecteren uw privacy en beschermen uw persoonsgegevens conform de AVG.')
+
+@section('canonical')
+<link rel="canonical" href="{{ route('privacy') }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Privacybeleid', 'url' => route('privacy')]
+];
+@endphp
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
+
+@section('meta')
+<meta name="robots" content="noindex, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacybeleid - Oxxen.nl">
+<meta property="og:description" content="Lees het privacybeleid van Oxxen.nl.">
+<meta property="og:url" content="{{ route('privacy') }}">
+@endsection
 
 @section('content')
 <div class="bg-gradient-to-r from-orange-500 to-red-500 py-12">

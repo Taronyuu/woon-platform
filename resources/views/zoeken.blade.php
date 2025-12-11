@@ -1,13 +1,61 @@
 @extends('layouts.app')
 
-@section('title', 'Woningen zoeken - Oxxen.nl')
-@section('meta_description', 'Zoek en vind je ideale woning op Oxxen.nl. Filter op prijs, locatie, oppervlakte en meer. Bekijk alle beschikbare koop- en huurwoningen.')
+@php
+    $searchLocation = $filters['search'] ?? null;
+    $searchType = $filters['type'] ?? null;
+    $typeLabel = $searchType === 'sale' ? 'te koop' : ($searchType === 'rent' ? 'te huur' : '');
+
+    if ($searchLocation && $typeLabel) {
+        $pageTitle = ucfirst($searchLocation) . ' woningen ' . $typeLabel . ' - Oxxen.nl';
+        $pageDescription = 'Bekijk ' . $properties->total() . ' woningen ' . $typeLabel . ' in ' . ucfirst($searchLocation) . '. Filter op prijs, oppervlakte en meer op Oxxen.nl.';
+    } elseif ($searchLocation) {
+        $pageTitle = ucfirst($searchLocation) . ' woningen - Oxxen.nl';
+        $pageDescription = 'Bekijk ' . $properties->total() . ' woningen in ' . ucfirst($searchLocation) . '. Vind je ideale koop- of huurwoning op Oxxen.nl.';
+    } elseif ($typeLabel) {
+        $pageTitle = 'Woningen ' . $typeLabel . ' - Oxxen.nl';
+        $pageDescription = 'Bekijk ' . $properties->total() . ' woningen ' . $typeLabel . ' in Nederland. Filter op prijs, oppervlakte en meer op Oxxen.nl.';
+    } else {
+        $pageTitle = 'Woningen zoeken - Oxxen.nl';
+        $pageDescription = 'Zoek en vind je ideale woning op Oxxen.nl. Filter op prijs, locatie, oppervlakte en meer. Bekijk alle beschikbare koop- en huurwoningen.';
+    }
+
+    $canonicalUrl = route('search');
+    if ($searchLocation || $searchType) {
+        $canonicalParams = [];
+        if ($searchLocation) $canonicalParams['search'] = $searchLocation;
+        if ($searchType) $canonicalParams['type'] = $searchType;
+        $canonicalUrl = route('search', $canonicalParams);
+    }
+@endphp
+
+@section('title', $pageTitle)
+@section('meta_description', $pageDescription)
+
+@section('canonical')
+<link rel="canonical" href="{{ $canonicalUrl }}">
+@if($properties->currentPage() > 1)
+<link rel="prev" href="{{ $properties->previousPageUrl() }}">
+@endif
+@if($properties->hasMorePages())
+<link rel="next" href="{{ $properties->nextPageUrl() }}">
+@endif
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Woningen zoeken', 'url' => route('search')]
+];
+@endphp
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+@endsection
 
 @section('meta')
 <meta property="og:type" content="website">
-<meta property="og:title" content="Woningen zoeken - Oxxen.nl">
-<meta property="og:description" content="Zoek en vind je ideale woning. Filter op prijs, locatie, oppervlakte en meer.">
-<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:title" content="{{ $pageTitle }}">
+<meta property="og:description" content="{{ $pageDescription }}">
+<meta property="og:url" content="{{ $canonicalUrl }}">
 @endsection
 
 @section('content')

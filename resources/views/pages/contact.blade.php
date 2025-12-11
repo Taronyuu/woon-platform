@@ -1,6 +1,60 @@
 @extends('layouts.app')
 
 @section('title', 'Contact - Oxxen.nl')
+@section('meta_description', 'Neem contact op met Oxxen.nl. Vragen over woningen of het platform? Wij helpen je graag. Bereikbaar via telefoon en e-mail.')
+
+@section('canonical')
+<link rel="canonical" href="{{ route('contact') }}">
+@endsection
+
+@section('structured-data')
+@php
+$breadcrumbItems = [
+    ['name' => 'Home', 'url' => route('home')],
+    ['name' => 'Contact', 'url' => route('contact')]
+];
+@endphp
+<x-seo.breadcrumb-schema :items="$breadcrumbItems" />
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@@type": "Question",
+            "name": "Hoe maak ik een account aan?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Klik rechtsboven op 'Registreren' en vul uw e-mailadres en wachtwoord in. U ontvangt een verificatie-e-mail om uw account te activeren."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Wat zijn zoekprofielen?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Met zoekprofielen kunt u uw zoekcriteria opslaan. U ontvangt automatisch een melding wanneer er nieuwe woningen zijn die aan uw criteria voldoen."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Is Oxxen.nl gratis?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Ja, het gebruik van Oxxen.nl is volledig gratis voor woningzoekers. U kunt onbeperkt zoeken, favorieten opslaan en zoekprofielen aanmaken."
+            }
+        }
+    ]
+}
+</script>
+@endsection
+
+@section('meta')
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact - Oxxen.nl">
+<meta property="og:description" content="Neem contact op met Oxxen.nl. Vragen over woningen of het platform? Wij helpen je graag.">
+<meta property="og:url" content="{{ route('contact') }}">
+@endsection
 
 @section('content')
 <div class="bg-gradient-to-r from-orange-500 to-red-500 py-12">
