@@ -7,21 +7,29 @@ use App\Models\PropertyUnit;
 use App\Services\ScrapflyService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class FetchPropertiesCommand extends Command
 {
     protected $signature = 'crawl:fetch
                             {website : The website ID to fetch properties for}
                             {--limit= : Maximum number of URLs to process}
+                            {--concurrency=1 : Number of concurrent requests}
                             {--retry-failed : Also retry failed URLs}';
 
     protected $description = 'Fetch and parse property data from discovered URLs';
+
+    private int $processed = 0;
+    private int $properties = 0;
+    private int $deleted = 0;
+    private int $failed = 0;
 
     public function handle(ScrapflyService $scrapfly): int
     {
         $websiteId = $this->argument('website');
         $config = config("websites.{$websiteId}");
         $limit = $this->option('limit') ? (int) $this->option('limit') : null;
+        $concurrency = (int) $this->option('concurrency') ?: 1;
         $retryFailed = $this->option('retry-failed');
 
         if (!$config) {
@@ -56,60 +64,13 @@ class FetchPropertiesCommand extends Command
 
         $this->info("Fetching properties for: {$config['name']}");
         $this->line("URLs to process: {$urls->count()}");
+        $this->line("Concurrency: {$concurrency}");
         $this->line('');
 
-        $processed = 0;
-        $properties = 0;
-        $deleted = 0;
-        $failed = 0;
-
-        foreach ($urls as $discoveredUrl) {
-            $url = $discoveredUrl->url;
-            $this->line("Fetching: {$url}");
-
-            try {
-                $data = $scrapfly->scrape($url);
-                $statusCode = $data['status_code'] ?? 200;
-
-                if ($statusCode === 404) {
-                    $discoveredUrl->delete();
-                    $deleted++;
-                    $this->warn("  Deleted (404)");
-                    $processed++;
-                    continue;
-                }
-
-                if (!$isLeafPage($url)) {
-                    $discoveredUrl->delete();
-                    $deleted++;
-                    $this->warn("  Deleted (not leaf page)");
-                    $processed++;
-                    continue;
-                }
-
-                $propertyData = $parseData($data['html'], $url);
-
-                if (empty($propertyData)) {
-                    $discoveredUrl->delete();
-                    $deleted++;
-                    $this->warn("  Deleted (no data extracted)");
-                    $processed++;
-                    continue;
-                }
-
-                $this->createOrUpdateProperty($propertyData, $websiteId, $url);
-                $discoveredUrl->markAsFetched();
-                $properties++;
-                $this->info("  Property saved");
-
-            } catch (\Exception $e) {
-                $discoveredUrl->markAsFailed($e->getMessage());
-                $failed++;
-                $this->error("  Failed: {$e->getMessage()}");
-            }
-
-            $processed++;
-            usleep($delayMs * 1000);
+        if ($concurrency > 1) {
+            $this->processWithConcurrency($urls, $websiteId, $isLeafPage, $parseData, $concurrency);
+        } else {
+            $this->processSequentially($urls, $websiteId, $scrapfly, $isLeafPage, $parseData, $delayMs);
         }
 
         $this->line('');
@@ -117,14 +78,126 @@ class FetchPropertiesCommand extends Command
         $this->table(
             ['Metric', 'Value'],
             [
-                ['URLs Processed', $processed],
-                ['Properties Created/Updated', $properties],
-                ['URLs Deleted (invalid)', $deleted],
-                ['URLs Failed', $failed],
+                ['URLs Processed', $this->processed],
+                ['Properties Created/Updated', $this->properties],
+                ['URLs Deleted (invalid)', $this->deleted],
+                ['URLs Failed', $this->failed],
             ]
         );
 
         return self::SUCCESS;
+    }
+
+    protected function processSequentially($urls, string $websiteId, ScrapflyService $scrapfly, callable $isLeafPage, callable $parseData, int $delayMs): void
+    {
+        foreach ($urls as $discoveredUrl) {
+            $url = $discoveredUrl->url;
+            $this->line("Fetching: {$url}");
+
+            try {
+                $data = $scrapfly->scrape($url);
+                $this->processUrl($discoveredUrl, $data['html'], $data['status_code'] ?? 200, $websiteId, $isLeafPage, $parseData);
+            } catch (\Exception $e) {
+                $discoveredUrl->markAsFailed($e->getMessage());
+                $this->failed++;
+                $this->error("  Failed: {$e->getMessage()}");
+            }
+
+            $this->processed++;
+            usleep($delayMs * 1000);
+        }
+    }
+
+    protected function processWithConcurrency($urls, string $websiteId, callable $isLeafPage, callable $parseData, int $concurrency): void
+    {
+        $chunks = $urls->chunk($concurrency);
+        $apiKey = config('services.scrapfly.api_key');
+        $baseUrl = 'https://api.scrapfly.io/scrape';
+
+        foreach ($chunks as $chunkIndex => $chunk) {
+            $this->line("Processing batch " . ($chunkIndex + 1) . "/" . $chunks->count() . " (" . $chunk->count() . " URLs)");
+
+            $chunkArray = $chunk->values()->all();
+
+            $responses = Http::pool(fn ($pool) =>
+                collect($chunkArray)->map(fn ($discoveredUrl) =>
+                    $pool->timeout(120)->get($baseUrl, [
+                        'key' => $apiKey,
+                        'url' => $discoveredUrl->url,
+                        'country' => 'nl',
+                        'asp' => 'true',
+                    ])
+                )->toArray()
+            );
+
+            foreach ($responses as $index => $response) {
+                $discoveredUrl = $chunkArray[$index];
+
+                try {
+                    if (!$response->successful()) {
+                        $discoveredUrl->markAsFailed("HTTP {$response->status()}");
+                        $this->failed++;
+                        $this->error("  Failed [{$discoveredUrl->url}]: HTTP {$response->status()}");
+                        $this->processed++;
+                        continue;
+                    }
+
+                    $data = $response->json();
+                    if (!isset($data['result']['content'])) {
+                        $discoveredUrl->markAsFailed("No content in response");
+                        $this->failed++;
+                        $this->error("  Failed [{$discoveredUrl->url}]: No content");
+                        $this->processed++;
+                        continue;
+                    }
+
+                    $html = $data['result']['content'];
+                    $statusCode = $data['result']['status_code'] ?? 200;
+
+                    $this->processUrl($discoveredUrl, $html, $statusCode, $websiteId, $isLeafPage, $parseData);
+
+                } catch (\Exception $e) {
+                    $discoveredUrl->markAsFailed($e->getMessage());
+                    $this->failed++;
+                    $this->error("  Failed [{$discoveredUrl->url}]: {$e->getMessage()}");
+                }
+
+                $this->processed++;
+            }
+        }
+    }
+
+    protected function processUrl(DiscoveredUrl $discoveredUrl, string $html, int $statusCode, string $websiteId, callable $isLeafPage, callable $parseData): void
+    {
+        $url = $discoveredUrl->url;
+
+        if ($statusCode === 404) {
+            $discoveredUrl->delete();
+            $this->deleted++;
+            $this->warn("  Deleted (404): {$url}");
+            return;
+        }
+
+        if (!$isLeafPage($url)) {
+            $discoveredUrl->delete();
+            $this->deleted++;
+            $this->warn("  Deleted (not leaf page): {$url}");
+            return;
+        }
+
+        $propertyData = $parseData($html, $url);
+
+        if (empty($propertyData)) {
+            $discoveredUrl->delete();
+            $this->deleted++;
+            $this->warn("  Deleted (no data extracted): {$url}");
+            return;
+        }
+
+        $this->createOrUpdateProperty($propertyData, $websiteId, $url);
+        $discoveredUrl->markAsFetched();
+        $this->properties++;
+        $this->info("  Property saved: {$url}");
     }
 
     protected function createOrUpdateProperty(array $data, string $websiteId, string $url): void
