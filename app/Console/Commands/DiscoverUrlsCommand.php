@@ -124,8 +124,7 @@ class DiscoverUrlsCommand extends Command
                         'key' => $apiKey,
                         'url' => $url,
                         'country' => 'nl',
-                        'asp' => true,
-                        'timeout' => 75000,
+                        'asp' => 'true',
                     ])
                 )->toArray()
             );
