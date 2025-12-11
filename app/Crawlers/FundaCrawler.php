@@ -83,6 +83,7 @@ class FundaCrawler extends WebsiteCrawler
             'original_description' => $this->extractDescription($htmlContent),
             'property_type' => $this->extractPropertyType($htmlContent),
             'transaction_type' => $isRental ? 'rent' : 'sale',
+            'status' => $this->extractStatus($htmlContent),
             'living_type' => $this->extractLivingType($htmlContent),
             'buyprice' => $isRental ? null : $price,
             'rentprice_month' => $isRental ? $price : null,
@@ -693,6 +694,24 @@ class FundaCrawler extends WebsiteCrawler
         }
 
         return !empty($data) ? $data : null;
+    }
+
+    private function extractStatus(string $content): string
+    {
+        $statusMapping = config('websites.funda.status_mapping', [
+            'Beschikbaar' => 'available',
+            'Verkocht' => 'unavailable',
+            'Verhuurd' => 'unavailable',
+            'Onder bod' => 'reserved',
+            'Onder optie' => 'reserved',
+        ]);
+
+        if (preg_match('/>Status<\/dt>.*?<dd[^>]*>.*?<span[^>]*>(.*?)<\/span>/is', $content, $matches)) {
+            $rawStatus = trim(strip_tags($matches[1]));
+            return $statusMapping[$rawStatus] ?? 'available';
+        }
+
+        return 'available';
     }
 
     private function extractAgentCompany(string $content): ?string

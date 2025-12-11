@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('transaction_type', ['sale', 'rent', 'auction']);
 
             $table->enum('status', [
-                'available', 'sold', 'rented', 'pending', 'withdrawn'
+                'available', 'reserved', 'unavailable'
             ])->default('available');
 
             $table->enum('living_type', [

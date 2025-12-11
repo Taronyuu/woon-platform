@@ -476,10 +476,8 @@ class PropertyUnit extends Model
     {
         $labels = [
             'available' => 'Beschikbaar',
-            'sold' => 'Verkocht',
-            'rented' => 'Verhuurd',
-            'pending' => 'In optie',
-            'withdrawn' => 'Uit de handel',
+            'reserved' => 'Gereserveerd',
+            'unavailable' => 'Niet beschikbaar',
         ];
 
         return $labels[$this->status] ?? ucfirst($this->status);

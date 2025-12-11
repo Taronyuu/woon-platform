@@ -78,11 +78,9 @@ class PropertyUnitsTable
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
-                        'available' => 'Available',
-                        'sold' => 'Sold',
-                        'rented' => 'Rented',
-                        'pending' => 'Pending',
-                        'withdrawn' => 'Withdrawn',
+                        'available' => 'Beschikbaar',
+                        'reserved' => 'Gereserveerd',
+                        'unavailable' => 'Niet beschikbaar',
                     ]),
                 SelectFilter::make('property_type')
                     ->label('Property Type')

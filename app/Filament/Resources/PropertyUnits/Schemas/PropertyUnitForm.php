@@ -65,11 +65,9 @@ class PropertyUnitForm
                                         Select::make('status')
                                             ->label('Status')
                                             ->options([
-                                                'available' => 'Available',
-                                                'sold' => 'Sold',
-                                                'rented' => 'Rented',
-                                                'pending' => 'Pending',
-                                                'withdrawn' => 'Withdrawn',
+                                                'available' => 'Beschikbaar',
+                                                'reserved' => 'Gereserveerd',
+                                                'unavailable' => 'Niet beschikbaar',
                                             ])
                                             ->required(),
                                         Select::make('living_type')

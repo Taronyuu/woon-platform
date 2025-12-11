@@ -12,6 +12,14 @@ return [
         'use_flaresolverr' => true,
         'is_active' => true,
 
+        'status_mapping' => [
+            'Beschikbaar' => 'available',
+            'Verkocht' => 'unavailable',
+            'Verhuurd' => 'unavailable',
+            'Onder bod' => 'reserved',
+            'Onder optie' => 'reserved',
+        ],
+
         'start_urls' => array_merge(
             array_map(fn($page) => "https://www.funda.nl/zoeken/koop/?page={$page}", range(1, 700)),
             array_map(fn($page) => "https://www.funda.nl/zoeken/huur/?page={$page}", range(1, 300)),

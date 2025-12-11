@@ -17,7 +17,8 @@ class PropertyStatsWidget extends StatsOverviewWidget
             ->where('created_at', '>=', now()->subWeek())
             ->count();
         $available = PropertyUnit::query()->where('status', 'available')->count();
-        $sold = PropertyUnit::query()->where('status', 'sold')->count();
+        $reserved = PropertyUnit::query()->where('status', 'reserved')->count();
+        $unavailable = PropertyUnit::query()->where('status', 'unavailable')->count();
         $forSale = PropertyUnit::query()->where('transaction_type', 'sale')->count();
         $forRent = PropertyUnit::query()->where('transaction_type', 'rent')->count();
 
@@ -27,7 +28,7 @@ class PropertyStatsWidget extends StatsOverviewWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('primary'),
             Stat::make('Available', number_format($available))
-                ->description($sold . ' sold')
+                ->description($reserved . ' reserved, ' . $unavailable . ' unavailable')
                 ->color('success'),
             Stat::make('For Sale', number_format($forSale))
                 ->description($forRent . ' for rent')
