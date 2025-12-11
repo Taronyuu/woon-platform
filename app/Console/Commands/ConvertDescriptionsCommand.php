@@ -3,18 +3,27 @@
 namespace App\Console\Commands;
 
 use App\Models\PropertyUnit;
-use App\Services\MistralService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class ConvertDescriptionsCommand extends Command
 {
     protected $signature = 'property:convert-descriptions
                             {--limit= : Limit the number of properties to process}
+                            {--concurrency=1 : Number of concurrent requests}
                             {--force : Reconvert even if description already exists}';
 
     protected $description = 'Convert property descriptions using Mistral AI to markdown format';
 
-    public function handle(MistralService $mistral): int
+    private const API_ENDPOINT = 'https://api.mistral.ai/v1/chat/completions';
+    private const API_KEY = 'PeBiaaVvUCCuHu8Seg1zLCOzj0maiZC3';
+    private const MODEL = 'mistral-small-2506';
+
+    private int $successCount = 0;
+    private int $errorCount = 0;
+
+    public function handle(): int
     {
         $query = PropertyUnit::query()
             ->whereNotNull('original_description')
@@ -29,6 +38,7 @@ class ConvertDescriptionsCommand extends Command
         }
 
         $properties = $query->get();
+        $concurrency = (int) $this->option('concurrency') ?: 1;
 
         if ($properties->isEmpty()) {
             $this->info('No properties to convert.');
@@ -36,11 +46,24 @@ class ConvertDescriptionsCommand extends Command
         }
 
         $this->info("Converting {$properties->count()} property descriptions...");
+        $this->line("Concurrency: {$concurrency}");
         $this->newLine();
 
-        $successCount = 0;
-        $errorCount = 0;
+        if ($concurrency > 1) {
+            $this->processWithConcurrency($properties, $concurrency);
+        } else {
+            $this->processSequentially($properties);
+        }
 
+        $this->line("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        $this->newLine();
+        $this->info("Completed: {$this->successCount} converted, {$this->errorCount} failed.");
+
+        return $this->errorCount > 0 ? Command::FAILURE : Command::SUCCESS;
+    }
+
+    private function processSequentially($properties): void
+    {
         foreach ($properties as $index => $property) {
             $current = $index + 1;
             $total = $properties->count();
@@ -50,34 +73,83 @@ class ConvertDescriptionsCommand extends Command
             $this->newLine();
 
             $this->warn('BEFORE:');
-            $this->line(\Illuminate\Support\Str::limit($property->original_description, 500));
+            $this->line(Str::limit($property->original_description, 500));
             $this->newLine();
 
             try {
-                $convertedDescription = $this->convertDescription($mistral, $property->original_description);
+                $response = Http::timeout(300)
+                    ->withHeaders([
+                        'Authorization' => 'Bearer ' . self::API_KEY,
+                        'Content-Type' => 'application/json',
+                    ])
+                    ->post(self::API_ENDPOINT, $this->buildRequestBody($property->original_description));
+
+                if (!$response->successful()) {
+                    throw new \Exception('API request failed: ' . $response->body());
+                }
+
+                $convertedDescription = $response->json()['choices'][0]['message']['content'] ?? '';
 
                 $property->description = $convertedDescription;
                 $property->save();
 
                 $this->info('AFTER:');
-                $this->line(\Illuminate\Support\Str::limit($convertedDescription, 500));
+                $this->line(Str::limit($convertedDescription, 500));
                 $this->newLine();
 
-                $successCount++;
+                $this->successCount++;
             } catch (\Exception $e) {
-                $errorCount++;
+                $this->errorCount++;
                 $this->error("Failed: {$e->getMessage()}");
             }
         }
-
-        $this->line("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        $this->newLine();
-        $this->info("Completed: {$successCount} converted, {$errorCount} failed.");
-
-        return $errorCount > 0 ? Command::FAILURE : Command::SUCCESS;
     }
 
-    private function convertDescription(MistralService $mistral, string $originalDescription): string
+    private function processWithConcurrency($properties, int $concurrency): void
+    {
+        $chunks = $properties->chunk($concurrency);
+
+        foreach ($chunks as $chunkIndex => $chunk) {
+            $this->line("Processing batch " . ($chunkIndex + 1) . "/" . $chunks->count() . " (" . $chunk->count() . " properties)");
+
+            $chunkArray = $chunk->values()->all();
+
+            $responses = Http::pool(fn ($pool) =>
+                collect($chunkArray)->map(fn ($property) =>
+                    $pool->timeout(300)
+                        ->withHeaders([
+                            'Authorization' => 'Bearer ' . self::API_KEY,
+                            'Content-Type' => 'application/json',
+                        ])
+                        ->post(self::API_ENDPOINT, $this->buildRequestBody($property->original_description))
+                )->toArray()
+            );
+
+            foreach ($responses as $index => $response) {
+                $property = $chunkArray[$index];
+
+                try {
+                    if (!$response->successful()) {
+                        throw new \Exception('API request failed: ' . $response->body());
+                    }
+
+                    $convertedDescription = $response->json()['choices'][0]['message']['content'] ?? '';
+
+                    $property->description = $convertedDescription;
+                    $property->save();
+
+                    $this->info("  Converted: {$property->name} (ID: {$property->id})");
+                    $this->successCount++;
+
+                } catch (\Exception $e) {
+                    $this->errorCount++;
+                    $this->error("  Failed [{$property->id}]: {$e->getMessage()}");
+                }
+            }
+        }
+    }
+
+    private function buildRequestBody(string $originalDescription): array
     {
         $prompt = <<<PROMPT
 Je bent een professionele Nederlandse vastgoed copywriter. Herschrijf de volgende woningbeschrijving als vloeiende, goed leesbare tekst.
@@ -104,6 +176,16 @@ Originele beschrijving:
 {$originalDescription}
 PROMPT;
 
-        return $mistral->sendPrompt($prompt);
+        return [
+            'model' => self::MODEL,
+            'max_tokens' => 8192,
+            'temperature' => 0.4,
+            'messages' => [
+                [
+                    'role' => 'user',
+                    'content' => $prompt,
+                ],
+            ],
+        ];
     }
 }
