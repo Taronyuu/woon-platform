@@ -21,8 +21,10 @@ return [
         ],
 
         'start_urls' => array_merge(
-            array_map(fn($page) => "https://www.funda.nl/zoeken/koop/?page={$page}", range(1, 700)),
-            array_map(fn($page) => "https://www.funda.nl/zoeken/huur/?page={$page}", range(1, 300)),
+            array_map(fn($page) => "https://www.funda.nl/zoeken/koop/?page={$page}", range(1, 10)),
+            array_map(fn($page) => "https://www.funda.nl/zoeken/huur/?page={$page}", range(1, 10)),
+            array_map(fn($page) => "https://www.funda.nl/zoeken/koop/?page={$page}", range(10, 700)),
+            array_map(fn($page) => "https://www.funda.nl/zoeken/huur/?page={$page}", range(10, 300)),
         ),
 
         'should_crawl' => function (string $url): bool {

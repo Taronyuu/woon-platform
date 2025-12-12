@@ -11,11 +11,10 @@ class DiscoverUrlsCommand extends Command
 {
     protected $signature = 'crawl:discover
                             {website? : The website ID to discover URLs for}
-                            {--full : Crawl ALL start URLs}
+                            {--full : Crawl ALL start URLs (default: first 20 only)}
                             {--from= : Start from this start URL index (0-based)}
                             {--till= : End at this start URL index (exclusive)}
                             {--concurrency=1 : Number of concurrent requests}
-                            {--partial : Stop when existing URL found (default)}
                             {--list : List all available websites}';
 
     protected $description = 'Discover property URLs from website listing pages';
@@ -63,6 +62,10 @@ class DiscoverUrlsCommand extends Command
             $startUrls = array_slice($startUrls, 0, $length);
         }
 
+        if (!$isFullCrawl && $tillIndex === null && $fromIndex === 0) {
+            $startUrls = array_slice($startUrls, 0, 20);
+        }
+
         $rangeInfo = '';
         if ($fromIndex > 0 || $tillIndex !== null) {
             $rangeInfo = " (index {$fromIndex}" . ($tillIndex !== null ? " to {$tillIndex}" : '') . ")";
@@ -74,9 +77,9 @@ class DiscoverUrlsCommand extends Command
         $this->line('');
 
         if ($concurrency > 1) {
-            $this->processWithConcurrency($startUrls, $websiteId, $scrapfly, $extractLinks, $shouldCrawl, $isFullCrawl, $concurrency);
+            $this->processWithConcurrency($startUrls, $websiteId, $scrapfly, $extractLinks, $shouldCrawl, $concurrency);
         } else {
-            $this->processSequentially($startUrls, $websiteId, $scrapfly, $extractLinks, $shouldCrawl, $isFullCrawl, $config['delay_ms'] ?? 1000);
+            $this->processSequentially($startUrls, $websiteId, $scrapfly, $extractLinks, $shouldCrawl, $config['delay_ms'] ?? 1000);
         }
 
         $this->line('');
@@ -86,19 +89,14 @@ class DiscoverUrlsCommand extends Command
         return self::SUCCESS;
     }
 
-    protected function processSequentially(array $startUrls, string $websiteId, ScrapflyService $scrapfly, callable $extractLinks, callable $shouldCrawl, bool $isFullCrawl, int $delayMs): void
+    protected function processSequentially(array $startUrls, string $websiteId, ScrapflyService $scrapfly, callable $extractLinks, callable $shouldCrawl, int $delayMs): void
     {
         foreach ($startUrls as $startUrl) {
             $this->line("Processing: {$startUrl}");
 
             try {
                 $data = $scrapfly->scrape($startUrl);
-                $shouldStop = $this->processPageLinks($data['html'], $startUrl, $websiteId, $extractLinks, $shouldCrawl, $isFullCrawl);
-
-                if ($shouldStop) {
-                    return;
-                }
-
+                $this->processPageLinks($data['html'], $startUrl, $websiteId, $extractLinks, $shouldCrawl);
                 $this->startUrlsProcessed++;
 
             } catch (\Exception $e) {
@@ -109,7 +107,7 @@ class DiscoverUrlsCommand extends Command
         }
     }
 
-    protected function processWithConcurrency(array $startUrls, string $websiteId, ScrapflyService $scrapfly, callable $extractLinks, callable $shouldCrawl, bool $isFullCrawl, int $concurrency): void
+    protected function processWithConcurrency(array $startUrls, string $websiteId, ScrapflyService $scrapfly, callable $extractLinks, callable $shouldCrawl, int $concurrency): void
     {
         $chunks = array_chunk($startUrls, $concurrency);
         $apiKey = config('services.scrapfly.api_key');
@@ -145,12 +143,7 @@ class DiscoverUrlsCommand extends Command
                     }
 
                     $html = $data['result']['content'];
-                    $shouldStop = $this->processPageLinks($html, $startUrl, $websiteId, $extractLinks, $shouldCrawl, $isFullCrawl);
-
-                    if ($shouldStop) {
-                        return;
-                    }
-
+                    $this->processPageLinks($html, $startUrl, $websiteId, $extractLinks, $shouldCrawl);
                     $this->startUrlsProcessed++;
 
                 } catch (\Exception $e) {
@@ -160,7 +153,7 @@ class DiscoverUrlsCommand extends Command
         }
     }
 
-    protected function processPageLinks(string $html, string $startUrl, string $websiteId, callable $extractLinks, callable $shouldCrawl, bool $isFullCrawl): bool
+    protected function processPageLinks(string $html, string $startUrl, string $websiteId, callable $extractLinks, callable $shouldCrawl): void
     {
         $links = $extractLinks($html, $startUrl);
 
@@ -175,14 +168,6 @@ class DiscoverUrlsCommand extends Command
             $linksOnPage++;
             $exists = DiscoveredUrl::urlExists($websiteId, $link);
 
-            if (!$isFullCrawl && $exists) {
-                $this->warn("Found existing URL, stopping partial crawl");
-                $this->line("URL: {$link}");
-                $this->line('');
-                $this->displayStats();
-                return true;
-            }
-
             if (!$exists) {
                 DiscoveredUrl::createFromUrl($websiteId, $link);
                 $this->urlsDiscovered++;
@@ -193,7 +178,6 @@ class DiscoverUrlsCommand extends Command
         }
 
         $this->info("  [{$startUrl}] Found {$linksOnPage} valid links, {$newOnPage} new");
-        return false;
     }
 
     protected function listWebsites(): int
