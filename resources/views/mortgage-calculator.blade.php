@@ -82,13 +82,12 @@ $breadcrumbItems = [
                             <select
                                 id="duration"
                                 x-model.number="duration"
-                                @change="calculate()"
+                                @change="updateInterestRate()"
                                 class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl text-gray-900 text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                             >
                                 <option value="10">10 jaar</option>
                                 <option value="15">15 jaar</option>
                                 <option value="20">20 jaar</option>
-                                <option value="25">25 jaar</option>
                                 <option value="30" selected>30 jaar</option>
                             </select>
                         </div>
@@ -191,6 +190,7 @@ $breadcrumbItems = [
                 amount: parseInt(urlParams.get('amount')) || 250000,
                 duration: parseInt(urlParams.get('duration')) || 30,
                 mortgageType: 'ANNUITAIR',
+                rates: {},
                 interestRate: 0,
                 monthlyPayment: 0,
                 totalInterest: 0,
@@ -223,9 +223,9 @@ $breadcrumbItems = [
 
                         if (data.error) {
                             this.error = data.error;
-                        } else if (data.interestRate) {
-                            this.interestRate = data.interestRate;
-                            this.calculate();
+                        } else if (data.rates) {
+                            this.rates = data.rates;
+                            this.updateInterestRate();
                         } else {
                             this.error = 'Onverwacht antwoord van server';
                         }
@@ -234,6 +234,12 @@ $breadcrumbItems = [
                     } finally {
                         this.loading = false;
                     }
+                },
+
+                updateInterestRate() {
+                    const months = this.duration * 12;
+                    this.interestRate = this.rates[months] || 0;
+                    this.calculate();
                 },
 
                 calculate() {

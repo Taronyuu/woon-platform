@@ -31,31 +31,32 @@ class MortgageCalculatorController extends Controller
                     'content-type' => 'application/json',
                     'origin' => 'https://hypotheken.abnamro.nl',
                     'pragma' => 'no-cache',
-                    'referer' => 'https://hypotheken.abnamro.nl/interest-rates/app/?lang=en',
+                    'referer' => 'https://hypotheken.abnamro.nl/interest-rates/app/?lang=nl',
                     'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36',
                 ])
-                    ->post('https://hypotheken.abnamro.nl/mortgage-customer-interest-rate-calculation/v1/interest-rates/calculate?inactive=true', [
+                    ->post('https://hypotheken.abnamro.nl/api/customer-interest-rates/interest-rates/calculate?inactive=true', [
                         'product' => $product,
                         'type' => $apiType,
+                        'discounts' => [
+                            ['type' => 'BANK_ACCOUNT'],
+                        ],
                     ]);
 
                 if ($response->successful()) {
                     $rawData = $response->json();
 
-                    $interestRate = 4.15;
+                    $rates = [];
                     if (isset($rawData['periods']) && is_array($rawData['periods'])) {
                         foreach ($rawData['periods'] as $period) {
-                            if ($period['duration'] == 360 && isset($period['rates'][0]['value'])) {
+                            if (isset($period['rates'][0]['value'])) {
                                 $rateString = $period['rates'][0]['value'];
-                                $interestRate = (float) str_replace('%', '', $rateString);
-                                break;
+                                $rates[$period['duration']] = (float) str_replace('%', '', $rateString);
                             }
                         }
                     }
 
                     return [
-                        'interestRate' => $interestRate,
-                        'rawData' => $rawData,
+                        'rates' => $rates,
                     ];
                 }
 
