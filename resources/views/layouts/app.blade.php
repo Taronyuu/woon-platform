@@ -17,6 +17,13 @@
     @yield('structured-data')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0RGVKVGQ9Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0RGVKVGQ9Y');
+    </script>
 </head>
 <body class="bg-gray-50">
 
